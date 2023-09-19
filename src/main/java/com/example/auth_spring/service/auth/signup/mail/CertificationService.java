@@ -3,40 +3,58 @@ package com.example.auth_spring.service.auth.signup.mail;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.domain.mail.Certification;
+import com.example.auth_spring.web.domain.mail.CertificationRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.signup.mail.MailRequestDto;
-import com.example.auth_spring.web.dto.signup.mail.MailResponseDto;
+import com.example.auth_spring.web.dto.signup.mail.CertificationRequestDto;
+import com.example.auth_spring.web.dto.signup.mail.CertificationResponseDto;
+import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class MailService {
+public class CertificationService {
 
     private final CommonService commonService;
-
+    private final CertificationRepository certificationRepository;
     private final JavaMailSender javaMailSender;
     private static final String senderEmail = "alsgur990104@gmail.com";
 
-    protected String sendMail(MailRequestDto mailRequestDto) {
+    // 인증 코드 전송(메일)
+    @Transactional
+    public String sendMail(CertificationRequestDto certificationRequestDto) {
 
         String authNum = createCode();
+
+        Optional<Certification> certificationOptional = certificationRepository.findByEmail(certificationRequestDto.getEmail());
+
+        if (certificationOptional.isPresent()) {
+            Certification certification = certificationOptional.get();
+            certification.codeUpdate(authNum);
+        } else {
+            certificationRepository.save(Certification.builder()
+                            .email(certificationRequestDto.getEmail())
+                            .code(authNum)
+                            .build());
+        }
 
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-            mimeMessage.setRecipients(Message.RecipientType.TO, mailRequestDto.getEmail()); // 보내는 대상
+            mimeMessage.setRecipients(Message.RecipientType.TO, certificationRequestDto.getEmail()); // 보내는 대상
             mimeMessage.setSubject("이메일 인증을 위한 인증 코드 발송"); // 제목
-
 
             String msgg = "";
             msgg += "<div style='margin:100px;'>";
@@ -64,14 +82,27 @@ public class MailService {
         }
     }
 
-    public CommonResponse<Object> responseSendMail(MailRequestDto mailRequestDto) {
-        String code = sendMail(mailRequestDto);
 
-        return commonService.successResponse(SuccessCode.MAIL_SEND_SUCCESS.getDescription(), HttpStatus.OK, new MailResponseDto(code));
+
+    // API 반환 (POST)
+    @Transactional
+    public CommonResponse<Object> responseSendMail(CertificationRequestDto certificationRequestDto) {
+        String code = sendMail(certificationRequestDto);
+
+        return commonService.successResponse(SuccessCode.CERTIFICATION_SEND_SUCCESS.getDescription(), HttpStatus.OK, new CertificationResponseDto(code));
     }
 
+    // 인증 코드가 일치하는지 (true, false) API 반환
+    public CommonResponse<Object> responseCertificationCheck(String certificationCode) {
+        certificationRepository.findByCode(certificationCode).orElseThrow(() ->
+                new NotFoundException(ErrorCode.CERTIFICATION_CODE_INCONSISTENCY));
+
+        return commonService.successResponse(SuccessCode.CERTIFICATION_CHECK.getDescription(), HttpStatus.OK, null);
+    }
+
+
     // 랜덤 인증 코드 전송
-    public String createCode() {
+    private String createCode() {
         StringBuilder key = new StringBuilder();
         Random rnd = new Random();
 
@@ -95,4 +126,6 @@ public class MailService {
         }
         return key.toString();
     }
+
+
 }

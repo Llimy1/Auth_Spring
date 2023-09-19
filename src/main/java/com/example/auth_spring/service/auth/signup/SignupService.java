@@ -14,6 +14,7 @@ import com.example.auth_spring.type.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +24,10 @@ public class SignupService {
     private final AddressRepository addressRepository;
     private final CommonService commonService;
 
-    protected Long signup(SignupRequestDto signupRequestDto) {
+
+    // 회원 가입
+    @Transactional
+    public Long signup(SignupRequestDto signupRequestDto) {
 
         userRepository.findByNickname(signupRequestDto.getNickname()).ifPresent(a -> {
             throw new IllegalStateException(ErrorCode.NICKNAME_THAT_EXIST);
@@ -47,6 +51,8 @@ public class SignupService {
         return userId;
     }
 
+    // API 반환
+    @Transactional
     public CommonResponse<Object> signupResponse(SignupRequestDto signupRequestDto) {
         Long userId = signup(signupRequestDto);
 

@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MailRequestDto {
+public class CertificationRequestDto {
     private String email;
 
-    public MailRequestDto(String email) {
+    public CertificationRequestDto(String email) {
         this.email = email;
     }
 }

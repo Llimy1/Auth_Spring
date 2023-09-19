@@ -4,6 +4,7 @@ import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
+import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,13 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(UnsupportedEncodingException.class)
     public ResponseEntity<ResultDto<Void>> handleIllegalStateException(UnsupportedEncodingException uee) {
         CommonResponse<Object> commonResponse = commonService.errorResponse(uee.getMessage(), HttpStatus.BAD_REQUEST, null);
+        ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+        return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ResultDto<Void>> handleIllegalStateException(NotFoundException nfe) {
+        CommonResponse<Object> commonResponse = commonService.errorResponse(nfe.getMessage(), HttpStatus.NOT_FOUND, null);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }

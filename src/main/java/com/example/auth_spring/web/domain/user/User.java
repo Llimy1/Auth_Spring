@@ -4,7 +4,6 @@ package com.example.auth_spring.web.domain.user;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
 import com.example.auth_spring.web.domain.role.Role;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

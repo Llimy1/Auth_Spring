@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AddressTest {
 
     @Test
-    @DisplayName("주소 생성 도메인 테스트")
+    @DisplayName("[Domain]주소 생성 도메인 테스트")
     void createAddress() {
 
         String mainAddress = "서울시 강남구";

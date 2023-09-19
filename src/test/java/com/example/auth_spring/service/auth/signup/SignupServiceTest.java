@@ -4,7 +4,8 @@ import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
-import com.example.auth_spring.web.dto.SignupRequestDto;
+import com.example.auth_spring.web.dto.signup.SignupRequestDto;
+import com.example.auth_spring.web.exception.IllegalStateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -32,7 +36,7 @@ class SignupServiceTest {
     private SignupService signupService;
 
     @Test
-    @DisplayName("회원가입 성공 테스트")
+    @DisplayName("[Service]회원가입 성공")
     void signupSuccess() throws Exception {
 
         //given
@@ -40,7 +44,7 @@ class SignupServiceTest {
         User user = user(signupRequestDto);
         Address address = address(signupRequestDto);
 
-        // Mocking
+
         given(userRepository.save(any()))
                 .willReturn(user);
 
@@ -48,6 +52,7 @@ class SignupServiceTest {
                 .willReturn(address);
 
         ReflectionTestUtils.setField(user, "id", 1L);
+
         //when
         Long userId = signupService.signup(signupRequestDto);
 
@@ -55,6 +60,54 @@ class SignupServiceTest {
         verify(userRepository, times(1)).save(any());
         verify(addressRepository, times(1)).save(any());
         assertThat(userId).isEqualTo(user.getId());
+    }
+
+    @Test
+    @DisplayName("[Service]이미 존재하는 닉네임 오류 발생")
+    void failNicknameExist() {
+
+        //given
+        User user = user(signupRequestDto());
+        given(userRepository.findByNickname(user.getNickname()))
+                .willReturn(Optional.of(user));
+
+
+        //when
+        //then
+        assertThatThrownBy(() -> signupService.signup(signupRequestDto()))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("[Service]이미 존재하는 이메일 오류 발생")
+    void failEmailExist() {
+
+        //given
+        User user = user(signupRequestDto());
+        given(userRepository.findByEmail(user.getEmail()))
+                .willReturn(Optional.of(user));
+
+
+        //when
+        //then
+        assertThatThrownBy(() -> signupService.signup(signupRequestDto()))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("[Service]이미 존재하는 핸드폰 번호 오류 발생")
+    void failPhoneNumberExist() {
+
+        //given
+        User user = user(signupRequestDto());
+        given(userRepository.findByPhoneNumber(user.getPhoneNumber()))
+                .willReturn(Optional.of(user));
+
+
+        //when
+        //then
+        assertThatThrownBy(() -> signupService.signup(signupRequestDto()))
+                .isInstanceOf(IllegalStateException.class);
     }
 
     private User user(SignupRequestDto signupRequestDto) {

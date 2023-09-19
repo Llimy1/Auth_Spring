@@ -28,7 +28,7 @@ class AddressRepositoryTest {
     }
 
     @Test
-    @DisplayName("주소 생성하기")
+    @DisplayName("[Repository]주소 생성하기")
     void createAddress() {
         String mainAddress1 = "서울시 강남구";
         String detailAddress1 = "1길 30";

@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.dto;
+package com.example.auth_spring.web.dto.signup;
 
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.role.Role;

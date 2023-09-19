@@ -1,9 +1,12 @@
 package com.example.auth_spring.web.controller.auth.signup;
 
 import com.example.auth_spring.service.auth.signup.SignupService;
-import com.example.auth_spring.web.dto.SignupRequestDto;
-import com.example.auth_spring.web.dto.SignupResponseDto;
+import com.example.auth_spring.web.dto.common.CommonResponse;
+import com.example.auth_spring.web.dto.common.ResultDto;
+import com.example.auth_spring.web.dto.signup.SignupRequestDto;
+import com.example.auth_spring.web.dto.signup.SignupResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,8 +17,11 @@ public class SignupController {
     private final SignupService signupService;
 
     @PostMapping("/signup")
-    public Long signup(@RequestBody SignupRequestDto signupRequestDto) {
+    public ResponseEntity<ResultDto<SignupResponseDto>> signup(@RequestBody SignupRequestDto signupRequestDto) {
+        CommonResponse<Object> commonResponse = signupService.signupResponse(signupRequestDto);
+        ResultDto<SignupResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
 
-        return signupService.signup(signupRequestDto);
+        result.setData((SignupResponseDto) commonResponse.getData());
+        return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }
 }

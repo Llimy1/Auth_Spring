@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -64,6 +65,12 @@ public class User extends BaseTimeEntity {
         this.profileImgUrl = profileImgUrl;
         this.introduce = introduce;
         this.role = role;
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nickname);
     }
 
     public String getRoleKey() {

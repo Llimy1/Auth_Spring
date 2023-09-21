@@ -1,13 +1,14 @@
 package com.example.auth_spring.web.domain.address;
 
-import com.example.auth_spring.web.domain.role.Role;
+import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -17,8 +18,11 @@ class AddressTest {
     @DisplayName("[Domain]주소 생성 도메인 테스트")
     void createAddress() {
 
-        String mainAddress = "서울시 강남구";
+        String zipCode = "12345";
+        String streetAddress = "서울시 강남구";
         String detailAddress = "1길 30";
+        Boolean isDefault = true;
+
         String email = "abce@naver.com";
         String password = "1234";
         String name = "홍길동";
@@ -44,16 +48,20 @@ class AddressTest {
 
         //given
         Address address = Address.builder()
-                .mainAddress(mainAddress)
+                .zipCode(zipCode)
+                .streetAddress(streetAddress)
                 .detailAddress(detailAddress)
                 .user(user)
+                .isDefault(isDefault)
                 .build();
 
         //when
         //then
 
-        assertThat(address.getMainAddress()).isEqualTo(mainAddress);
+        assertThat(address.getZipCode()).isEqualTo(zipCode);
+        assertThat(address.getStreetAddress()).isEqualTo(streetAddress);
         assertThat(address.getDetailAddress()).isEqualTo(detailAddress);
         assertThat(address.getUser()).isEqualTo(user);
+        assertThat(address.getIsDefault()).isEqualTo(isDefault);
     }
 }

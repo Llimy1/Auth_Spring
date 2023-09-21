@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.domain.role;
+package com.example.auth_spring.type;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

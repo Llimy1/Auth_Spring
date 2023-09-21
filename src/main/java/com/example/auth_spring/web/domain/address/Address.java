@@ -19,10 +19,16 @@ public class Address {
     private Long id;
 
     @Column
-    private String mainAddress;
+    private String zipCode;
+
+    @Column
+    private String streetAddress;
 
     @Column
     private String detailAddress;
+
+    @Column
+    private Boolean isDefault;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,9 +36,11 @@ public class Address {
     private User user;
 
     @Builder
-    public Address(String mainAddress, String detailAddress, User user) {
-        this.mainAddress = mainAddress;
+    public Address(String zipCode, String streetAddress, String detailAddress, User user, Boolean isDefault) {
+        this.zipCode = zipCode;
+        this.streetAddress = streetAddress;
         this.detailAddress = detailAddress;
         this.user = user;
+        this.isDefault = isDefault;
     }
 }

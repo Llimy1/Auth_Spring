@@ -1,6 +1,6 @@
 package com.example.auth_spring.web.domain.common;
 
-import com.example.auth_spring.web.domain.role.Role;
+import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BaseTimeEntityTest {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
 
     @AfterEach
     public void cleanup() {

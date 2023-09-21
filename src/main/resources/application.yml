@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    include: oauth
   mail:
     host: smtp.gmail.com
     port: 587
@@ -25,4 +27,7 @@ spring:
        hibernate:
         format_sql: true
     show-sql: true
+
+jwt:
+  secret: spring-auth-project-spring-auth-project-spring-auth-project-spring-auth-project
 

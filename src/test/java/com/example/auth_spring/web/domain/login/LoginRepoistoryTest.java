@@ -1,5 +1,6 @@
-package com.example.auth_spring.web.domain.address;
+package com.example.auth_spring.web.domain.login;
 
+import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
@@ -8,39 +9,30 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class AddressRepositoryTest {
+class LoginRepoistoryTest {
+
+    @Autowired
+    private LoginRepoistory loginRepoistory;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private AddressRepository addressRepository;
-
+    private JwtProvider jwtProvider;
 
     @AfterEach
     public void cleanup() {
-        userRepository.deleteAll();
-        addressRepository.deleteAll();
+        loginRepoistory.deleteAll();
     }
 
     @Test
-    @DisplayName("[Repository]주소 생성하기")
-    void createAddress() {
-
-        String zipCode1 = "12345";
-        String streetAddress1 = "서울시 강남구";
-        String detailAddress1 = "1길 30";
-        Boolean isDefault1 = true;
-
-        String zipCode2 = "123456";
-        String streetAddress2 = "서울시 강남구";
-        String detailAddress2 = "1길 50";
-        Boolean isDefault2 = true;
+    @DisplayName("[Repository] 로그인 생성하기")
+    void createLogin() {
 
         String email1 = "abce@naver.com";
         String password1 = "1234";
@@ -62,7 +54,8 @@ class AddressRepositoryTest {
         String profileImgUrl2 = "https://img2_url";
         Role role2 = Role.valueOf("USER");
 
-        User user1 = userRepository.save(User.builder()
+        //given
+        User user1 = User.builder()
                 .email(email1)
                 .password(password1)
                 .name(name1)
@@ -72,9 +65,9 @@ class AddressRepositoryTest {
                 .introduce(introduce1)
                 .profileImgUrl(profileImgUrl1)
                 .role(role1)
-                .build());
+                .build();
 
-        User user2 = userRepository.save(User.builder()
+        User user2 = User.builder()
                 .email(email2)
                 .password(password2)
                 .name(name2)
@@ -84,36 +77,36 @@ class AddressRepositoryTest {
                 .introduce(introduce2)
                 .profileImgUrl(profileImgUrl2)
                 .role(role2)
-                .build());
-
-
-
-
-        //given
-        Address address1 = Address.builder()
-                .zipCode(zipCode1)
-                .streetAddress(streetAddress1)
-                .detailAddress(detailAddress1)
-                .user(user1)
-                .isDefault(isDefault1)
                 .build();
 
-        Address address2 = Address.builder()
-                .zipCode(zipCode2)
-                .streetAddress(streetAddress2)
-                .detailAddress(detailAddress2)
-                .user(user2)
-                .isDefault(isDefault2)
+        User userSave1 = userRepository.save(user1);
+        User userSave2 = userRepository.save(user2);
+
+
+        String refreshToken1 = jwtProvider.generateRefreshToken(userSave1.getRoleKey());
+        String refreshToken2 = jwtProvider.generateRefreshToken(userSave2.getRoleKey());
+
+        Login login1 = Login.builder()
+                .user(userSave1)
+                .refreshToken(refreshToken1)
                 .build();
 
+        Login login2 = Login.builder()
+                .user(userSave2)
+                .refreshToken(refreshToken2)
+                .build();
+
+
+
+
+        Login result1 = loginRepoistory.save(login1);
+        Login result2 = loginRepoistory.save(login2);
 
         //when
-        Address result1 = addressRepository.save(address1);
-        Address result2 = addressRepository.save(address2);
-
-
         //then
-        assertThat(result1.getStreetAddress()).isEqualTo(streetAddress1);
-        assertThat(result2.getStreetAddress()).isEqualTo(streetAddress2);
+        assertThat(result1.getUser()).isEqualTo(login1.getUser());
+        assertThat(result2.getUser()).isEqualTo(login2.getUser());
+        assertThat(result1.getRefreshToken()).isEqualTo(login1.getRefreshToken());
+        assertThat(result2.getRefreshToken()).isEqualTo(login2.getRefreshToken());
     }
 }

@@ -1,22 +1,27 @@
-package com.example.auth_spring.web.domain.user;
+package com.example.auth_spring.web.domain.login;
 
+import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.type.Role;
+import com.example.auth_spring.web.domain.user.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserTest {
+class LoginTest {
 
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @Test
-    @DisplayName("[Domain]유저 생성 도메인 테스트")
-    void createUser() {
+    @DisplayName("[Domain] 로그인 생성 도메인 테스트")
+    void createLogin() {
+        //given
 
         String email = "abce@naver.com";
         String password = "1234";
@@ -41,17 +46,16 @@ class UserTest {
                 .role(role)
                 .build();
 
+        String refreshToken = jwtProvider.generateRefreshToken(user.getRoleKey());
+
+        Login login = Login.builder()
+                .user(user)
+                .refreshToken(refreshToken)
+                .build();
+
         //when
         //then
-        assertThat(user.getEmail()).isEqualTo(email);
-        assertThat(user.getPassword()).isEqualTo(password);
-        assertThat(user.getName()).isEqualTo(name);
-        assertThat(user.getNickname()).isEqualTo(nickname);
-        assertThat(user.getPhoneNumber()).isEqualTo(phoneNumber);
-        assertThat(user.getGender()).isEqualTo(gender);
-        assertThat(user.getIntroduce()).isEqualTo(introduce);
-        assertThat(user.getProfileImgUrl()).isEqualTo(profileImgUrl);
-        assertThat(user.getRole()).isEqualTo(role);
+        assertThat(user).isEqualTo(login.getUser());
+        assertThat(refreshToken).isEqualTo(login.getRefreshToken());
     }
-
 }

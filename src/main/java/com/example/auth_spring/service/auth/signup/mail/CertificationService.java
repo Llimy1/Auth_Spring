@@ -92,7 +92,7 @@ public class CertificationService {
         return commonService.successResponse(SuccessCode.CERTIFICATION_SEND_SUCCESS.getDescription(), HttpStatus.OK, new CertificationResponseDto(code));
     }
 
-    // 인증 코드가 일치하는지 (true, false) API 반환
+    // 인증 코드가 일치하는지 API 반환 (GET)
     public CommonResponse<Object> responseCertificationCheck(String certificationCode) {
         certificationRepository.findByCode(certificationCode).orElseThrow(() ->
                 new NotFoundException(ErrorCode.CERTIFICATION_CODE_INCONSISTENCY));

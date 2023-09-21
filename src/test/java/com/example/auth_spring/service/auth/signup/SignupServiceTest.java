@@ -6,12 +6,14 @@ import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.signup.SignupRequestDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
@@ -32,8 +34,18 @@ class SignupServiceTest {
     @Mock
     private AddressRepository addressRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private SignupService signupService;
+
+
+    @AfterEach
+    public void cleanup() {
+        userRepository.deleteAll();
+        addressRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("[Service]회원가입 성공")
@@ -42,6 +54,8 @@ class SignupServiceTest {
         //given
         SignupRequestDto signupRequestDto = signupRequestDto();
         User user = user(signupRequestDto);
+        user.passwordEncode(passwordEncoder);
+
         Address address = address(signupRequestDto);
 
 
@@ -88,6 +102,7 @@ class SignupServiceTest {
                 .willReturn(Optional.of(user));
 
 
+
         //when
         //then
         assertThatThrownBy(() -> signupService.signup(signupRequestDto()))
@@ -129,7 +144,8 @@ class SignupServiceTest {
         String introduce = "안녕하세요 홍길동 입니다.";
         String profileImgUrl = "https://img_url";
 
-        String mainAddress = "서울시 강남구";
+        String zipCode = "12345";
+        String streetAddress = "서울시 강남구";
         String detailAddress = "1길 30";
 
 
@@ -142,7 +158,8 @@ class SignupServiceTest {
                 .gender(gender)
                 .introduce(introduce)
                 .profileImgUrl(profileImgUrl)
-                .mainAddress(mainAddress)
+                .zipCode(zipCode)
+                .streetAddress(streetAddress)
                 .detailAddress(detailAddress)
                 .build();
     }

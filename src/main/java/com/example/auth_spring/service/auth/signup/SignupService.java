@@ -13,6 +13,7 @@ import com.example.auth_spring.web.exception.IllegalStateException;
 import com.example.auth_spring.type.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class SignupService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final CommonService commonService;
+    private final PasswordEncoder passwordEncoder;
 
 
     // 회원 가입
@@ -41,8 +43,9 @@ public class SignupService {
             throw new IllegalStateException(ErrorCode.PHONE_NUMBER_THAT_EXIST);
         });
 
-
         User user = signupRequestDto.toUserEntity();
+        user.passwordEncode(passwordEncoder);
+
         Long userId = userRepository.save(user).getId();
 
         Address address = signupRequestDto.toAddressEntity(user);

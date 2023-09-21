@@ -1,16 +1,16 @@
 package com.example.auth_spring.web.domain.user;
 
 
+import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
-import com.example.auth_spring.web.domain.role.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -45,16 +45,18 @@ public class User extends BaseTimeEntity {
     @Column
     private String introduce;
 
+    @Column
+    private String provider;
+
+    @Column
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
 
     @Builder
-    public User(String email, String password, String name, String nickname, String phoneNumber, String gender,
-                String profileImgUrl, String introduce, Role role) {
+    public User(String email, String password, String name, String nickname, String phoneNumber, String gender, String profileImgUrl, String introduce, String provider, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -63,16 +65,15 @@ public class User extends BaseTimeEntity {
         this.gender = gender;
         this.profileImgUrl = profileImgUrl;
         this.introduce = introduce;
+        this.provider = provider;
         this.role = role;
     }
 
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nickname);
+    public String getRoleKey() {
+        return this.role.getKey();
     }
 
-    public String getRoleKey() {
-        return this.getRoleKey();
+    public void passwordEncode(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 }

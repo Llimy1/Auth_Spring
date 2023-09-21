@@ -1,14 +1,13 @@
 package com.example.auth_spring.web.domain.user;
 
-import com.example.auth_spring.web.domain.role.Role;
+import com.example.auth_spring.type.Role;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,10 +19,10 @@ class UserRepositoryTest {
 
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @AfterEach
-    public void cleanup() {
+    public void afterCleanup() {
         userRepository.deleteAll();
     }
 

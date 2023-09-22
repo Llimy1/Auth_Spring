@@ -1,12 +1,10 @@
-package com.example.auth_spring.service.auth.logout;
+package com.example.auth_spring.service.auth.withdrawal;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.security.jwt.service.TokenService;
 import com.example.auth_spring.type.Role;
-import com.example.auth_spring.web.domain.login.Login;
-import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
-import com.example.auth_spring.web.dto.auth.login.LoginReqeustDto;
+import com.example.auth_spring.web.domain.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,15 +16,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class BasicLogoutServiceTest {
-
+class WithdrawalServiceTest {
 
     @Mock
-    private LoginRepository loginRepository;
+    private UserRepository userRepository;
 
     @Mock
     private JwtProvider jwtProvider;
@@ -38,7 +36,8 @@ class BasicLogoutServiceTest {
     private TokenService tokenService;
 
     @InjectMocks
-    private BasicLogoutService basicLogoutService;
+    private WithdrawalService withdrawalService;
+
 
     String email = "abcd@naver.com";
     String password = "1234";
@@ -49,12 +48,10 @@ class BasicLogoutServiceTest {
     String introduce = "안녕하세요 홍길동 입니다.";
     String profileImgUrl = "https://img_url";
     Role role = Role.valueOf("USER");
-
     @Test
-    @DisplayName("[Service] 로그아웃 성공")
-    void logoutSuccess() {
+    @DisplayName("[Service] 회원탈퇴 성공")
+    void withdrawalSuccess() {
         //given
-
         User user = User.builder()
                 .email(email)
                 .password(password)
@@ -68,21 +65,18 @@ class BasicLogoutServiceTest {
                 .build();
 
         user.passwordEncode(passwordEncoder);
-        
-        Login login = Login.builder()
-                .user(user)
-                .refreshToken("refreshToken")
-                .build();
+
+        given(userRepository.findById(any()))
+                .willReturn(Optional.of(user));
 
         String accessToken = jwtProvider.generateAccessToken(user.getEmail(), user.getRoleKey());
 
-        given(loginRepository.findByUserId(any()))
-                .willReturn(Optional.of(login));
-
         //when
-        basicLogoutService.logout(accessToken);
+        withdrawalService.withdrawal(accessToken);
 
         //then
-        assertThat(loginRepository.findByRefreshToken(login.getRefreshToken())).isEmpty();
+        assertThat(userRepository.findByEmail(user.getEmail())).isEmpty();
+
     }
+
 }

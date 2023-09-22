@@ -53,35 +53,11 @@ class LoginControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private PasswordEncoder passwordEncoder;
-
-    @MockBean
-    private AuthenticationManager authenticationManager;
-
-    @MockBean
-    private JwtProvider jwtProvider;
-
     @Autowired
     private MockMvc mvc;
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    String email = "abcd@naver.com";
-    String password = "1234";
-    String name = "홍길동";
-    String nickname = "바람";
-    String phoneNumber = "01000000000";
-    String gender = "male";
-    String introduce = "안녕하세요 홍길동 입니다.";
-    String profileImgUrl = "https://img_url";
-    Role role = Role.valueOf("USER");
-
-
 
     @BeforeEach
     public void setup() {
@@ -117,8 +93,8 @@ class LoginControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.accessToken").value("accessToken"))
-                .andExpect(jsonPath("$.data.refreshToken").value("refreshToken"))
+                .andExpect(jsonPath("$.data.accessToken").value("Bearer accessToken"))
+                .andExpect(jsonPath("$.data.refreshToken").value("Bearer refreshToken"))
                 .andDo(print());
     }
 

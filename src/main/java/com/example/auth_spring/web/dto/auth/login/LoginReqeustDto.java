@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.dto.login;
+package com.example.auth_spring.web.dto.auth.login;
 
 import com.example.auth_spring.web.domain.login.Login;
 import com.example.auth_spring.web.domain.user.User;

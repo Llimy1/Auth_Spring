@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.dto.signup.mail;
+package com.example.auth_spring.web.dto.auth.signup.mail;
 
 import lombok.Getter;
 

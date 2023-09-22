@@ -21,6 +21,7 @@ public class Login extends BaseTimeEntity {
     private Long id;
 
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

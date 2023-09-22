@@ -4,7 +4,7 @@ import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
-import com.example.auth_spring.web.dto.signup.SignupRequestDto;
+import com.example.auth_spring.web.dto.auth.signup.SignupRequestDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

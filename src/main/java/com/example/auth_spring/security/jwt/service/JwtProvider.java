@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
 
@@ -28,11 +27,9 @@ public class JwtProvider implements InitializingBean {
     private String secret;
     private Key signingKey;
 
-    private static final String TOKEN_PREFIX = "Bearer ";
     private static final String ROLE_KEY = "role";
-    private static final String ACCESS_TOKEN_KEY = "Authorization";
-    private static final String REFRESH_TOKEN_KEY = "RefreshToken";
 
+    // signingKey 생성
     @Override
     public void afterPropertiesSet() throws Exception {
         byte[] secretKeyByte = secret.getBytes();
@@ -45,7 +42,6 @@ public class JwtProvider implements InitializingBean {
 
         // 새로운 클레임 객체를 생성, 이메일과 역할 (권한) 설정
         Claims claims = Jwts.claims().setSubject(email);
-        claims.setSubject(ACCESS_TOKEN_KEY);
         claims.put(ROLE_KEY, role);
 
         Date now = new Date();
@@ -64,13 +60,11 @@ public class JwtProvider implements InitializingBean {
 
     public String generateRefreshToken(String role) {
         long refreshPeriod = 1000L * 60L * 60L * 24L * 14L; // 2주
-        Claims claims = Jwts.claims().setSubject(REFRESH_TOKEN_KEY);
-        claims.put(ROLE_KEY, role);
 
         Date now = new Date();
 
         return Jwts.builder()
-                .setClaims(claims)
+                .claim(ROLE_KEY, role)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + refreshPeriod))
                 .signWith(signingKey, SignatureAlgorithm.HS256)
@@ -81,6 +75,7 @@ public class JwtProvider implements InitializingBean {
     // 유효 토큰 확인
     public Boolean verifyToken(String token) {
         try {
+
             Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(signingKey) // 비밀 키 설정하여 파싱
                     .build().parseClaimsJws(token); // 주어진 토큰 파싱하여 claims 객체 빼오기
@@ -94,15 +89,6 @@ public class JwtProvider implements InitializingBean {
         }
     }
 
-    // 토큰 값만 추출
-    public String resolveToken(HttpServletRequest httpServletRequest) {
-        String bearerToken = httpServletRequest.getHeader("Autho    rization");
-        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
-            return bearerToken.substring(TOKEN_PREFIX.length());
-        }
-        return null;
-    }
-
     // 권한 생성
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getEmail(token));
@@ -111,6 +97,7 @@ public class JwtProvider implements InitializingBean {
 
     // 토큰에서 이메일 추출
     public String getEmail(String token) {
+
         return Jwts.parserBuilder()
                 .setSigningKey(signingKey)
                 .build().parseClaimsJws(token)
@@ -119,10 +106,30 @@ public class JwtProvider implements InitializingBean {
 
     // 토큰에서 권한 추출
     public String getTokenRole (String token) {
+
         return Jwts.parserBuilder()
                 .setSigningKey(signingKey)
                 .build().parseClaimsJws(token)
                 .getBody().get(ROLE_KEY, String.class);
     }
 
+    // AccessToken 만료 시간이 5분 보다 적게 남았는지 확인
+    public boolean getExpiration(String token) {
+        try {
+
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(signingKey) // 비밀 키 설정하여 파싱
+                    .build().parseClaimsJws(token); // 주어진 토큰 파싱하여 claims 객체 빼오기
+
+            Date expiration = claims.getBody().getExpiration();
+
+            Date now = new Date();
+            long timeDiff = expiration.getTime() - now.getTime();
+            int fiveMinutes = 1000 * 60 * 5; // 5분
+
+            return timeDiff < fiveMinutes;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

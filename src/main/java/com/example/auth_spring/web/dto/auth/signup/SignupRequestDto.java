@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.dto.signup;
+package com.example.auth_spring.web.dto.auth.signup;
 
 import com.example.auth_spring.security.config.PasswordEncoderConfig;
 import com.example.auth_spring.type.Role;

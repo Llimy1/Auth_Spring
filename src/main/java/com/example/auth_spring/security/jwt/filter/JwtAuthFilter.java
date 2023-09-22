@@ -27,10 +27,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Value("${jwt.secret}")
     private String secretKey;
 
+    private static final String TOKEN_PREFIX = "Bearer ";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // request Header에서 accessToken을 가져온다.
-        String accessToken = jwtProvider.resolveToken(request);
+        String accessToken = resolveToken(request);
 
         // 토큰 검사 생략 (모두 허용 URL인 경우 토큰 검사 통과)
         if (!StringUtils.hasText(accessToken)) {
@@ -50,5 +52,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
+    }
+
+    // AccessToken 값만 추출
+    public String resolveToken(HttpServletRequest httpServletRequest) {
+        String bearerToken = httpServletRequest.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
+            return bearerToken.substring(TOKEN_PREFIX.length());
+        }
+        return null;
     }
 }

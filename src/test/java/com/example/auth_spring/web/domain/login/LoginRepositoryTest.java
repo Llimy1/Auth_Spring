@@ -11,13 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class LoginRepoistoryTest {
+class LoginRepositoryTest {
 
     @Autowired
-    private LoginRepoistory loginRepoistory;
+    private LoginRepository loginRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -27,7 +26,7 @@ class LoginRepoistoryTest {
 
     @AfterEach
     public void cleanup() {
-        loginRepoistory.deleteAll();
+        loginRepository.deleteAll();
     }
 
     @Test
@@ -99,8 +98,8 @@ class LoginRepoistoryTest {
 
 
 
-        Login result1 = loginRepoistory.save(login1);
-        Login result2 = loginRepoistory.save(login2);
+        Login result1 = loginRepository.save(login1);
+        Login result2 = loginRepository.save(login2);
 
         //when
         //then

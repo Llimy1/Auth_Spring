@@ -85,4 +85,11 @@ public class ExceptionControllerAdvice {
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }
+
+    @ExceptionHandler(ExpirationFiveMinutesException.class)
+    public ResponseEntity<ResultDto<Void>> handleIllegalStateException(ExpirationFiveMinutesException efm) {
+        CommonResponse<Object> commonResponse = commonService.errorResponse(efm.getMessage(), HttpStatus.BAD_REQUEST, null);
+        ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+        return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
+    }
 }

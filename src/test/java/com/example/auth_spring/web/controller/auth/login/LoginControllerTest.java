@@ -1,6 +1,6 @@
 package com.example.auth_spring.web.controller.auth.login;
 
-import com.example.auth_spring.security.jwt.dto.GeneratedToken;
+import com.example.auth_spring.security.jwt.dto.GeneratedTokenDto;
 import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.auth.login.BasicLoginService;
@@ -9,10 +9,9 @@ import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.type.SuccessCode;
-import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.login.LoginReqeustDto;
+import com.example.auth_spring.web.dto.auth.login.LoginReqeustDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,19 +22,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -108,7 +101,7 @@ class LoginControllerTest {
                 .httpStatus(HttpStatus.CREATED)
                 .status(ResponseStatus.SUCCESS.getDescription())
                 .message(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription())
-                .data(new GeneratedToken("accessToken", "refreshToken"))
+                .data(new GeneratedTokenDto("accessToken", "refreshToken"))
                 .build();
 
         //given

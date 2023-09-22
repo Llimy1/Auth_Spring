@@ -1,19 +1,15 @@
 package com.example.auth_spring.service.auth.login;
 
-import com.example.auth_spring.security.config.PasswordEncoderConfig;
-import com.example.auth_spring.security.jwt.dto.GeneratedToken;
+import com.example.auth_spring.security.jwt.dto.GeneratedTokenDto;
 import com.example.auth_spring.security.jwt.service.JwtProvider;
-import com.example.auth_spring.service.auth.signup.SignupService;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.login.Login;
-import com.example.auth_spring.web.domain.login.LoginRepoistory;
+import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
-import com.example.auth_spring.web.dto.login.LoginReqeustDto;
-import com.example.auth_spring.web.exception.IllegalStateException;
+import com.example.auth_spring.web.dto.auth.login.LoginReqeustDto;
 import com.example.auth_spring.web.exception.LoginException;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +20,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -43,7 +38,7 @@ class BasicLoginServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private LoginRepoistory loginRepoistory;
+    private LoginRepository loginRepository;
 
     @Mock
     private JwtProvider jwtProvider;
@@ -60,7 +55,7 @@ class BasicLoginServiceTest {
     @AfterEach
     public void cleanup() {
         userRepository.deleteAll();
-        loginRepoistory.deleteAll();
+        loginRepository.deleteAll();
     }
 
     String email = "abcd@naver.com";
@@ -110,12 +105,12 @@ class BasicLoginServiceTest {
 
         Login login = loginReqeustDto.toEntity(user, refreshToken);
 
-        given(loginRepoistory.save(any()))
+        given(loginRepository.save(any()))
                 .willReturn(login);
 
 
         //when
-        GeneratedToken token = basicLoginService.basicLogin(loginReqeustDto);
+        GeneratedTokenDto token = basicLoginService.basicLogin(loginReqeustDto);
 
 
         //then

@@ -1,6 +1,5 @@
 package com.example.auth_spring.web.dto.auth.signup;
 
-import com.example.auth_spring.security.config.PasswordEncoderConfig;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.user.User;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SignupRequestDto {
+public class BasicSignupRequestDto {
 
     private String email;
     private String password;
@@ -27,10 +26,10 @@ public class SignupRequestDto {
     private String detailAddress;
 
     @Builder
-    public SignupRequestDto(String email, String password, String name,
-                            String nickname, String phoneNumber, String gender,
-                            String profileImgUrl, String introduce, String zipCode,
-                            String streetAddress, String detailAddress, String provider) {
+    public BasicSignupRequestDto(String email, String password, String name,
+                                 String nickname, String phoneNumber, String gender,
+                                 String profileImgUrl, String introduce, String zipCode,
+                                 String streetAddress, String detailAddress, String provider) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -46,7 +45,7 @@ public class SignupRequestDto {
     }
 
 
-    public User toUserEntity() {
+    public User toBasicUserEntity() {
         return User.builder()
                 .email(email)
                 .password(password)

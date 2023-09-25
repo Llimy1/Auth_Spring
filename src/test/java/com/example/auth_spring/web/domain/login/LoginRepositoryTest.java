@@ -82,8 +82,8 @@ class LoginRepositoryTest {
         User userSave2 = userRepository.save(user2);
 
 
-        String refreshToken1 = jwtProvider.generateRefreshToken(userSave1.getRoleKey());
-        String refreshToken2 = jwtProvider.generateRefreshToken(userSave2.getRoleKey());
+        String refreshToken1 = jwtProvider.generateRefreshToken();
+        String refreshToken2 = jwtProvider.generateRefreshToken();
 
         Login login1 = Login.builder()
                 .user(userSave1)

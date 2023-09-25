@@ -46,7 +46,7 @@ class LoginTest {
                 .role(role)
                 .build();
 
-        String refreshToken = jwtProvider.generateRefreshToken(user.getRoleKey());
+        String refreshToken = jwtProvider.generateRefreshToken();
 
         Login login = Login.builder()
                 .user(user)

@@ -21,6 +21,11 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @BeforeEach
+    public void beforeCleanup() {
+        userRepository.deleteAll();
+    }
+
     @AfterEach
     public void afterCleanup() {
         userRepository.deleteAll();

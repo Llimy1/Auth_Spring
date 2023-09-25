@@ -4,7 +4,7 @@ import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
-import com.example.auth_spring.web.dto.auth.signup.SignupRequestDto;
+import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class SignupServiceTest {
+class BasicSignupServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -38,7 +38,7 @@ class SignupServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private SignupService signupService;
+    private BasicSignupService basicSignupService;
 
 
     @AfterEach
@@ -52,11 +52,11 @@ class SignupServiceTest {
     void signupSuccess() throws Exception {
 
         //given
-        SignupRequestDto signupRequestDto = signupRequestDto();
-        User user = user(signupRequestDto);
+        BasicSignupRequestDto basicSignupRequestDto = signupRequestDto();
+        User user = user(basicSignupRequestDto);
         user.passwordEncode(passwordEncoder);
 
-        Address address = address(signupRequestDto);
+        Address address = address(basicSignupRequestDto);
 
 
         given(userRepository.save(any()))
@@ -68,7 +68,7 @@ class SignupServiceTest {
         ReflectionTestUtils.setField(user, "id", 1L);
 
         //when
-        Long userId = signupService.signup(signupRequestDto);
+        Long userId = basicSignupService.basicSignup(basicSignupRequestDto);
 
         //then
         verify(userRepository, times(1)).save(any());
@@ -88,7 +88,7 @@ class SignupServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> signupService.signup(signupRequestDto()))
+        assertThatThrownBy(() -> basicSignupService.basicSignup(signupRequestDto()))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -105,7 +105,7 @@ class SignupServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> signupService.signup(signupRequestDto()))
+        assertThatThrownBy(() -> basicSignupService.basicSignup(signupRequestDto()))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -121,20 +121,20 @@ class SignupServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> signupService.signup(signupRequestDto()))
+        assertThatThrownBy(() -> basicSignupService.basicSignup(signupRequestDto()))
                 .isInstanceOf(IllegalStateException.class);
     }
 
-    private User user(SignupRequestDto signupRequestDto) {
-        return signupRequestDto.toUserEntity();
+    private User user(BasicSignupRequestDto basicSignupRequestDto) {
+        return basicSignupRequestDto.toBasicUserEntity();
     }
 
-    private Address address(SignupRequestDto signupRequestDto) {
-        return signupRequestDto.toAddressEntity(user(signupRequestDto));
+    private Address address(BasicSignupRequestDto basicSignupRequestDto) {
+        return basicSignupRequestDto.toAddressEntity(user(basicSignupRequestDto));
     }
 
 
-    private SignupRequestDto signupRequestDto() {
+    private BasicSignupRequestDto signupRequestDto() {
         String email = "abce@naver.com";
         String password = "1234";
         String name = "홍길동";
@@ -149,7 +149,7 @@ class SignupServiceTest {
         String detailAddress = "1길 30";
 
 
-        return SignupRequestDto.builder()
+        return BasicSignupRequestDto.builder()
                 .email(email)
                 .password(password)
                 .name(name)

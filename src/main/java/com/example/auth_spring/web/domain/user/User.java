@@ -24,19 +24,19 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column
     private String gender;
 
     @Column
@@ -75,5 +75,22 @@ public class User extends BaseTimeEntity {
 
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
+    }
+
+    public User update(String name, String profileImgUrl) {
+        this.name = name;
+        this.profileImgUrl = profileImgUrl;
+
+        return this;
+    }
+
+    public User oauth2UserUpdate(String nickname, String phoneNumber, String gender, String introduce) {
+        this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.introduce = introduce;
+        this.role = Role.USER;
+
+        return this;
     }
 }

@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +54,7 @@ public class TokenService {
         String role = user.getRoleKey();
 
         String reissueAccessToken = jwtProvider.generateAccessToken(email, role);
-        String reissueRefreshToken = jwtProvider.generateRefreshToken(role);
+        String reissueRefreshToken = jwtProvider.generateRefreshToken();
 
         login.updateRefreshToken(reissueRefreshToken);
 
@@ -65,10 +67,13 @@ public class TokenService {
 
     // API 반환
     @Transactional
-    public CommonResponse<Object> reissueResponse(String refreshToken) {
+    public CommonResponse<Object> reissueResponse(String refreshToken, HttpServletResponse httpServletResponse) {
         GeneratedTokenDto generatedTokenDto = reissue(refreshToken);
 
-        return commonService.successResponse(SuccessCode.TOKEN_REISSUE_SUCCESS.getDescription(), HttpStatus.OK, generatedTokenDto);
+        httpServletResponse.setHeader("Authorization", generatedTokenDto.getAccessToken());
+        httpServletResponse.setHeader("REFRESH-TOKEN", generatedTokenDto.getRefreshToken());
+
+        return commonService.successResponse(SuccessCode.TOKEN_REISSUE_SUCCESS.getDescription(), HttpStatus.OK, null);
     }
 
     // 토큰 값만 추출

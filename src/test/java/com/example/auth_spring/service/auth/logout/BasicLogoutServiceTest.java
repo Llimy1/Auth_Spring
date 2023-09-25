@@ -6,7 +6,7 @@ import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.login.Login;
 import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
-import com.example.auth_spring.web.dto.auth.login.LoginReqeustDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +39,11 @@ class BasicLogoutServiceTest {
 
     @InjectMocks
     private BasicLogoutService basicLogoutService;
+
+    @AfterEach
+    public void cleanup() {
+        loginRepository.deleteAll();
+    }
 
     String email = "abcd@naver.com";
     String password = "1234";

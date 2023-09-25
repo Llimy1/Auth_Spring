@@ -7,7 +7,7 @@ import com.example.auth_spring.web.domain.login.Login;
 import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
-import com.example.auth_spring.web.dto.auth.login.LoginReqeustDto;
+import com.example.auth_spring.web.dto.auth.login.BasicLoginRequestDto;
 import com.example.auth_spring.web.exception.LoginException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -73,7 +73,7 @@ class BasicLoginServiceTest {
     void loginSuccess() {
         //given
 
-        LoginReqeustDto loginReqeustDto = loginReqeustDto();
+        BasicLoginRequestDto basicLoginRequestDto = loginReqeustDto();
 
 
         User user = User.builder()
@@ -92,7 +92,7 @@ class BasicLoginServiceTest {
 
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginReqeustDto.getEmail(), loginReqeustDto.getPassword()));
+                new UsernamePasswordAuthenticationToken(basicLoginRequestDto.getEmail(), basicLoginRequestDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -101,21 +101,21 @@ class BasicLoginServiceTest {
                 .willReturn(Optional.of(user));
 
         String accessToken = jwtProvider.generateAccessToken(user.getEmail(), user.getRoleKey());
-        String refreshToken = jwtProvider.generateRefreshToken(user.getRoleKey());
+        String refreshToken = jwtProvider.generateRefreshToken();
 
-        Login login = loginReqeustDto.toEntity(user, refreshToken);
+        Login login = basicLoginRequestDto.toEntity(user, refreshToken);
 
         given(loginRepository.save(any()))
                 .willReturn(login);
 
 
         //when
-        GeneratedTokenDto token = basicLoginService.basicLogin(loginReqeustDto);
+        GeneratedTokenDto token = basicLoginService.basicLogin(basicLoginRequestDto);
 
 
         //then
-        assertThat(accessToken).isEqualTo(token.getAccessToken());
-        assertThat(token.getRefreshToken()).isEqualTo(login.getRefreshToken());
+        assertThat("Bearer " + accessToken).isEqualTo(token.getAccessToken());
+        assertThat("Bearer " + login.getRefreshToken()).isEqualTo(token.getRefreshToken());
         assertThat(user).isEqualTo(login.getUser());
     }
 
@@ -123,7 +123,7 @@ class BasicLoginServiceTest {
     @DisplayName("[Service] 이메일 불일치")
     void loginEmailFail() {
         //given
-        LoginReqeustDto loginReqeustDto = loginReqeustDto();
+        BasicLoginRequestDto basicLoginRequestDto = loginReqeustDto();
 
 
         User user = User.builder()
@@ -142,7 +142,7 @@ class BasicLoginServiceTest {
 
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken("abc@naver.com", loginReqeustDto.getPassword()));
+                new UsernamePasswordAuthenticationToken("abc@naver.com", basicLoginRequestDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -156,7 +156,7 @@ class BasicLoginServiceTest {
     @DisplayName("[Service] 패스워드 불일치")
     void loginPasswordFail() {
         //given
-        LoginReqeustDto loginReqeustDto = loginReqeustDto();
+        BasicLoginRequestDto basicLoginRequestDto = loginReqeustDto();
 
 
         User user = User.builder()
@@ -175,7 +175,7 @@ class BasicLoginServiceTest {
 
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginReqeustDto.getEmail(), "123"));
+                new UsernamePasswordAuthenticationToken(basicLoginRequestDto.getEmail(), "123"));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -186,11 +186,11 @@ class BasicLoginServiceTest {
     }
 
 
-    private LoginReqeustDto loginReqeustDto() {
+    private BasicLoginRequestDto loginReqeustDto() {
         String email = "abcd@naver.com";
         String password = "1234";
 
-        return LoginReqeustDto.builder()
+        return BasicLoginRequestDto.builder()
                 .email(email)
                 .password(password)
                 .build();

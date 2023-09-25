@@ -58,13 +58,12 @@ public class JwtProvider implements InitializingBean {
                 .compact();
     }
 
-    public String generateRefreshToken(String role) {
+    public String generateRefreshToken() {
         long refreshPeriod = 1000L * 60L * 60L * 24L * 14L; // 2주
 
         Date now = new Date();
 
         return Jwts.builder()
-                .claim(ROLE_KEY, role)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + refreshPeriod))
                 .signWith(signingKey, SignatureAlgorithm.HS256)

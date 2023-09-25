@@ -1,17 +1,13 @@
 package com.example.auth_spring.web.controller.auth.login;
 
-import com.example.auth_spring.security.jwt.dto.GeneratedTokenDto;
 import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
-import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.auth.login.BasicLoginService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
-import com.example.auth_spring.type.Role;
 import com.example.auth_spring.type.SuccessCode;
-import com.example.auth_spring.web.domain.user.UserRepository;
+import com.example.auth_spring.web.dto.auth.login.BasicLoginRequestDto;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.auth.login.LoginReqeustDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,8 +28,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(LoginController.class)
@@ -77,11 +70,11 @@ class LoginControllerTest {
                 .httpStatus(HttpStatus.CREATED)
                 .status(ResponseStatus.SUCCESS.getDescription())
                 .message(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription())
-                .data(new GeneratedTokenDto("accessToken", "refreshToken"))
+                .data(null)
                 .build();
-
         //given
-        given(basicLoginService.basicLoginResponse(any()))
+
+        given(basicLoginService.basicLoginResponse(any(), any()))
                 .willReturn(commonResponse);
 
         //when
@@ -93,8 +86,6 @@ class LoginControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.accessToken").value("Bearer accessToken"))
-                .andExpect(jsonPath("$.data.refreshToken").value("Bearer refreshToken"))
                 .andDo(print());
     }
 
@@ -112,8 +103,9 @@ class LoginControllerTest {
                 .data(null)
                 .build();
 
+
         //given
-        given(basicLoginService.basicLoginResponse(any()))
+        given(basicLoginService.basicLoginResponse(any(), any()))
                 .willReturn(commonResponse);
 
         //when
@@ -128,11 +120,11 @@ class LoginControllerTest {
                 .andDo(print());
     }
 
-    private LoginReqeustDto loginReqeustDto() {
+    private BasicLoginRequestDto loginReqeustDto() {
         String email = "abcd@naver.com";
         String password = "1234";
 
-        return LoginReqeustDto.builder()
+        return BasicLoginRequestDto.builder()
                 .email(email)
                 .password(password)
                 .build();

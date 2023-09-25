@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
@@ -16,10 +18,9 @@ public class TokenController {
     private final TokenService tokenService;
 
     @PostMapping("/reissue")
-    public ResponseEntity<ResultDto<GeneratedTokenDto>> reissue(@RequestHeader("Refresh-Token") String bearerRefreshToken) {
-        CommonResponse<Object> commonResponse = tokenService.reissueResponse(bearerRefreshToken);
+    public ResponseEntity<ResultDto<GeneratedTokenDto>> reissue(@RequestHeader("REFRESH-TOKEN") String bearerRefreshToken, HttpServletResponse httpServletResponse) {
+        CommonResponse<Object> commonResponse = tokenService.reissueResponse(bearerRefreshToken, httpServletResponse);
         ResultDto<GeneratedTokenDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
-        result.setData((GeneratedTokenDto) commonResponse.getData());
 
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }

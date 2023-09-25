@@ -7,7 +7,7 @@ import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.auth.signup.SignupRequestDto;
+import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
 import com.example.auth_spring.web.dto.auth.signup.SignupResponseDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
 import com.example.auth_spring.type.ErrorCode;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class SignupService {
+public class BasicSignupService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
@@ -27,28 +27,28 @@ public class SignupService {
     private final PasswordEncoder passwordEncoder;
 
 
-    // 회원 가입
+    // 자체 회원 가입
     @Transactional
-    public Long signup(SignupRequestDto signupRequestDto) {
+    public Long basicSignup(BasicSignupRequestDto basicSignupRequestDto) {
 
-        userRepository.findByNickname(signupRequestDto.getNickname()).ifPresent(a -> {
+        userRepository.findByNickname(basicSignupRequestDto.getNickname()).ifPresent(a -> {
             throw new IllegalStateException(ErrorCode.NICKNAME_THAT_EXIST);
         });
 
-        userRepository.findByEmail(signupRequestDto.getEmail()).ifPresent(a -> {
+        userRepository.findByEmail(basicSignupRequestDto.getEmail()).ifPresent(a -> {
             throw new IllegalStateException(ErrorCode.EMAIL_THAT_EXIST);
         });
 
-        userRepository.findByPhoneNumber(signupRequestDto.getPhoneNumber()).ifPresent(a -> {
+        userRepository.findByPhoneNumber(basicSignupRequestDto.getPhoneNumber()).ifPresent(a -> {
             throw new IllegalStateException(ErrorCode.PHONE_NUMBER_THAT_EXIST);
         });
 
-        User user = signupRequestDto.toUserEntity();
+        User user = basicSignupRequestDto.toBasicUserEntity();
         user.passwordEncode(passwordEncoder);
 
         Long userId = userRepository.save(user).getId();
 
-        Address address = signupRequestDto.toAddressEntity(user);
+        Address address = basicSignupRequestDto.toAddressEntity(user);
         addressRepository.save(address);
 
         return userId;
@@ -56,9 +56,9 @@ public class SignupService {
 
     // API 반환
     @Transactional
-    public CommonResponse<Object> signupResponse(SignupRequestDto signupRequestDto) {
-        Long userId = signup(signupRequestDto);
+    public CommonResponse<Object> signupResponse(BasicSignupRequestDto basicSignupRequestDto) {
+        Long userId = basicSignup(basicSignupRequestDto);
 
-        return commonService.successResponse(SuccessCode.SIGNUP_SUCCESS.getDescription(), HttpStatus.CREATED, new SignupResponseDto(userId));
+        return commonService.successResponse(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription(), HttpStatus.CREATED, new SignupResponseDto(userId));
     }
 }

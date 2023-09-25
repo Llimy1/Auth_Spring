@@ -2,7 +2,11 @@ package com.example.auth_spring.security.config;
 
 import com.example.auth_spring.security.config.handler.CustomAccessDeniedHandler;
 import com.example.auth_spring.security.config.handler.CustomAuthenticationEntryPoint;
+import com.example.auth_spring.security.config.handler.CustomAuthenticationFailureHandler;
+import com.example.auth_spring.security.config.handler.CustomAuthenticationSuccessHandler;
 import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
+import com.example.auth_spring.security.jwt.service.JwtProvider;
+import com.example.auth_spring.service.auth.oauth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +31,10 @@ public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private final JwtAuthFilter jwtAuthFilter;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final JwtProvider jwtProvider;
 
 
     @Bean
@@ -45,16 +52,19 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/api/v1/**").permitAll()
+
                 .and()
-//
-//                .and()
-//                .exceptionHandling()
-//                .accessDeniedHandler(accessDeniedHandler)
-//                .authenticationEntryPoint(authenticationEntryPoint)
-//
-//                .and()
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//                .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(authenticationEntryPoint)
+
+                .and()
+                .oauth2Login()
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
+                .userInfoEndpoint().userService(customOAuth2UserService);
+
+                http.addFilterBefore(new JwtAuthFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -67,7 +77,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(""));
+        configuration.setAllowedOrigins(List.of("http://localhost:63342/**"));
         configuration.setAllowCredentials(true);  // 토큰 주고 받을 때
         configuration.addAllowedHeader("*");
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "PUT", "DELETE", "OPTIONS"));

@@ -5,6 +5,7 @@ import com.example.auth_spring.security.jwt.service.TokenService;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +39,10 @@ class WithdrawalServiceTest {
     @InjectMocks
     private WithdrawalService withdrawalService;
 
+    @AfterEach
+    public void cleanup() {
+        userRepository.deleteAll();
+    }
 
     String email = "abcd@naver.com";
     String password = "1234";

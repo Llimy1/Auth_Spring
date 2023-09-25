@@ -1,13 +1,13 @@
 package com.example.auth_spring.web.controller.auth.signup;
 
 import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
-import com.example.auth_spring.service.auth.signup.SignupService;
+import com.example.auth_spring.service.auth.signup.BasicSignupService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.auth.signup.SignupRequestDto;
+import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
 import com.example.auth_spring.web.dto.auth.signup.SignupResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SignupControllerTest {
 
     @MockBean
-    private SignupService signupService;
+    private BasicSignupService basicSignupService;
 
     @MockBean
     private CommonService commonService;
@@ -76,7 +76,7 @@ class SignupControllerTest {
                 .build();
 
         //given
-        given(signupService.signupResponse(any()))
+        given(basicSignupService.signupResponse(any()))
                 .willReturn(commonResponse);
 
 
@@ -107,7 +107,7 @@ class SignupControllerTest {
                 .build();
 
         //given
-        given(signupService.signupResponse(any()))
+        given(basicSignupService.signupResponse(any()))
                 .willReturn(commonResponse);
 
 
@@ -123,7 +123,7 @@ class SignupControllerTest {
                 .andDo(print());
     }
 
-    private SignupRequestDto signupRequestDto() {
+    private BasicSignupRequestDto signupRequestDto() {
         String email = "abce@naver.com";
         String password = "1234";
         String name = "홍길동";
@@ -138,7 +138,7 @@ class SignupControllerTest {
         String detailAddress = "1길 30";
 
 
-        return SignupRequestDto.builder()
+        return BasicSignupRequestDto.builder()
                 .email(email)
                 .password(password)
                 .name(name)

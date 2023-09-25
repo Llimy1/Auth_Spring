@@ -10,15 +10,10 @@ import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.auth.login.BasicLoginRequestDto;
 import com.example.auth_spring.web.exception.LoginException;
 import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,38 +21,32 @@ import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
 @Service
-public class BasicLoginService {
+public class OAuth2LoginService {
 
     private final UserRepository userRepository;
     private final LoginRepository loginRepository;
 
     private final JwtProvider jwtProvider;
-    private final AuthenticationManager authenticationManager;
     private final CommonService commonService;
 
 
-
-    // 자체 로그인
+    // OAuth2 로그인
     @Transactional
-    public GeneratedTokenDto basicLogin(BasicLoginRequestDto basicLoginRequestDto) {
-
-        String requestEmail = basicLoginRequestDto.getEmail();
-        String requestPassword = basicLoginRequestDto.getPassword();
+    public GeneratedTokenDto oauth2Login(String email) {
 
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(requestEmail, requestPassword));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            User user = userRepository.findByEmail(basicLoginRequestDto.getEmail())
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
-
 
             String accessToken = jwtProvider.generateAccessToken(user.getEmail(), user.getRoleKey());
             String refreshToken = jwtProvider.generateRefreshToken();
 
-            Login login = basicLoginRequestDto.toEntity(user, refreshToken);
+            Login login = Login.builder()
+                    .user(user)
+                    .refreshToken(refreshToken)
+                    .build();
+
             loginRepository.save(login);
 
             return GeneratedTokenDto.builder()
@@ -72,12 +61,14 @@ public class BasicLoginService {
 
     // API 반환
     @Transactional
-    public CommonResponse<Object> basicLoginResponse(BasicLoginRequestDto basicLoginRequestDto, HttpServletResponse httpServletResponse) {
-        GeneratedTokenDto generatedTokenDto = basicLogin(basicLoginRequestDto);
+    public CommonResponse<Object> oAuth2LoginResponse(String email, HttpServletResponse httpServletResponse) {
+        GeneratedTokenDto generatedTokenDto = oauth2Login(email);
 
         httpServletResponse.setHeader("Authorization", generatedTokenDto.getAccessToken());
         httpServletResponse.setHeader("REFRESH-TOKEN", generatedTokenDto.getRefreshToken());
 
-        return commonService.successResponse(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription(), HttpStatus.CREATED, null);
+        return commonService.successResponse(SuccessCode.OAUTH2_LOGIN_SUCCESS.getDescription(), HttpStatus.CREATED, null);
     }
+
+
 }

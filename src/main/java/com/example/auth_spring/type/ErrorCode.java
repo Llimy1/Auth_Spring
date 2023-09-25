@@ -22,7 +22,8 @@ public enum ErrorCode {
     AUTHORITY_NOT_FOUND("권한 정보가 없습니다."),
     LOGIN_EXCEPTION("로그인 실패! 이메일과 비밀번호를 확인해주세요."),
     REFRESH_TOKEN_NOT_FOUND("REFRESH TOKEN을 찾을 수 없습니다."),
-    REFRESH_TOKEN_EXPIRATION("REFRESH TOKEN이 올바르지 않거나, 만료되었습니다. 재로그인 해주세요.");
+    REFRESH_TOKEN_EXPIRATION("REFRESH TOKEN이 올바르지 않거나, 만료되었습니다. 재로그인 해주세요."),
+    DO_NOT_SEARCH_PROVIDER("해당 소셜 로그인을 지원하지 않습니다.");
 
 
 

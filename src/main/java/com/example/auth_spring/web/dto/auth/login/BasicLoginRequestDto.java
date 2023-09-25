@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class LoginReqeustDto {
+public class BasicLoginRequestDto {
 
     private String email;
     private String password;
 
     @Builder
-    public LoginReqeustDto(String email, String password) {
+    public BasicLoginRequestDto(String email, String password) {
         this.email = email;
         this.password = password;
     }

@@ -2,6 +2,7 @@ package com.example.auth_spring.web.controller.auth.signup;
 
 import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
 import com.example.auth_spring.service.auth.signup.BasicSignupService;
+import com.example.auth_spring.service.auth.signup.OAuth2SignupService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
@@ -39,6 +40,9 @@ class SignupControllerTest {
     private BasicSignupService basicSignupService;
 
     @MockBean
+    private OAuth2SignupService oAuth2SignupService;
+
+    @MockBean
     private CommonService commonService;
 
     @MockBean
@@ -71,7 +75,7 @@ class SignupControllerTest {
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.CREATED)
                 .status(ResponseStatus.SUCCESS.getDescription())
-                .message(SuccessCode.SIGNUP_SUCCESS.getDescription())
+                .message(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription())
                 .data(new SignupResponseDto(1L))
                 .build();
 
@@ -82,13 +86,13 @@ class SignupControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/signup")
+        mvc.perform(post("/api/v1/signup/basic")
                         .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.message").value(SuccessCode.SIGNUP_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.message").value(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.data.userId").value(1))
                 .andDo(print());
     }
@@ -113,7 +117,7 @@ class SignupControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/signup")
+        mvc.perform(post("/api/v1/signup/basic")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))

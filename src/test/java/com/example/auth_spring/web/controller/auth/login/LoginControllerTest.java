@@ -2,6 +2,7 @@ package com.example.auth_spring.web.controller.auth.login;
 
 import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
 import com.example.auth_spring.service.auth.login.BasicLoginService;
+import com.example.auth_spring.service.auth.login.OAuth2LoginService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
@@ -38,6 +39,9 @@ class LoginControllerTest {
     private BasicLoginService basicLoginService;
 
     @MockBean
+    private OAuth2LoginService oAuth2LoginService;
+
+    @MockBean
     private CommonService commonService;
 
     @MockBean
@@ -64,7 +68,7 @@ class LoginControllerTest {
     @WithMockUser(roles = "USER")
     void loginSuccess() throws Exception {
 
-        String body = objectMapper.writeValueAsString(loginReqeustDto());
+        String body = objectMapper.writeValueAsString(loginRequestDto());
 
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.CREATED)
@@ -79,7 +83,7 @@ class LoginControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/login")
+        mvc.perform(post("/api/v1/login/basic")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -94,7 +98,7 @@ class LoginControllerTest {
     @WithMockUser(roles = "USER")
     void loginFail() throws Exception {
 
-        String body = objectMapper.writeValueAsString(loginReqeustDto());
+        String body = objectMapper.writeValueAsString(loginRequestDto());
 
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
@@ -110,7 +114,7 @@ class LoginControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/login")
+        mvc.perform(post("/api/v1/login/basic")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -120,7 +124,7 @@ class LoginControllerTest {
                 .andDo(print());
     }
 
-    private BasicLoginRequestDto loginReqeustDto() {
+    private BasicLoginRequestDto loginRequestDto() {
         String email = "abcd@naver.com";
         String password = "1234";
 

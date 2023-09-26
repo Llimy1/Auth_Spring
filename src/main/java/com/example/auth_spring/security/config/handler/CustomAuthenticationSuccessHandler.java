@@ -4,9 +4,12 @@ import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.auth.login.OAuth2LoginService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.Role;
+import com.example.auth_spring.web.dto.common.CommonResponse;
+import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.exception.IllegalAccessException;
 import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -47,8 +50,10 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 
         } else {
-            oAuth2LoginService.oAuth2LoginResponse(email, response);
-            response.sendRedirect("http://localhost:8080/loginsuccess.html");
+            CommonResponse<Object> commonResponse = oAuth2LoginService.oAuth2LoginResponse(email, response);
+            ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+            ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
+            response.sendRedirect("http://localhost:8080/");
         }
     }
 }

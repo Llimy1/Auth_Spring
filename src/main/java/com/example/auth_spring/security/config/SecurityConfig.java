@@ -77,7 +77,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:63342/**"));
+        configuration.setAllowedOrigins(List.of());
         configuration.setAllowCredentials(true);  // 토큰 주고 받을 때
         configuration.addAllowedHeader("*");
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "PUT", "DELETE", "OPTIONS"));

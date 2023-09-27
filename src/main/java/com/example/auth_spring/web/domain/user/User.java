@@ -73,10 +73,9 @@ public class User extends BaseTimeEntity {
         return this.role.getKey();
     }
 
-    public User roleUpdate() {
+    public void roleUpdate() {
         this.role = Role.SELLER;
 
-        return this;
     }
 
     public void passwordEncode(PasswordEncoder passwordEncoder) {

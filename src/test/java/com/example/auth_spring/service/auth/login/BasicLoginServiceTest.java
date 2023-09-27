@@ -120,7 +120,7 @@ class BasicLoginServiceTest {
     }
 
     @Test
-    @DisplayName("[Service] 이메일 불일치")
+    @DisplayName("[Service] 로그인 실패 - 이메일 불일치")
     void loginEmailFail() {
         //given
         BasicLoginRequestDto basicLoginRequestDto = loginRequestDto();
@@ -153,7 +153,7 @@ class BasicLoginServiceTest {
     }
 
     @Test
-    @DisplayName("[Service] 패스워드 불일치")
+    @DisplayName("[Service] 로그인 실패 - 패스워드 불일치")
     void loginPasswordFail() {
         //given
         BasicLoginRequestDto basicLoginRequestDto = loginRequestDto();

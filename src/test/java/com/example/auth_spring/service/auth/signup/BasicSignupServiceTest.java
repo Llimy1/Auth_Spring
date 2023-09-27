@@ -48,7 +48,7 @@ class BasicSignupServiceTest {
     }
 
     @Test
-    @DisplayName("[Service]회원가입 성공")
+    @DisplayName("[Service] 회원 가입 성공")
     void signupSuccess() throws Exception {
 
         //given
@@ -77,7 +77,7 @@ class BasicSignupServiceTest {
     }
 
     @Test
-    @DisplayName("[Service]이미 존재하는 닉네임 오류 발생")
+    @DisplayName("[Service] 회원 가입 실패 - 이미 존재하는 닉네임 오류 발생")
     void failNicknameExist() {
 
         //given
@@ -93,7 +93,7 @@ class BasicSignupServiceTest {
     }
 
     @Test
-    @DisplayName("[Service]이미 존재하는 이메일 오류 발생")
+    @DisplayName("[Service] 회원 가입 실패 - 이미 존재하는 이메일 오류 발생")
     void failEmailExist() {
 
         //given
@@ -110,7 +110,7 @@ class BasicSignupServiceTest {
     }
 
     @Test
-    @DisplayName("[Service]이미 존재하는 핸드폰 번호 오류 발생")
+    @DisplayName("[Service] 회원 가입 실패 - 이미 존재하는 핸드폰 번호 오류 발생")
     void failPhoneNumberExist() {
 
         //given

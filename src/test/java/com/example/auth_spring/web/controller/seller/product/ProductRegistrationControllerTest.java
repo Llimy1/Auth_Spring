@@ -1,15 +1,16 @@
-package com.example.auth_spring.web.controller.auth.signup;
+package com.example.auth_spring.web.controller.seller.product;
 
-import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
-import com.example.auth_spring.service.auth.signup.BasicSignupService;
-import com.example.auth_spring.service.auth.signup.OAuth2SignupService;
+import com.example.auth_spring.security.jwt.service.JwtProvider;
+import com.example.auth_spring.security.jwt.service.TokenService;
 import com.example.auth_spring.service.common.CommonService;
+import com.example.auth_spring.service.product.ProductRegistrationService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
+import com.example.auth_spring.type.Role;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
-import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
+import com.example.auth_spring.web.dto.product.ProductRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,29 +25,32 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(SignupController.class)
-class SignupControllerTest {
+@WebMvcTest(ProductRegistrationController.class)
+class ProductRegistrationControllerTest {
 
     @MockBean
-    private BasicSignupService basicSignupService;
-
-    @MockBean
-    private OAuth2SignupService oAuth2SignupService;
+    private ProductRegistrationService productRegistrationService;
 
     @MockBean
     private CommonService commonService;
 
     @MockBean
-    private JwtAuthFilter jwtAuthFilter;
+    private JwtProvider jwtProvider;
+
+    @MockBean
+    private TokenService tokenService;
 
     @Autowired
     private WebApplicationContext context;
@@ -64,97 +68,80 @@ class SignupControllerTest {
                 .build();
     }
 
+    private ProductRequestDto productRequestDto() {
+        return ProductRequestDto.builder()
+                .productName("옷")
+                .productPrice(10000L)
+                .build();
+    }
 
     @Test
-    @DisplayName("[API] 회원 가입 성공")
-    @WithMockUser(roles = "USER")
-    void signupSuccess() throws Exception {
+    @DisplayName("[API] 상품 등록 성공")
+    @WithMockUser(roles = "SELLER")
+    void productRegistrationSuccess() throws Exception {
 
-        String body = objectMapper.writeValueAsString(signupRequestDto());
+        String body = objectMapper.writeValueAsString(productRequestDto());
+
+        String bearerAccessToken = "Bearer accessToken";
 
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.CREATED)
                 .status(ResponseStatus.SUCCESS.getDescription())
-                .message(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription())
-                .data(new UserIdResponseDto(1L))
+                .message(SuccessCode.PRODUCT_REGISTRATION_SUCCESS.getDescription())
+                .data(new ProductIdResponseDto(1L))
                 .build();
 
         //given
-        given(basicSignupService.signupResponse(any()))
+        given(productRegistrationService.registrationResponse(any(), any()))
                 .willReturn(commonResponse);
 
 
         //when
         //then
-        mvc.perform(post("/api/v1/all/signup/basic")
+        mvc.perform(post("/api/v1/seller/registration")
                         .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", bearerAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.message").value(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.userId").value(1))
+                .andExpect(jsonPath("$.message").value(SuccessCode.PRODUCT_REGISTRATION_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.data.productId").value(1L))
                 .andDo(print());
     }
 
     @Test
-    @DisplayName("[API] 회원 가입 실패 - 닉네임 중복")
+    @DisplayName("[API] 상품 등록 실패 - 판매자 권한 없음")
     @WithMockUser(roles = "USER")
-    void signFail() throws Exception {
-        String body = objectMapper.writeValueAsString(signupRequestDto());
+    void productRegistrationFail() throws Exception {
+        String body = objectMapper.writeValueAsString(productRequestDto());
+
+        String bearerAccessToken = "Bearer accessToken";
 
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .status(ResponseStatus.FAIL.getDescription())
-                .message(ErrorCode.NICKNAME_THAT_EXIST.getDescription())
+                .message(ErrorCode.AUTHORITY_NOT_SELLER.getDescription())
                 .data(null)
                 .build();
 
         //given
-        given(basicSignupService.signupResponse(any()))
+        given(tokenService.findUserRole(anyString())).willReturn(Role.USER.getKey());
+
+        given(productRegistrationService.registrationResponse(any(), any()))
                 .willReturn(commonResponse);
 
 
         //when
         //then
-        mvc.perform(post("/api/v1/all/signup/basic")
+        mvc.perform(post("/api/v1/seller/registration")
                         .with(csrf())
+                        .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.FAIL.getDescription()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.NICKNAME_THAT_EXIST.getDescription()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.AUTHORITY_NOT_SELLER.getDescription()))
                 .andDo(print());
     }
-
-    private BasicSignupRequestDto signupRequestDto() {
-        String email = "abce@naver.com";
-        String password = "1234";
-        String name = "홍길동";
-        String nickname = "바람";
-        String phoneNumber = "01000000000";
-        String gender = "male";
-        String introduce = "안녕하세요 홍길동 입니다.";
-        String profileImgUrl = "https://img_url";
-
-        String zipCode = "12345";
-        String streetAddress = "서울시 강남구";
-        String detailAddress = "1길 30";
-
-
-        return BasicSignupRequestDto.builder()
-                .email(email)
-                .password(password)
-                .name(name)
-                .nickname(nickname)
-                .phoneNumber(phoneNumber)
-                .gender(gender)
-                .introduce(introduce)
-                .profileImgUrl(profileImgUrl)
-                .zipCode(zipCode)
-                .streetAddress(streetAddress)
-                .detailAddress(detailAddress)
-                .build();
-    }
-
 }

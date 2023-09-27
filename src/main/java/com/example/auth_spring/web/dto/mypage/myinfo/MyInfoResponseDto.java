@@ -1,0 +1,48 @@
+package com.example.auth_spring.web.dto.mypage.myinfo;
+
+import com.example.auth_spring.web.domain.address.Address;
+import com.example.auth_spring.web.domain.user.User;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class MyInfoResponseDto {
+    @ApiModelProperty(name = "email", value = "email", example = "abcd@naver.com")
+    private String email;
+    @ApiModelProperty(name = "name", value = "name", example = "홍길동")
+    private String name;
+    @ApiModelProperty(name = "nickname", value = "nickname", example = "바람")
+    private String nickname;
+    @ApiModelProperty(name = "phoneNumber", value = "phoneNumber", example = "01000000000")
+    private String phoneNumber;
+    @ApiModelProperty(name = "gender", value = "gender", example = "male")
+    private String gender;
+    @ApiModelProperty(name = "profileImgUrl", value = "imgUrl", example = "imgUrl")
+    private String profileImgUrl;
+    @ApiModelProperty(name = "introduce", value = "introduce", example = "안녕하세요")
+    private String introduce;
+    @ApiModelProperty(name = "zipCode", value = "zipCode", example = "00012")
+    private String zipCode;
+    @ApiModelProperty(name = "streetAddress", value = "streetAddress", example = "서울시 강남구")
+    private String streetAddress;
+    @ApiModelProperty(name = "detailAddress", value = "detailAddress", example = "블라동 10")
+    private String detailAddress;
+
+
+    @Builder
+    public MyInfoResponseDto(User user, Address address) {
+        this.email = user.getEmail();
+        this.name = user.getName();
+        this.nickname = user.getNickname();
+        this.phoneNumber = user.getPhoneNumber();
+        this.gender = user.getGender();
+        this.profileImgUrl = user.getProfileImgUrl();
+        this.introduce = user.getIntroduce();
+        this.zipCode = address.getZipCode();
+        this.streetAddress = address.getStreetAddress();
+        this.detailAddress = address.getDetailAddress();
+    }
+}

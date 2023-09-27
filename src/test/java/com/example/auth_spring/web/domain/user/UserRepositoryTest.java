@@ -32,7 +32,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("[Repository]유저 생성하기")
+    @DisplayName("[Repository] 유저 생성하기")
     void createUser() {
 
         String email1 = "abce@naver.com";

@@ -15,7 +15,7 @@ class UserTest {
 
 
     @Test
-    @DisplayName("[Domain]유저 생성 도메인 테스트")
+    @DisplayName("[Domain] 유저 생성 도메인 테스트")
     void createUser() {
 
         String email = "abce@naver.com";

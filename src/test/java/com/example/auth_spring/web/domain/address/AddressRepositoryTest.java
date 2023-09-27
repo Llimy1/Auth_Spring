@@ -29,7 +29,7 @@ class AddressRepositoryTest {
     }
 
     @Test
-    @DisplayName("[Repository]주소 생성하기")
+    @DisplayName("[Repository] 주소 생성하기")
     void createAddress() {
 
         String zipCode1 = "12345";

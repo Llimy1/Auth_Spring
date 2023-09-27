@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AddressTest {
 
     @Test
-    @DisplayName("[Domain]주소 생성 도메인 테스트")
+    @DisplayName("[Domain] 주소 생성 도메인 테스트")
     void createAddress() {
 
         String zipCode = "12345";

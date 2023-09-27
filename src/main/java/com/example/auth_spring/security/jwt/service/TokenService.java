@@ -4,6 +4,8 @@ import com.example.auth_spring.security.jwt.dto.GeneratedTokenDto;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.domain.address.Address;
+import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.login.Login;
 import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
@@ -27,6 +29,7 @@ public class TokenService {
     private final JwtProvider jwtProvider;
     private final LoginRepository loginRepository;
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
     private final CommonService commonService;
 
     private static final String TOKEN_PREFIX = "Bearer ";
@@ -113,5 +116,25 @@ public class TokenService {
 
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    // AccessToken을 통해 address 가져오기
+    public Address findAddress(String accessToken) {
+        Long userId = accessTokenUserId(accessToken);
+
+        return addressRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    // AccessToken을 통해 User 권한 가져오기
+    public String findUserRole(String accessToken) {
+        String resolveAccessToken = resolveToken(accessToken);
+
+        String email = jwtProvider.getEmail(resolveAccessToken);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        return user.getRoleKey();
     }
 }

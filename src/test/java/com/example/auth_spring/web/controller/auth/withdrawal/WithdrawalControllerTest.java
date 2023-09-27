@@ -55,7 +55,7 @@ class WithdrawalControllerTest {
     }
 
     @Test
-    @DisplayName("[API] 회원탈퇴 성공")
+    @DisplayName("[API] 회원 탈퇴 성공")
     @WithMockUser(roles = "USER")
     void loginSuccess() throws Exception {
 

@@ -54,7 +54,7 @@ class WithdrawalServiceTest {
     String profileImgUrl = "https://img_url";
     Role role = Role.valueOf("USER");
     @Test
-    @DisplayName("[Service] 회원탈퇴 성공")
+    @DisplayName("[Service] 회원 탈퇴 성공")
     void withdrawalSuccess() {
         //given
         User user = User.builder()

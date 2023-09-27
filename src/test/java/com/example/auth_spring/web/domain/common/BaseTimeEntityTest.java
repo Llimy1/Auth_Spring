@@ -28,7 +28,7 @@ class BaseTimeEntityTest {
     }
 
     @Test
-    @DisplayName("[Domain]베이스 타임 적용 확인")
+    @DisplayName("[Domain] 베이스 타임 적용 확인")
     void useBaseTimeEntity() {
 
         String email1 = "abce@naver.com";

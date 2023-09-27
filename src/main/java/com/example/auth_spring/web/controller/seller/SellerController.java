@@ -4,6 +4,7 @@ import com.example.auth_spring.service.seller.SellerService;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Response;

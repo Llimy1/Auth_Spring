@@ -8,7 +8,7 @@ import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
-import com.example.auth_spring.web.dto.auth.signup.SignupResponseDto;
+import com.example.auth_spring.web.dto.common.UserIdResponseDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
 import com.example.auth_spring.type.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +59,6 @@ public class BasicSignupService {
     public CommonResponse<Object> signupResponse(BasicSignupRequestDto basicSignupRequestDto) {
         Long userId = basicSignup(basicSignupRequestDto);
 
-        return commonService.successResponse(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription(), HttpStatus.CREATED, new SignupResponseDto(userId));
+        return commonService.successResponse(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription(), HttpStatus.CREATED, new UserIdResponseDto(userId));
     }
 }

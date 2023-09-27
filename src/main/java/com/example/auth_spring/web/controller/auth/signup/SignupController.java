@@ -6,7 +6,10 @@ import com.example.auth_spring.web.dto.auth.signup.OAuth2SignupRequestDto;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
-import com.example.auth_spring.web.dto.auth.signup.SignupResponseDto;
+import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,26 +17,30 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
+@Api(tags = "Auth APIs")
 public class SignupController {
 
     private final BasicSignupService basicSignupService;
     private final OAuth2SignupService oAuth2SignupService;
 
-    @PostMapping("/signup/basic")
-    public ResponseEntity<ResultDto<SignupResponseDto>> signup(@RequestBody BasicSignupRequestDto basicSignupRequestDto) {
+    @ApiOperation(value = "자체 회원가입 API", notes = "자체 회원가입")
+    @PostMapping("/all/signup/basic")
+    public ResponseEntity<ResultDto<UserIdResponseDto>> signup(@RequestBody BasicSignupRequestDto basicSignupRequestDto) {
         CommonResponse<Object> commonResponse = basicSignupService.signupResponse(basicSignupRequestDto);
-        ResultDto<SignupResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+        ResultDto<UserIdResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
 
-        result.setData((SignupResponseDto) commonResponse.getData());
+        result.setData((UserIdResponseDto) commonResponse.getData());
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }
 
-    @PostMapping("/signup/oauth2")
-    public ResponseEntity<ResultDto<SignupResponseDto>> oauth2Signup(@RequestBody OAuth2SignupRequestDto oAuth2SignupRequestDto) {
-        CommonResponse<Object> commonResponse = oAuth2SignupService.oauth2SignupResponse(oAuth2SignupRequestDto);
-        ResultDto<SignupResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+    @ApiOperation(value = "소셜 회원가입 API", notes = "소셜 회원가입")
+    @PostMapping("/all/signup/oauth2")
+    public ResponseEntity<ResultDto<UserIdResponseDto>> oauth2Signup(@ApiParam(name = "email", value = "email", example = "abcd@naver.com") @RequestParam String email,
+                                                                     @RequestBody OAuth2SignupRequestDto oAuth2SignupRequestDto) {
+        CommonResponse<Object> commonResponse = oAuth2SignupService.oauth2SignupResponse(email, oAuth2SignupRequestDto);
+        ResultDto<UserIdResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
 
-        result.setData((SignupResponseDto) commonResponse.getData());
+        result.setData((UserIdResponseDto) commonResponse.getData());
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }
 }

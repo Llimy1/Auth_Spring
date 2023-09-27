@@ -1,6 +1,6 @@
-package com.example.auth_spring.security.jwt.service;
+package com.example.auth_spring.service.auth.basic;
 
-import com.example.auth_spring.security.jwt.dto.CustomUserDetails;
+import com.example.auth_spring.web.dto.auth.basic.CustomUserDetails;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;

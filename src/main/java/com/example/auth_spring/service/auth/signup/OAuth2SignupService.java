@@ -8,7 +8,7 @@ import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.auth.signup.OAuth2SignupRequestDto;
-import com.example.auth_spring.web.dto.auth.signup.SignupResponseDto;
+import com.example.auth_spring.web.dto.common.UserIdResponseDto;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,8 @@ public class OAuth2SignupService {
     private final CommonService commonService;
 
     @Transactional
-    public Long oAuth2Signup(OAuth2SignupRequestDto oAuth2SignupRequestDto) {
+    public Long oAuth2Signup(String email, OAuth2SignupRequestDto oAuth2SignupRequestDto) {
 
-        String email = oAuth2SignupRequestDto.getEmail();
         String nickname = oAuth2SignupRequestDto.getNickname();
         String phoneNumber = oAuth2SignupRequestDto.getPhoneNumber();
         String gender= oAuth2SignupRequestDto.getGender();
@@ -46,10 +45,10 @@ public class OAuth2SignupService {
     }
 
     @Transactional
-    public CommonResponse<Object> oauth2SignupResponse(OAuth2SignupRequestDto oAuth2SignupRequestDto) {
-        Long userId = oAuth2Signup(oAuth2SignupRequestDto);
+    public CommonResponse<Object> oauth2SignupResponse(String email, OAuth2SignupRequestDto oAuth2SignupRequestDto) {
+        Long userId = oAuth2Signup(email, oAuth2SignupRequestDto);
 
-        return commonService.successResponse(SuccessCode.OAUTH2_SIGNUP_SUCCESS.getDescription(), HttpStatus.CREATED, new SignupResponseDto(userId));
+        return commonService.successResponse(SuccessCode.OAUTH2_SIGNUP_SUCCESS.getDescription(), HttpStatus.CREATED, new UserIdResponseDto(userId));
     }
 
 

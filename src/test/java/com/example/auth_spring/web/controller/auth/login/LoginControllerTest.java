@@ -83,7 +83,7 @@ class LoginControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/login/basic")
+        mvc.perform(post("/api/v1/all/login/basic")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -114,7 +114,7 @@ class LoginControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/login/basic")
+        mvc.perform(post("/api/v1/all/login/basic")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))

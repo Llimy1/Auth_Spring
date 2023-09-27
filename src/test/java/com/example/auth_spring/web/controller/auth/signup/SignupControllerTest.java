@@ -9,7 +9,7 @@ import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
-import com.example.auth_spring.web.dto.auth.signup.SignupResponseDto;
+import com.example.auth_spring.web.dto.common.UserIdResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -76,7 +76,7 @@ class SignupControllerTest {
                 .httpStatus(HttpStatus.CREATED)
                 .status(ResponseStatus.SUCCESS.getDescription())
                 .message(SuccessCode.BASIC_SIGNUP_SUCCESS.getDescription())
-                .data(new SignupResponseDto(1L))
+                .data(new UserIdResponseDto(1L))
                 .build();
 
         //given
@@ -86,7 +86,7 @@ class SignupControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/signup/basic")
+        mvc.perform(post("/api/v1/all/signup/basic")
                         .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -117,7 +117,7 @@ class SignupControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/signup/basic")
+        mvc.perform(post("/api/v1/all/signup/basic")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))

@@ -73,6 +73,12 @@ public class User extends BaseTimeEntity {
         return this.role.getKey();
     }
 
+    public User roleUpdate() {
+        this.role = Role.SELLER;
+
+        return this;
+    }
+
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
     }
@@ -84,13 +90,12 @@ public class User extends BaseTimeEntity {
         return this;
     }
 
-    public User oauth2UserUpdate(String nickname, String phoneNumber, String gender, String introduce) {
+    public void oauth2UserUpdate(String nickname, String phoneNumber, String gender, String introduce) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.introduce = introduce;
         this.role = Role.USER;
 
-        return this;
     }
 }

@@ -74,7 +74,7 @@ class WithdrawalControllerTest {
 
         //when
         //then
-        mvc.perform(delete("/api/v1/withdrawal")
+        mvc.perform(delete("/api/v1/user/withdrawal")
                         .with(csrf())
                         .header("Authorization", "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON))

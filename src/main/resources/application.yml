@@ -14,6 +14,10 @@ spring:
           starttls:
             enable: true
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
   datasource:
     username: root
     password: alsgur99

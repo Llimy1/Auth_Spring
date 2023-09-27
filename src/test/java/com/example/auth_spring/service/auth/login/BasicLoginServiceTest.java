@@ -73,7 +73,7 @@ class BasicLoginServiceTest {
     void loginSuccess() {
         //given
 
-        BasicLoginRequestDto basicLoginRequestDto = loginReqeustDto();
+        BasicLoginRequestDto basicLoginRequestDto = loginRequestDto();
 
 
         User user = User.builder()
@@ -123,7 +123,7 @@ class BasicLoginServiceTest {
     @DisplayName("[Service] 이메일 불일치")
     void loginEmailFail() {
         //given
-        BasicLoginRequestDto basicLoginRequestDto = loginReqeustDto();
+        BasicLoginRequestDto basicLoginRequestDto = loginRequestDto();
 
 
         User user = User.builder()
@@ -148,7 +148,7 @@ class BasicLoginServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> basicLoginService.basicLogin(loginReqeustDto()))
+        assertThatThrownBy(() -> basicLoginService.basicLogin(loginRequestDto()))
                 .isInstanceOf(LoginException.class);
     }
 
@@ -156,7 +156,7 @@ class BasicLoginServiceTest {
     @DisplayName("[Service] 패스워드 불일치")
     void loginPasswordFail() {
         //given
-        BasicLoginRequestDto basicLoginRequestDto = loginReqeustDto();
+        BasicLoginRequestDto basicLoginRequestDto = loginRequestDto();
 
 
         User user = User.builder()
@@ -181,12 +181,12 @@ class BasicLoginServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> basicLoginService.basicLogin(loginReqeustDto()))
+        assertThatThrownBy(() -> basicLoginService.basicLogin(loginRequestDto()))
                 .isInstanceOf(LoginException.class);
     }
 
 
-    private BasicLoginRequestDto loginReqeustDto() {
+    private BasicLoginRequestDto loginRequestDto() {
         String email = "abcd@naver.com";
         String password = "1234";
 

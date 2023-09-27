@@ -1,4 +1,4 @@
-package com.example.auth_spring.security.jwt.dto;
+package com.example.auth_spring.web.dto.auth.basic;
 
 import com.example.auth_spring.type.Role;
 import lombok.Builder;

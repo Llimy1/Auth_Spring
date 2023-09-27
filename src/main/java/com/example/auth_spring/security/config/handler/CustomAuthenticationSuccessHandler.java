@@ -46,7 +46,15 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         if (Objects.equals(role, Role.GUEST.getKey())) {
 
-            response.sendRedirect("http://localhost:8080/signup.html");
+            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/signup.html")
+                    .queryParam("email", email)
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString();
+
+
+            getRedirectStrategy().sendRedirect(request, response, targetUrl);
+
 
 
         } else {

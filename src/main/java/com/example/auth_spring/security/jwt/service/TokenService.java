@@ -86,7 +86,9 @@ public class TokenService {
 
     // AccessToken 만료 시간이 5분보다 적게 남았을 때
     public void accessTokenExpiration(String accessToken) {
-        if (jwtProvider.getExpiration(accessToken)) {
+        String resolveAccessToken = resolveToken(accessToken);
+
+        if (jwtProvider.getExpiration(resolveAccessToken)) {
             throw new ExpirationFiveMinutesException(ErrorCode.ACCESS_TOKEN_FIVE_MINUTES);
         }
     }
@@ -101,5 +103,15 @@ public class TokenService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         return user.getId();
+    }
+
+    // AccessToken을 통해 user 가져오기
+    public User findUser(String accessToken) {
+        String resolveAccessToken = resolveToken(accessToken);
+
+        String email = jwtProvider.getEmail(resolveAccessToken);
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 }

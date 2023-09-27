@@ -23,8 +23,6 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class BasicLogoutServiceTest {
-
-
     @Mock
     private LoginRepository loginRepository;
 

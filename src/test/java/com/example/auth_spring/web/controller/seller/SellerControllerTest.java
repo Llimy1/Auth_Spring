@@ -1,12 +1,12 @@
-package com.example.auth_spring.web.controller.auth.logout;
+package com.example.auth_spring.web.controller.seller;
 
-import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
-import com.example.auth_spring.service.auth.logout.BasicLogoutService;
+import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.common.CommonService;
+import com.example.auth_spring.service.seller.SellerService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.auth_spring.web.dto.common.UserIdResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,22 +24,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(LogoutController.class)
-class LogoutControllerTest {
+@WebMvcTest(SellerController.class)
+class SellerControllerTest {
 
     @MockBean
-    private BasicLogoutService basicLogoutService;
+    private SellerService sellerService;
 
     @MockBean
     private CommonService commonService;
 
     @MockBean
-    private JwtAuthFilter jwtAuthFilter;
+    private JwtProvider jwtProvider;
 
     @Autowired
     private WebApplicationContext context;
@@ -55,32 +55,34 @@ class LogoutControllerTest {
     }
 
     @Test
-    @DisplayName("[API] 로그아웃 성공")
+    @DisplayName("[API] 판매자 전환 성공")
     @WithMockUser(roles = "USER")
-    void loginSuccess() throws Exception {
+    void sellerConversionSuccess() throws Exception {
 
-        String accessToken = "accessToken";
+        String bearerAccessToken = "Bearer AccessToken";
 
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .status(ResponseStatus.SUCCESS.getDescription())
-                .message(SuccessCode.BASIC_LOGOUT_SUCCESS.getDescription())
-                .data(null)
+                .message(SuccessCode.SELLER_CONVERSION_SUCCESS.getDescription())
+                .data(new UserIdResponseDto(1L))
                 .build();
 
         //given
-        given(basicLogoutService.logoutResponse(any()))
+        given(sellerService.conversionResponse(any()))
                 .willReturn(commonResponse);
+
 
         //when
         //then
-        mvc.perform(delete("/api/v1/user/logout")
+        mvc.perform(post("/api/v1/seller/conversion")
                         .with(csrf())
-                        .header("Authorization", "Bearer " + accessToken)
+                        .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.message").value(SuccessCode.BASIC_LOGOUT_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.message").value(SuccessCode.SELLER_CONVERSION_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.data.userId").value(1))
                 .andDo(print());
     }
 

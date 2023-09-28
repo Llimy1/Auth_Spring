@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/signup")
+@RequestMapping("/api/v1/all")
 @Api(tags = "Auth APIs")
 public class CertificationController {
 
     private final CertificationService certificationService;
 
     @ApiOperation(value = "이메일 인증 번호 전송 API")
-    @PostMapping("/all/mail")
+    @PostMapping("/signup/mail")
     public ResponseEntity<ResultDto<CertificationResponseDto>> mailSend(@RequestBody CertificationRequestDto requestDto) {
         CommonResponse<Object> commonResponse = certificationService.responseSendMail(requestDto);
         ResultDto<CertificationResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

@@ -14,7 +14,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/seller")
 @Api(tags = "Seller APIs")
 public class ProductRegistrationController {
 
@@ -22,7 +22,7 @@ public class ProductRegistrationController {
 
 
     @ApiOperation(value = "판매자 상품 등록 API")
-    @PostMapping("/seller/registration")
+    @PostMapping("/registration")
     public ResponseEntity<ResultDto<ProductIdResponseDto>> productRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                                @RequestBody ProductRequestDto productRequestDto) {
         CommonResponse<Object> commonResponse = productRegistrationService.registrationResponse(bearerAccessToken, productRequestDto);

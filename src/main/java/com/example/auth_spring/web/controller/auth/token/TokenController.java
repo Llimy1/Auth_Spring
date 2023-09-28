@@ -14,14 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @Api(tags = "Token APIs")
 public class TokenController {
 
     private final TokenService tokenService;
 
     @ApiOperation(value = "토큰 재발급 API")
-    @PostMapping("/user/reissue")
+    @PostMapping("/reissue")
     public ResponseEntity<ResultDto<GeneratedTokenDto>> reissue(@RequestHeader("REFRESH-TOKEN") String bearerRefreshToken, HttpServletResponse httpServletResponse) {
         CommonResponse<Object> commonResponse = tokenService.reissueResponse(bearerRefreshToken, httpServletResponse);
         ResultDto<GeneratedTokenDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

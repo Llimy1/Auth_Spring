@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/all")
 @Api(tags = "Auth APIs")
 public class LoginController {
 
@@ -23,7 +23,7 @@ public class LoginController {
     private final OAuth2LoginService oAuth2LoginService;
 
     @ApiOperation(value = "자체 로그인 API", notes = "자체 로그인 진행")
-    @PostMapping("/all/login/basic")
+    @PostMapping("/login/basic")
     public ResponseEntity<ResultDto<Void>> basicLogin(@RequestBody BasicLoginRequestDto basicLoginRequestDto, HttpServletResponse httpServletResponse) {
         CommonResponse<Object> commonResponse = basicLoginService.basicLoginResponse(basicLoginRequestDto, httpServletResponse);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

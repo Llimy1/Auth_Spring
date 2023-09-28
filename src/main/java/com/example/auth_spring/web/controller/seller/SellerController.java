@@ -15,14 +15,14 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/seller")
 @Api(tags = "Seller APIs")
 public class SellerController {
 
     private final SellerService sellerService;
 
     @ApiOperation(value = "판매자 전환 API")
-    @PostMapping("/seller/conversion")
+    @PostMapping("/conversion")
     public ResponseEntity<ResultDto<UserIdResponseDto>> sellerConversion(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken) {
 
         CommonResponse<Object> commonResponse = sellerService.conversionResponse(bearerAccessToken);

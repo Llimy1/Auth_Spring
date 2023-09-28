@@ -15,14 +15,14 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @Api(tags = "Auth APIs")
 public class WithdrawalController {
 
     private final WithdrawalService withdrawalService;
 
     @ApiOperation(value = "회원탈퇴 API")
-    @DeleteMapping("/user/withdrawal")
+    @DeleteMapping("/withdrawal")
     public ResponseEntity<ResultDto<Void>> withdrawal(@ApiIgnore @RequestHeader("Authorization") String accessToken) {
         CommonResponse<Object> commonResponse = withdrawalService.withdrawalResponse(accessToken);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

@@ -16,14 +16,14 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @Api(tags = "MyPage APIs")
 public class AddressInfoController {
 
     private final AddressInfoService addressInfoService;
 
     @ApiOperation(value = "내 주소 정보 조회 API")
-    @GetMapping("/user/addressInfo")
+    @GetMapping("/addressInfo")
     public ResponseEntity<ResultDto<AddressInfoResponseDto>> addressInfoCheck(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken) {
         CommonResponse<Object> commonResponse = addressInfoService.addressInfoResponse(bearerAccessToken);
         ResultDto<AddressInfoResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/all")
 @Api(tags = "Auth APIs")
 public class SignupController {
 
@@ -24,7 +24,7 @@ public class SignupController {
     private final OAuth2SignupService oAuth2SignupService;
 
     @ApiOperation(value = "자체 회원가입 API", notes = "자체 회원가입")
-    @PostMapping("/all/signup/basic")
+    @PostMapping("/signup/basic")
     public ResponseEntity<ResultDto<UserIdResponseDto>> signup(@RequestBody BasicSignupRequestDto basicSignupRequestDto) {
         CommonResponse<Object> commonResponse = basicSignupService.signupResponse(basicSignupRequestDto);
         ResultDto<UserIdResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
@@ -34,7 +34,7 @@ public class SignupController {
     }
 
     @ApiOperation(value = "소셜 회원가입 API", notes = "소셜 회원가입")
-    @PostMapping("/all/signup/oauth2")
+    @PostMapping("/signup/oauth2")
     public ResponseEntity<ResultDto<UserIdResponseDto>> oauth2Signup(@ApiParam(name = "email", value = "email", example = "abcd@naver.com") @RequestParam String email,
                                                                      @RequestBody OAuth2SignupRequestDto oAuth2SignupRequestDto) {
         CommonResponse<Object> commonResponse = oAuth2SignupService.oauth2SignupResponse(email, oAuth2SignupRequestDto);

@@ -16,14 +16,14 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @Api(tags = "Auth APIs")
 public class LogoutController {
 
     private final BasicLogoutService basicLogoutService;
 
     @ApiOperation(value = "로그아웃 API")
-    @DeleteMapping("/user/logout")
+    @DeleteMapping("/logout")
     public ResponseEntity<ResultDto<Void>> logout(@ApiIgnore @RequestHeader("Authorization") String accessToken) {
         CommonResponse<Object> commonResponse = basicLogoutService.logoutResponse(accessToken);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

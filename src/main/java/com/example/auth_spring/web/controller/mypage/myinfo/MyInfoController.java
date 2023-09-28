@@ -16,14 +16,14 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @Api(tags = "MyPage APIs")
 public class MyInfoController {
 
     private final MyInfoService myInfoService;
 
     @ApiOperation(value = "내 정보 조회 API")
-    @GetMapping("/user/myInfo")
+    @GetMapping("/myInfo")
     public ResponseEntity<ResultDto<MyInfoResponseDto>> myInfoCheck(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken) {
         CommonResponse<Object> commonResponse = myInfoService.myInfoResponse(bearerAccessToken);
 

@@ -1,6 +1,5 @@
 package com.example.auth_spring.web.dto.mypage.myinfo;
 
-import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -10,30 +9,25 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MyInfoResponseDto {
-    @ApiModelProperty(name = "email", value = "email", example = "abcd@naver.com")
+    @ApiModelProperty(example = "이메일")
     private String email;
-    @ApiModelProperty(name = "name", value = "name", example = "홍길동")
+    @ApiModelProperty(example = "이름")
     private String name;
-    @ApiModelProperty(name = "nickname", value = "nickname", example = "바람")
+    @ApiModelProperty(example = "닉네임")
     private String nickname;
-    @ApiModelProperty(name = "phoneNumber", value = "phoneNumber", example = "01000000000")
+    @ApiModelProperty(example = "휴대폰 번호")
     private String phoneNumber;
-    @ApiModelProperty(name = "gender", value = "gender", example = "male")
+    @ApiModelProperty(example = "성별")
     private String gender;
-    @ApiModelProperty(name = "profileImgUrl", value = "imgUrl", example = "imgUrl")
+    @ApiModelProperty(example = "이미지 URL")
     private String profileImgUrl;
-    @ApiModelProperty(name = "introduce", value = "introduce", example = "안녕하세요")
+    @ApiModelProperty(example = "간단 소개글")
     private String introduce;
-    @ApiModelProperty(name = "zipCode", value = "zipCode", example = "00012")
-    private String zipCode;
-    @ApiModelProperty(name = "streetAddress", value = "streetAddress", example = "서울시 강남구")
-    private String streetAddress;
-    @ApiModelProperty(name = "detailAddress", value = "detailAddress", example = "블라동 10")
-    private String detailAddress;
+
 
 
     @Builder
-    public MyInfoResponseDto(User user, Address address) {
+    public MyInfoResponseDto(User user) {
         this.email = user.getEmail();
         this.name = user.getName();
         this.nickname = user.getNickname();
@@ -41,8 +35,5 @@ public class MyInfoResponseDto {
         this.gender = user.getGender();
         this.profileImgUrl = user.getProfileImgUrl();
         this.introduce = user.getIntroduce();
-        this.zipCode = address.getZipCode();
-        this.streetAddress = address.getStreetAddress();
-        this.detailAddress = address.getDetailAddress();
     }
 }

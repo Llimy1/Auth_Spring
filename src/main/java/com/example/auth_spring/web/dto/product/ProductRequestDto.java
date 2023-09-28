@@ -1,6 +1,7 @@
 package com.example.auth_spring.web.dto.product;
 
 import com.example.auth_spring.web.domain.product.Product;
+import com.example.auth_spring.web.domain.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,8 +22,9 @@ public class ProductRequestDto {
         this.productPrice = productPrice;
     }
 
-    public Product toProductEntity() {
+    public Product toProductEntity(User user) {
         return Product.builder()
+                .user(user)
                 .name(productName)
                 .price(productPrice)
                 .build();

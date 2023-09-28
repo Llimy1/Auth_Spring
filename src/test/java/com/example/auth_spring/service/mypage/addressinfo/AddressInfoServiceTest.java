@@ -1,10 +1,10 @@
-package com.example.auth_spring.service.mypage.myinfo;
+package com.example.auth_spring.service.mypage.addressinfo;
 
 import com.example.auth_spring.security.jwt.service.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.user.User;
-import com.example.auth_spring.web.dto.mypage.myinfo.MyInfoResponseDto;
+import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,18 +18,19 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-class MyInfoServiceTest {
+class AddressInfoServiceTest {
 
-    private MyInfoService myInfoService;
     private TokenService tokenService;
     private CommonService commonService;
-    private User user;
+    private AddressInfoService addressInfoService;
+    private Address address;
 
     @BeforeEach
     void setup() {
         tokenService = mock(TokenService.class);
-        myInfoService = new MyInfoService(tokenService, commonService);
-        user = User.builder()
+        addressInfoService = new AddressInfoService(tokenService, commonService);
+
+        User user = User.builder()
                 .email("abcd@naver.com")
                 .name("홍길동")
                 .nickname("바람")
@@ -40,22 +41,29 @@ class MyInfoServiceTest {
                 .build();
 
         ReflectionTestUtils.setField(user, "id", 1L);
+
+        address = Address.builder()
+                .user(user)
+                .zipCode("001011")
+                .streetAddress("서울")
+                .detailAddress("도곡 10")
+                .isDefault(true)
+                .build();
     }
 
     @Test
-    @DisplayName("[Service] 내 정보 조회 성공")
-    void myInfoCheckSuccess() {
-        //given
+    @DisplayName("[Service] 내 주소 정보 조회 성공")
+    void addressInfoCheckSuccess() {
         String bearerAccessToken = "Bearer accessToken";
-        given(tokenService.findUser(bearerAccessToken)).willReturn(user);
+
+        //given
+        given(tokenService.findAddress(bearerAccessToken)).willReturn(address);
 
         //when
-        MyInfoResponseDto myInfoResponseDto = myInfoService.myInfo(bearerAccessToken);
-
+        AddressInfoResponseDto addressInfoResponseDto = addressInfoService.addressInfo(bearerAccessToken);
 
         //then
-        assertThat(myInfoResponseDto.getName()).isEqualTo(user.getName());
-
+        assertThat(addressInfoResponseDto.getStreetAddress()).isEqualTo(address.getStreetAddress());
     }
 
 }

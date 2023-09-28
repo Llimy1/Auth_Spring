@@ -1,32 +1,27 @@
 package com.example.auth_spring.service.product;
 
-import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.security.jwt.service.TokenService;
 import com.example.auth_spring.service.common.CommonService;
+import com.example.auth_spring.service.seller.registration.ProductRegistrationService;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.user.User;
-import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.product.ProductRequestDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class ProductRegistrationServiceTest {
@@ -39,6 +34,8 @@ class ProductRegistrationServiceTest {
     private ProductRepository productRepository;
 
     private ProductRegistrationService productRegistrationService;
+
+    private User user;
 
     @BeforeEach
     void setup() {
@@ -59,12 +56,25 @@ class ProductRegistrationServiceTest {
     @DisplayName("[Service] 상품 등록 성공")
     void productRegistrationSuccess() {
 
+        user = User.builder()
+                .email("abcd@naver.com")
+                .name("홍길동")
+                .nickname("바람")
+                .phoneNumber("01000000000")
+                .gender("male")
+                .introduce("안녕하세요")
+                .profileImgUrl("https://img_url")
+                .role(Role.SELLER)
+                .build();
+
+        ReflectionTestUtils.setField(user, "id", 1L);
+
         //given
-        given(tokenService.findUserRole(anyString())).willReturn(Role.SELLER.getKey());
+        given(tokenService.findUser(anyString())).willReturn(user);
 
 
         ProductRequestDto productRequestDto = productRequestDto();
-        Product product = productRequestDto.toProductEntity();
+        Product product = productRequestDto.toProductEntity(user);
 
         ReflectionTestUtils.setField(product, "id", 1L);
 
@@ -86,8 +96,21 @@ class ProductRegistrationServiceTest {
     void productRegistrationFail() {
         String bearerAccessToken = "Bearer accessToken";
 
+        user = User.builder()
+                .email("abcd@naver.com")
+                .name("홍길동")
+                .nickname("바람")
+                .phoneNumber("01000000000")
+                .gender("male")
+                .introduce("안녕하세요")
+                .profileImgUrl("https://img_url")
+                .role(Role.USER)
+                .build();
+
+        ReflectionTestUtils.setField(user, "id", 1L);
+
         //given
-        given(tokenService.findUserRole(anyString())).willReturn(Role.USER.getKey());
+        given(tokenService.findUser(anyString())).willReturn(user);
 
         //when
         //then

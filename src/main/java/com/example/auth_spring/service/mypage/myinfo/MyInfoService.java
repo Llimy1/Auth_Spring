@@ -21,9 +21,8 @@ public class MyInfoService {
     public MyInfoResponseDto myInfo(String bearAccessToken) {
 
         User user = tokenService.findUser(bearAccessToken);
-        Address address = tokenService.findAddress(bearAccessToken);
 
-        return new MyInfoResponseDto(user, address);
+        return new MyInfoResponseDto(user);
     }
 
     public CommonResponse<Object>  myInfoResponse(String bearerAccessToken) {

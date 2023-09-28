@@ -18,7 +18,9 @@ public enum SuccessCode {
     OAUTH2_LOGIN_SUCCESS("소셜 로그인에 성공 했습니다."),
     SELLER_CONVERSION_SUCCESS("판매자 전환에 성공 했습니다."),
     MY_INFO_CHECK_SUCCESS("내 정보 조회에 성공 했습니다."),
-    PRODUCT_REGISTRATION_SUCCESS("상품 등록에 성공 했습니다.");
+    ADDRESS_INFO_CHECK_SUCCESS("내 주소 조회에 성공 했습니다."),
+    PRODUCT_REGISTRATION_SUCCESS("상품 등록에 성공 했습니다."),
+    SELLER_PRODUCT_INQUIRY_SUCCESS("판매자 상품 조회에 성공 했습니다.");
 
     private final String description;
 

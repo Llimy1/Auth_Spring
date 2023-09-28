@@ -4,8 +4,6 @@ import com.example.auth_spring.security.jwt.service.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.user.User;
-import com.example.auth_spring.web.domain.user.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SellerServiceTest {
@@ -39,7 +37,7 @@ class SellerServiceTest {
     void sellerConversionSuccess() {
         //given
         String bearerAccessToken = "Bearer accessToken";
-        when(tokenService.findUser(bearerAccessToken)).thenReturn(user);
+        given(tokenService.findUser(bearerAccessToken)).willReturn(user);
 
         //when
         Long userId = sellerService.conversion(bearerAccessToken);
@@ -47,7 +45,5 @@ class SellerServiceTest {
         //then
         assertThat(userId).isEqualTo(user.getId());
         assertThat(user.getRoleKey()).isEqualTo(Role.SELLER.getKey());
-
     }
-
 }

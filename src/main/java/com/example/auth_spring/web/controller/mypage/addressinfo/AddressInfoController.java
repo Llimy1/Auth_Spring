@@ -3,6 +3,7 @@ package com.example.auth_spring.web.controller.mypage.addressinfo;
 import com.example.auth_spring.service.mypage.addressinfo.AddressInfoService;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
+import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoListResponseDto;
 import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,10 +25,10 @@ public class AddressInfoController {
 
     @ApiOperation(value = "내 주소 정보 조회 API")
     @GetMapping("/addressInfo")
-    public ResponseEntity<ResultDto<AddressInfoResponseDto>> addressInfoCheck(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken) {
+    public ResponseEntity<ResultDto<AddressInfoListResponseDto>> addressInfoCheck(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken) {
         CommonResponse<Object> commonResponse = addressInfoService.addressInfoResponse(bearerAccessToken);
-        ResultDto<AddressInfoResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
-        result.setData((AddressInfoResponseDto) commonResponse.getData());
+        ResultDto<AddressInfoListResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+        result.setData((AddressInfoListResponseDto) commonResponse.getData());
 
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }

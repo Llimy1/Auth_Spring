@@ -9,6 +9,7 @@ import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.CommonResponse;
+import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoListResponseDto;
 import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoResponseDto;
 import com.example.auth_spring.web.dto.mypage.myinfo.MyInfoResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,7 +68,7 @@ class AddressInfoControllerTest {
     @Test
     @DisplayName("[API] 내 주소 정보 조회 성공")
     @WithMockUser(roles = "USER")
-    void myInfoCheckSuccess() throws Exception {
+    void addressInfoCheckSuccess() throws Exception {
 
         User user = User.builder()
                 .email("abcd@naver.com")
@@ -85,14 +90,23 @@ class AddressInfoControllerTest {
                 .isDefault(true)
                 .build();
 
-        //given
         String bearerAccessToken = "Bearer accessToken";
+
+        AddressInfoResponseDto addressInfoResponseDto = AddressInfoResponseDto.builder()
+                .address(address)
+                .build();
+
+        List<AddressInfoResponseDto> addressInfoResponseDtoList = new ArrayList<>(Collections.singletonList(addressInfoResponseDto));
+
+
+        //given
+
 
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .status(ResponseStatus.SUCCESS.getDescription())
                 .message(SuccessCode.ADDRESS_INFO_CHECK_SUCCESS.getDescription())
-                .data(new AddressInfoResponseDto(address))
+                .data(new AddressInfoListResponseDto(addressInfoResponseDtoList))
                 .build();
 
 
@@ -108,10 +122,9 @@ class AddressInfoControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.ADDRESS_INFO_CHECK_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.zipCode").value("001011"))
-                .andExpect(jsonPath("$.data.streetAddress").value("서울"))
-                .andExpect(jsonPath("$.data.detailAddress").value("도곡 10"))
+                .andExpect(jsonPath("$.data.addressInfoResponseDtoList[0].zipCode").value("001011"))
+                .andExpect(jsonPath("$.data.addressInfoResponseDtoList[0].streetAddress").value("서울"))
+                .andExpect(jsonPath("$.data.addressInfoResponseDtoList[0].detailAddress").value("도곡 10"))
                 .andDo(print());
     }
-
 }

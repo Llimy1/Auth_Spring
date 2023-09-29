@@ -31,18 +31,6 @@ public class BasicSignupService {
     @Transactional
     public Long basicSignup(BasicSignupRequestDto basicSignupRequestDto) {
 
-        userRepository.findByNickname(basicSignupRequestDto.getNickname()).ifPresent(a -> {
-            throw new IllegalStateException(ErrorCode.NICKNAME_THAT_EXIST);
-        });
-
-        userRepository.findByEmail(basicSignupRequestDto.getEmail()).ifPresent(a -> {
-            throw new IllegalStateException(ErrorCode.EMAIL_THAT_EXIST);
-        });
-
-        userRepository.findByPhoneNumber(basicSignupRequestDto.getPhoneNumber()).ifPresent(a -> {
-            throw new IllegalStateException(ErrorCode.PHONE_NUMBER_THAT_EXIST);
-        });
-
         User user = basicSignupRequestDto.toBasicUserEntity();
         user.passwordEncode(passwordEncoder);
 

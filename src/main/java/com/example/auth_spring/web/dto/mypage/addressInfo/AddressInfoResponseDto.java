@@ -17,6 +17,7 @@ public class AddressInfoResponseDto {
     @ApiModelProperty(example = "상세 주소명")
     private String detailAddress;
 
+
     @Builder
     public AddressInfoResponseDto(Address address) {
         this.zipCode = address.getZipCode();

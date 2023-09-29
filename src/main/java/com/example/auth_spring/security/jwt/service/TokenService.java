@@ -11,6 +11,7 @@ import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
+import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoResponseDto;
 import com.example.auth_spring.web.exception.ExpirationFiveMinutesException;
 import com.example.auth_spring.web.exception.JwtException;
 import com.example.auth_spring.web.exception.NotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 @Service
@@ -119,11 +121,10 @@ public class TokenService {
     }
 
     // AccessToken을 통해 address 가져오기
-    public Address findAddress(String accessToken) {
+    public List<AddressInfoResponseDto> findAllAddress(String accessToken) {
         Long userId = accessTokenUserId(accessToken);
 
-        return addressRepository.findByUserId(userId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        return addressRepository.findAllByUserId(userId);
     }
 
     // AccessToken을 통해 User 권한 가져오기

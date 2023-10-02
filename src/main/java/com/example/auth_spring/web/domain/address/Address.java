@@ -43,4 +43,11 @@ public class Address {
         this.user = user;
         this.isDefault = isDefault;
     }
+
+    public void addressUpdate(String zipCode, String streetAddress, String detailAddress, Boolean isDefault) {
+        this.zipCode = zipCode;
+        this.streetAddress = streetAddress;
+        this.detailAddress = detailAddress;
+        this.isDefault = isDefault;
+    }
 }

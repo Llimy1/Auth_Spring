@@ -22,10 +22,11 @@ public class ProductRegistrationController {
 
 
     @ApiOperation(value = "판매자 상품 등록 API")
-    @PostMapping("/registration")
+    @PostMapping("/product/registration/{subCategoryName}")
     public ResponseEntity<ResultDto<ProductIdResponseDto>> productRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
+                                                                               @PathVariable String subCategoryName,
                                                                                @RequestBody ProductRequestDto productRequestDto) {
-        CommonResponse<Object> commonResponse = productRegistrationService.registrationResponse(bearerAccessToken, productRequestDto);
+        CommonResponse<Object> commonResponse = productRegistrationService.registrationResponse(bearerAccessToken, subCategoryName, productRequestDto);
         ResultDto<ProductIdResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
         result.setData((ProductIdResponseDto) commonResponse.getData());
 

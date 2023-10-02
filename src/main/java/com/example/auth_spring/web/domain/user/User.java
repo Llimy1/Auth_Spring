@@ -4,6 +4,7 @@ package com.example.auth_spring.web.domain.user;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
+import com.example.auth_spring.web.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,6 +55,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> products;
 
     @Builder
     public User(String email, String password, String name, String nickname, String phoneNumber, String gender, String profileImgUrl, String introduce, String provider, Role role) {

@@ -18,6 +18,7 @@ public class MyInfoService {
     private final TokenService tokenService;
     private final CommonService commonService;
 
+    // 내 정보 조회
     public MyInfoResponseDto myInfo(String bearAccessToken) {
 
         User user = tokenService.findUser(bearAccessToken);
@@ -25,6 +26,7 @@ public class MyInfoService {
         return new MyInfoResponseDto(user);
     }
 
+    // API 반환
     public CommonResponse<Object>  myInfoResponse(String bearerAccessToken) {
         return commonService.successResponse(SuccessCode.MY_INFO_CHECK_SUCCESS.getDescription(), HttpStatus.OK
         , myInfo(bearerAccessToken));

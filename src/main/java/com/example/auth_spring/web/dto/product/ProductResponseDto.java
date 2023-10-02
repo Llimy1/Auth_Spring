@@ -1,6 +1,7 @@
 package com.example.auth_spring.web.dto.product;
 
 import com.example.auth_spring.web.domain.product.Product;
+import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -91,7 +91,7 @@ class ProductRegistrationControllerTest {
                 .build();
 
         //given
-        given(productRegistrationService.registrationResponse(any(), any()))
+        given(productRegistrationService.registrationResponse(any(), any(), any()))
                 .willReturn(commonResponse);
 
 
@@ -127,7 +127,7 @@ class ProductRegistrationControllerTest {
         //given
         given(tokenService.findUserRole(anyString())).willReturn(Role.USER.getKey());
 
-        given(productRegistrationService.registrationResponse(any(), any()))
+        given(productRegistrationService.registrationResponse(any(), any(), any()))
                 .willReturn(commonResponse);
 
 

@@ -1,6 +1,7 @@
 package com.example.auth_spring.web.domain.subcategory;
 
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -26,6 +28,9 @@ public class SubCategory {
     @Column
     private String name;
 
+    @OneToMany(mappedBy = "subCategory")
+    private List<Product> productList;
+
     @Builder
     public SubCategory(Category category, String name) {
         this.category = category;
@@ -34,6 +39,5 @@ public class SubCategory {
 
     public void subCategoryUpdate(String afterSubCategoryName) {
         this.name = afterSubCategoryName;
-
     }
 }

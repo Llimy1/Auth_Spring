@@ -1,6 +1,7 @@
 package com.example.auth_spring.web.domain.product;
 
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
+import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,10 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sub_category_id")
+    private SubCategory subCategory;
+
     @Column
     private String name;
 
@@ -28,8 +33,9 @@ public class Product extends BaseTimeEntity {
     private Long price;
 
     @Builder
-    public Product(User user, String name, Long price) {
+    public Product(User user, SubCategory subCategory, String name, Long price) {
         this.user = user;
+        this.subCategory = subCategory;
         this.name = name;
         this.price = price;
     }

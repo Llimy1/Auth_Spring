@@ -26,6 +26,7 @@ public class ProductRegistrationService {
     private final ProductRepository productRepository;
 
 
+    // 상품 등록
     @Transactional
     public Long registration(String bearerAccessToken, ProductRequestDto productRequestDto) {
         tokenService.accessTokenExpiration(bearerAccessToken);
@@ -41,6 +42,7 @@ public class ProductRegistrationService {
         return productRepository.save(product).getId();
     }
 
+    // API 반환
     @Transactional
     public CommonResponse<Object> registrationResponse(String bearerAccessToken, ProductRequestDto productRequestDto) {
         Long productId = registration(bearerAccessToken, productRequestDto);

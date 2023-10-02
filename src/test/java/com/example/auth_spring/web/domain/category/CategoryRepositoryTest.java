@@ -16,16 +16,6 @@ class CategoryRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @BeforeEach
-    public void beforeCleanup() {
-        categoryRepository.deleteAll();
-    }
-
-    @AfterEach
-    public void afterCleanup() {
-        categoryRepository.deleteAll();
-    }
-
     @Test
     @DisplayName("[Repository] 카테고리 생성하기")
     void createCategory() {

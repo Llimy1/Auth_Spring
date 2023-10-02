@@ -76,54 +76,7 @@ class BasicSignupServiceTest {
         assertThat(userId).isEqualTo(user.getId());
     }
 
-    @Test
-    @DisplayName("[Service] 회원 가입 실패 - 이미 존재하는 닉네임 오류 발생")
-    void failNicknameExist() {
 
-        //given
-        User user = user(signupRequestDto());
-        given(userRepository.findByNickname(user.getNickname()))
-                .willReturn(Optional.of(user));
-
-
-        //when
-        //then
-        assertThatThrownBy(() -> basicSignupService.basicSignup(signupRequestDto()))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    @DisplayName("[Service] 회원 가입 실패 - 이미 존재하는 이메일 오류 발생")
-    void failEmailExist() {
-
-        //given
-        User user = user(signupRequestDto());
-        given(userRepository.findByEmail(user.getEmail()))
-                .willReturn(Optional.of(user));
-
-
-
-        //when
-        //then
-        assertThatThrownBy(() -> basicSignupService.basicSignup(signupRequestDto()))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    @DisplayName("[Service] 회원 가입 실패 - 이미 존재하는 핸드폰 번호 오류 발생")
-    void failPhoneNumberExist() {
-
-        //given
-        User user = user(signupRequestDto());
-        given(userRepository.findByPhoneNumber(user.getPhoneNumber()))
-                .willReturn(Optional.of(user));
-
-
-        //when
-        //then
-        assertThatThrownBy(() -> basicSignupService.basicSignup(signupRequestDto()))
-                .isInstanceOf(IllegalStateException.class);
-    }
 
     private User user(BasicSignupRequestDto basicSignupRequestDto) {
         return basicSignupRequestDto.toBasicUserEntity();

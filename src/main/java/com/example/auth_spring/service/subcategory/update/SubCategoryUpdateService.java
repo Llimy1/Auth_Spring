@@ -33,7 +33,7 @@ public class SubCategoryUpdateService {
 
         tokenService.accessTokenExpiration(bearerAccessToken);
 
-        if (tokenService.findUserRole(bearerAccessToken).equals(Role.ADMIN.getKey())) {
+        if (!tokenService.findUserRole(bearerAccessToken).equals(Role.ADMIN.getKey())) {
             throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_ADMIN);
         }
 

@@ -23,7 +23,15 @@ public enum SuccessCode {
     SELLER_PRODUCT_INQUIRY_SUCCESS("판매자 상품 조회에 성공 했습니다."),
     NICKNAME_USE_EXIST("사용 가능한 닉네임 입니다."),
     EMAIL_USE_EXIST("사용 가능한 이메일 입니다."),
-    PHONE_NUMBER_USE_EXIST("사용 가능한 번호 입니다.");
+    PHONE_NUMBER_USE_EXIST("사용 가능한 번호 입니다."),
+    CATEGORY_REGISTRATION_SUCCESS("카테고리 등록에 성공 했습니다."),
+    CATEGORY_INQUIRY_SUCCESS("카테고리 조회에 성공 했습니다."),
+    CATEGORY_DELETE_SUCCESS("카테고리 삭제에 성공 했습니다."),
+    CATEGORY_UPDATE_SUCCESS("카테고리 변경에 성공 했습니다."),
+    SUB_CATEGORY_REGISTRATION_SUCCESS("서브 카테고리 등록에 성공 했습니다."),
+    SUB_CATEGORY_INQUIRY_SUCCESS("서브 카테고리 조회에 성공 했습니다."),
+    SUB_CATEGORY_DELETE_SUCCESS("서브 카테고리 삭제에 성공 했습니다."),
+    SUB_CATEGORY_UPDATE_SUCCESS("서브 카테고리 변경에 성공 했습니다."),;
 
     private final String description;
 

@@ -1,13 +1,11 @@
 package com.example.auth_spring.service.seller;
 
-import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.security.jwt.service.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.user.User;
-import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import com.example.auth_spring.web.dto.auth.signup.UserIdResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

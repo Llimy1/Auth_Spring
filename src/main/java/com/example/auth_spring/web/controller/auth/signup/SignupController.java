@@ -6,7 +6,7 @@ import com.example.auth_spring.web.dto.auth.signup.OAuth2SignupRequestDto;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
-import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import com.example.auth_spring.web.dto.auth.signup.UserIdResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

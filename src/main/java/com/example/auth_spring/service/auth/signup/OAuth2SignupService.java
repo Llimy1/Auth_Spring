@@ -8,7 +8,7 @@ import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.auth.signup.OAuth2SignupRequestDto;
-import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import com.example.auth_spring.web.dto.auth.signup.UserIdResponseDto;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;

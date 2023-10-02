@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.dto.common;
+package com.example.auth_spring.web.dto.auth.signup;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

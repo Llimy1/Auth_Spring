@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,8 +20,8 @@ public class ProductInquiryController {
     private final ProductInquiryService productInquiryService;
 
     @ApiOperation(value = "판매자 상품 조회 API")
-    @GetMapping("/productList")
-    public ResponseEntity<ResultDto<ProductListResponseDto>> productList(@RequestHeader("Authorization") String bearerAccessToken,
+    @GetMapping("/product/getList")
+    public ResponseEntity<ResultDto<ProductListResponseDto>> productList(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                          @RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                          @RequestParam(value = "size", defaultValue = "10", required = false) int size,
                                                                          @RequestParam(value = "sortBy", defaultValue = "modifiedAt", required = false) String sortBy) {

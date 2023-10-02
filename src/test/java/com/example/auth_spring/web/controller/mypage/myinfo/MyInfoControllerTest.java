@@ -8,7 +8,6 @@ import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.common.UserIdResponseDto;
 import com.example.auth_spring.web.dto.mypage.myinfo.MyInfoResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

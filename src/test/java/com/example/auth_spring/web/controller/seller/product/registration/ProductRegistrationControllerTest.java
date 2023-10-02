@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.controller.seller.product;
+package com.example.auth_spring.web.controller.seller.product.registration;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.security.jwt.service.TokenService;
@@ -31,7 +31,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

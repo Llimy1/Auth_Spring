@@ -21,10 +21,14 @@ public enum ErrorCode {
     INCORRECT_CLAIM("토큰 정보가 잘못되었습니다."),
     AUTHORITY_NOT_FOUND("권한 정보가 없습니다."),
     AUTHORITY_NOT_SELLER("판매자 권한이 없습니다."),
+    AUTHORITY_NOT_ADMIN("관리자 권한이 없습니다."),
     LOGIN_EXCEPTION("로그인 실패! 이메일과 비밀번호를 확인해주세요."),
     REFRESH_TOKEN_NOT_FOUND("REFRESH TOKEN을 찾을 수 없습니다."),
     REFRESH_TOKEN_EXPIRATION("REFRESH TOKEN이 올바르지 않거나, 만료되었습니다. 재로그인 해주세요."),
-    DO_NOT_SEARCH_PROVIDER("해당 소셜 로그인을 지원하지 않습니다.");
+    DO_NOT_SEARCH_PROVIDER("해당 소셜 로그인을 지원하지 않습니다."),
+    SELLER_PRODUCT_NOT_FOUND("판매자 상품을 찾을 수 없습니다."),
+    CATEGORY_NOT_FOUND("해당 카테고리를 찾을 수 없습니다."),
+    SUB_CATEGORY_NOT_FOUND("해당 서브 카테고리를 찾을 수 없습니다.");
 
 
 

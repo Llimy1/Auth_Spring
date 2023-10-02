@@ -9,7 +9,7 @@ import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.auth.signup.BasicSignupRequestDto;
-import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import com.example.auth_spring.web.dto.auth.signup.UserIdResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

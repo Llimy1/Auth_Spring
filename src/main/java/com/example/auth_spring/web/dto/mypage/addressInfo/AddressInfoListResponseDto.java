@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AddressInfoListResponseDto {
 
-    List<AddressInfoResponseDto> addressInfoResponseDtoList;
+    private List<AddressInfoResponseDto> addressInfoResponseDtoList;
 
     public AddressInfoListResponseDto(List<AddressInfoResponseDto> addressInfoResponseDtoList) {
         this.addressInfoResponseDtoList = addressInfoResponseDtoList;

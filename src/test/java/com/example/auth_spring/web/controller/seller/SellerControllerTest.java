@@ -6,7 +6,7 @@ import com.example.auth_spring.service.seller.SellerService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.common.UserIdResponseDto;
+import com.example.auth_spring.web.dto.auth.signup.UserIdResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

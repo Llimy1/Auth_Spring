@@ -27,6 +27,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_EXPIRATION("REFRESH TOKEN이 올바르지 않거나, 만료되었습니다. 재로그인 해주세요."),
     DO_NOT_SEARCH_PROVIDER("해당 소셜 로그인을 지원하지 않습니다."),
     SELLER_PRODUCT_NOT_FOUND("판매자 상품을 찾을 수 없습니다."),
+    PRODUCT_NOT_FOUND("판매 상품을 찾을 수 없습니다."),
     CATEGORY_NOT_FOUND("해당 카테고리를 찾을 수 없습니다."),
     SUB_CATEGORY_NOT_FOUND("해당 서브 카테고리를 찾을 수 없습니다."),
     ADDRESS_NOT_FOUND("해당 유저의 주소를 찾을 수 없습니다."),

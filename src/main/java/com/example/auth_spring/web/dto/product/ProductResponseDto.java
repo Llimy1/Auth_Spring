@@ -2,6 +2,7 @@ package com.example.auth_spring.web.dto.product;
 
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ public class ProductResponseDto {
     private String productName;
     private Long productPrice;
 
+    @Builder
     public ProductResponseDto(Product product) {
         this.productName = product.getName();
         this.productPrice = product.getPrice();

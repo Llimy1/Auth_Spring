@@ -1,14 +1,13 @@
 package com.example.auth_spring.web.controller.seller.product.registration;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
-import com.example.auth_spring.security.jwt.service.TokenService;
+import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.seller.registration.ProductRegistrationService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.type.SuccessCode;
-import com.example.auth_spring.web.controller.seller.product.registration.ProductRegistrationController;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
 import com.example.auth_spring.web.dto.product.ProductRequestDto;
@@ -97,7 +96,7 @@ class ProductRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/seller/registration")
+        mvc.perform(post("/api/v1/seller/product/registration/{subCategoryName}", "서브 카테고리명")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -133,7 +132,7 @@ class ProductRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/seller/registration")
+        mvc.perform(post("/api/v1/seller/product/registration/{subCategoryName}", "서브 카테고리명")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)

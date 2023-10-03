@@ -26,6 +26,7 @@ class SubCategoryRepositoryTest {
         subCategoryRepository.deleteAll();
         categoryRepository.deleteAll();
     }
+
     @Test
     @DisplayName("[Repository] 서브 카테고리 생성하기")
     void createSubCategory() {

@@ -1,13 +1,11 @@
 package com.example.auth_spring.security.config.handler;
 
-import com.example.auth_spring.security.jwt.service.JwtProvider;
-import com.example.auth_spring.service.auth.login.OAuth2LoginService;
+import com.example.auth_spring.service.all.login.OAuth2LoginService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.exception.IllegalAccessException;
-import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

@@ -1,10 +1,9 @@
 package com.example.auth_spring.web.controller.seller.product.inquiry;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
-import com.example.auth_spring.security.jwt.service.TokenService;
+import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.seller.inquiry.ProductInquiryService;
-import com.example.auth_spring.service.seller.registration.ProductRegistrationService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.category.Category;
@@ -12,10 +11,8 @@ import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.Pagination;
-import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
 import com.example.auth_spring.web.dto.product.ProductResponseDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -110,7 +106,7 @@ class ProductInquiryControllerTest {
 
 
         ProductListResponseDto productListResponseDto = ProductListResponseDto.builder()
-                .productList(productList)
+                .productList(page.getContent())
                 .pagination(pagination)
                 .build();
 
@@ -139,6 +135,10 @@ class ProductInquiryControllerTest {
                 .andExpect(jsonPath("$.message").value(SuccessCode.SELLER_PRODUCT_INQUIRY_SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.data.productList[0].productName").value("옷"))
                 .andExpect(jsonPath("$.data.productList[0].productPrice").value(10000L))
+                .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
+                .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
+                .andExpect(jsonPath("$.data.pagination.pageNo").value(0))
+                .andExpect(jsonPath("$.data.pagination.lastPage").value(true))
                 .andDo(print());
 
     }

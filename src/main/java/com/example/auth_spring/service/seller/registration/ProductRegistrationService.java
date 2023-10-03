@@ -1,6 +1,6 @@
 package com.example.auth_spring.service.seller.registration;
 
-import com.example.auth_spring.security.jwt.service.TokenService;
+import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.Role;

@@ -1,5 +1,6 @@
 package com.example.auth_spring.web.domain.product;
 
+import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -31,6 +33,9 @@ public class Product extends BaseTimeEntity {
 
     @Column
     private Long price;
+
+    @OneToMany(mappedBy = "product")
+    private List<Cart> cart;
 
     @Builder
     public Product(User user, SubCategory subCategory, String name, Long price) {

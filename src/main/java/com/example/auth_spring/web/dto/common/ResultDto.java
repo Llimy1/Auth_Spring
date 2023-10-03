@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @RequiredArgsConstructor(staticName = "in")
 public class ResultDto<Data> {
@@ -20,6 +19,7 @@ public class ResultDto<Data> {
     private final String message;
 
     @ApiModelProperty(example = "응답 데이터")
+    @Setter
     private Data data;
 
 

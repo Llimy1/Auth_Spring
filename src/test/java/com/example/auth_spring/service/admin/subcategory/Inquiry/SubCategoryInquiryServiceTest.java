@@ -32,15 +32,13 @@ class SubCategoryInquiryServiceTest {
     private TokenService tokenService;
     private CommonService commonService;
     private SubCategoryRepository subCategoryRepository;
-    private CategoryRepository categoryRepository;
     private SubCategoryInquiryService subCategoryInquiryService;
 
     @BeforeEach
     void setup() {
         tokenService = mock(TokenService.class);
         subCategoryRepository = mock(SubCategoryRepository.class);
-        categoryRepository = mock(CategoryRepository.class);
-        subCategoryInquiryService = new SubCategoryInquiryService(tokenService, commonService, categoryRepository, subCategoryRepository);
+        subCategoryInquiryService = new SubCategoryInquiryService(tokenService, commonService, subCategoryRepository);
     }
 
     @Test

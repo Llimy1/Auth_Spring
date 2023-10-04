@@ -39,8 +39,13 @@ public class CartRegistrationService {
             throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_USER);
         }
 
+        cartRepository.findByProductName(productName).ifPresent(a -> {
+            throw new IllegalStateException(ErrorCode.PRODUCT_THAT_EXIST);
+        });
+
         Product product = productRepository.findByName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+
 
         Cart cart = Cart.builder()
                 .user(user)

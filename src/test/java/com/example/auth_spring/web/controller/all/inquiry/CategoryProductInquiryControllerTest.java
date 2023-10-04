@@ -1,11 +1,11 @@
 package com.example.auth_spring.web.controller.all.inquiry;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
-import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.all.inquiry.AllProductInquiryService;
+import com.example.auth_spring.service.all.inquiry.CategoryProductInquiryService;
+import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
-import com.example.auth_spring.web.controller.all.inquiry.AllProductInquiryController;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -41,11 +42,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AllProductInquiryController.class)
-class AllProductInquiryControllerTest {
+@WebMvcTest(CategoryProductInquiryController.class)
+class CategoryProductInquiryControllerTest {
 
     @MockBean
-    private AllProductInquiryService allProductInquiryService;
+    private CategoryProductInquiryService categoryProductInquiryService;
 
     @MockBean
     private CommonService commonService;
@@ -67,9 +68,9 @@ class AllProductInquiryControllerTest {
     }
 
     @Test
-    @DisplayName("[API] 전체 상품 조회 성공")
+    @DisplayName("[API] 카테고리 별 상품 조회 성공")
     @WithMockUser(roles = "USER")
-    void allProductInquirySuccess() throws Exception {
+    void categoryProductInquirySuccess() throws Exception {
 
         Product product = Product.builder()
                 .subCategory(SubCategory.builder()
@@ -104,24 +105,23 @@ class AllProductInquiryControllerTest {
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .status(ResponseStatus.SUCCESS.getDescription())
-                .message(SuccessCode.ALL_PRODUCT_INQUIRY_SUCCESS.getDescription())
+                .message(SuccessCode.CATEGORY_PRODUCT_INQUIRY_SUCCESS.getDescription())
                 .data(productListResponseDto)
                 .build();
 
-
         //given
-        given(allProductInquiryService.allProductInquiryResponse(anyInt(), anyInt(), anyString()))
+        given(categoryProductInquiryService.categoryProductInquiryResponse(anyString(), anyInt(), anyInt(), anyString()))
                 .willReturn(commonResponse);
 
         //when
         //then
-        mvc.perform(get("/api/v1/all/product/getAllList")
+        mvc.perform(get("/api/v1/all/product/category/{categoryName}/getList", "의류")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.message").value(SuccessCode.ALL_PRODUCT_INQUIRY_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.message").value(SuccessCode.CATEGORY_PRODUCT_INQUIRY_SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.data.productList[0].productName").value("옷"))
                 .andExpect(jsonPath("$.data.productList[0].productPrice").value(10000L))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
@@ -130,4 +130,5 @@ class AllProductInquiryControllerTest {
                 .andExpect(jsonPath("$.data.pagination.lastPage").value(true))
                 .andDo(print());
     }
+
 }

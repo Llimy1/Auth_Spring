@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/all")
-@Api(tags = "All APIs")
+@Api(tags = "Inquiry APIs")
 public class AllProductInquiryController {
 
     private final AllProductInquiryService allProductInquiryService;

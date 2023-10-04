@@ -33,7 +33,9 @@ public enum ErrorCode {
     SUB_CATEGORY_NOT_FOUND("해당 서브 카테고리를 찾을 수 없습니다."),
     ADDRESS_NOT_FOUND("해당 유저의 주소를 찾을 수 없습니다."),
     DEFAULT_ADDRESS_TO_MANY("기본 주소가 이미 존재합니다."),
-    CART_PRODUCT_NOT_FOUND("장바구니에서 상품을 찾을 수 없습니다.");
+    CART_PRODUCT_NOT_FOUND("장바구니에서 상품을 찾을 수 없습니다."),
+    PRODUCT_THAT_EXIST("중복된 상품 입니다."),
+    SEARCH_NOT_FOUND("검색한 상품을 찾을 수 없습니다.");
 
 
 

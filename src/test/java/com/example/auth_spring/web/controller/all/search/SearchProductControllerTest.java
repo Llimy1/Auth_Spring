@@ -1,11 +1,12 @@
-package com.example.auth_spring.web.controller.all.inquiry;
+package com.example.auth_spring.web.controller.all.search;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
-import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.all.inquiry.AllProductInquiryService;
+import com.example.auth_spring.service.all.search.SearchProductService;
+import com.example.auth_spring.service.common.CommonService;
+import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
-import com.example.auth_spring.web.controller.all.inquiry.AllProductInquiryController;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -32,7 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -41,11 +44,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AllProductInquiryController.class)
-class AllProductInquiryControllerTest {
+@WebMvcTest(SearchProductController.class)
+class SearchProductControllerTest {
 
     @MockBean
-    private AllProductInquiryService allProductInquiryService;
+    private SearchProductService searchProductService;
 
     @MockBean
     private CommonService commonService;
@@ -67,9 +70,9 @@ class AllProductInquiryControllerTest {
     }
 
     @Test
-    @DisplayName("[API] 전체 상품 조회 성공")
+    @DisplayName("[API] 검색 상품 조회 성공")
     @WithMockUser(roles = "USER")
-    void allProductInquirySuccess() throws Exception {
+    void searchProductSuccess() throws Exception {
 
         Product product = Product.builder()
                 .subCategory(SubCategory.builder()
@@ -78,7 +81,7 @@ class AllProductInquiryControllerTest {
                                 .build())
                         .name("맨투맨")
                         .build())
-                .name("옷")
+                .name("나이키 맨투맨")
                 .price(10000L)
                 .build();
 
@@ -104,25 +107,24 @@ class AllProductInquiryControllerTest {
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .status(ResponseStatus.SUCCESS.getDescription())
-                .message(SuccessCode.ALL_PRODUCT_INQUIRY_SUCCESS.getDescription())
+                .message(SuccessCode.SEARCH_PRODUCT_SUCCESS.getDescription())
                 .data(productListResponseDto)
                 .build();
 
-
         //given
-        given(allProductInquiryService.allProductInquiryResponse(anyInt(), anyInt(), anyString()))
+        given(searchProductService.searchProductListResponse(anyString(), anyInt(), anyInt(), anyString()))
                 .willReturn(commonResponse);
 
         //when
         //then
-        mvc.perform(get("/api/v1/all/product/getAllList")
+        mvc.perform(get("/api/v1/all/search/{keyword}", "나")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.message").value(SuccessCode.ALL_PRODUCT_INQUIRY_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.productList[0].productName").value("옷"))
+                .andExpect(jsonPath("$.message").value(SuccessCode.SEARCH_PRODUCT_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.data.productList[0].productName").value("나이키 맨투맨"))
                 .andExpect(jsonPath("$.data.productList[0].productPrice").value(10000L))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
@@ -130,4 +132,35 @@ class AllProductInquiryControllerTest {
                 .andExpect(jsonPath("$.data.pagination.lastPage").value(true))
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("[API] 검색 상품 조회 실패 - 상품 없음")
+    @WithMockUser(roles = "USER")
+    void searchProductFail() throws Exception {
+
+        CommonResponse<Object> commonResponse = CommonResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .status(ResponseStatus.FAIL.getDescription())
+                .message(ErrorCode.PRODUCT_NOT_FOUND.getDescription())
+                .data(null)
+                .build();
+
+        //given
+        given(searchProductService.searchProductListResponse(anyString(), anyInt(), anyInt(), anyString()))
+                .willReturn(commonResponse);
+
+        //when
+        //then
+        mvc.perform(get("/api/v1/all/search/{keyword}", "나")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(ResponseStatus.FAIL.getDescription()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.PRODUCT_NOT_FOUND.getDescription()))
+                .andDo(print());
+    }
+
+
+
 }

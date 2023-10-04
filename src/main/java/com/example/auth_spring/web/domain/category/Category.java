@@ -1,11 +1,13 @@
 package com.example.auth_spring.web.domain.category;
 
 
+import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -18,6 +20,9 @@ public class Category {
 
     @Column
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<SubCategory> subCategory;
 
     @Builder
     public Category(String name) {

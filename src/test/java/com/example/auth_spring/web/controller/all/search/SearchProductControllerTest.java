@@ -14,6 +14,8 @@ import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
 import com.example.auth_spring.web.dto.product.ProductResponseDto;
+import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
+import com.example.auth_spring.web.dto.search.SearchProductResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,12 +87,13 @@ class SearchProductControllerTest {
                 .price(10000L)
                 .build();
 
-        ProductResponseDto productResponseDto = ProductResponseDto.builder()
+        SearchProductResponseDto productResponseDto = SearchProductResponseDto.builder()
                 .product(product)
                 .build();
-        List<ProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));
 
-        Page<ProductResponseDto> page = new PageImpl<>(productList);
+        List<SearchProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));
+
+        Page<SearchProductResponseDto> page = new PageImpl<>(productList);
 
         Pagination pagination = Pagination.builder()
                 .totalPages(page.getTotalPages())
@@ -99,8 +102,8 @@ class SearchProductControllerTest {
                 .isLastPage(page.isLast())
                 .build();
 
-        ProductListResponseDto productListResponseDto = ProductListResponseDto.builder()
-                .productList(productList)
+        SearchProductListResponseDto productListResponseDto = SearchProductListResponseDto.builder()
+                .searchProductList(productList)
                 .pagination(pagination)
                 .build();
 
@@ -124,8 +127,8 @@ class SearchProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.SEARCH_PRODUCT_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.productList[0].productName").value("나이키 맨투맨"))
-                .andExpect(jsonPath("$.data.productList[0].productPrice").value(10000L))
+                .andExpect(jsonPath("$.data.searchProductList[0].productName").value("나이키 맨투맨"))
+                .andExpect(jsonPath("$.data.searchProductList[0].productPrice").value(10000L))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))

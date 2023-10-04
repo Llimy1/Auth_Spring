@@ -35,33 +35,36 @@ public class ProductInquiryService {
 
         tokenService.accessTokenExpiration(bearerAccessToken);
 
-        User user = tokenService.findUser(bearerAccessToken);
+        String email = tokenService.accessTokenEmail(bearerAccessToken);
 
-        if (!user.getRoleKey().equals(Role.SELLER.getKey())) {
-            throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_SELLER);
-        }
+//        User user = tokenService.findUser(bearerAccessToken);
+//
+//        if (!user.getRoleKey().equals(Role.SELLER.getKey())) {
+//            throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_SELLER);
+//        }
 
-        Long userId = user.getId();
+//        Long userId = user.getId();
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<ProductResponseDto> data = productRepository.findAllByUserId(userId, pageable).map(ProductResponseDto::new);
+        Page<ProductResponseDto> data = productRepository.findProductByUserEmail(email, pageable);
 
-        if (data.isEmpty()) {
-            throw new NotFoundException(ErrorCode.SELLER_PRODUCT_NOT_FOUND);
-        }
-        
-        Pagination pagination = Pagination.builder()
-                .totalPages(data.getTotalPages())
-                .totalElements(data.getTotalElements())
-                .pageNo(data.getNumber())
-                .isLastPage(data.isLast())
-                .build();
-
-         return ProductListResponseDto.builder()
-                .productList(data.getContent())
-                .pagination(pagination)
-                .build();
+//        if (data.isEmpty()) {
+//            throw new NotFoundException(ErrorCode.SELLER_PRODUCT_NOT_FOUND);
+//        }
+//
+//        Pagination pagination = Pagination.builder()
+//                .totalPages(data.getTotalPages())
+//                .totalElements(data.getTotalElements())
+//                .pageNo(data.getNumber())
+//                .isLastPage(data.isLast())
+//                .build();
+//
+//         return ProductListResponseDto.builder()
+//                .productList(data.getContent())
+//                .pagination(pagination)
+//                .build();
+        return ProductListResponseDto.getProductListResponseDto(data);
     }
 
     // API 반환

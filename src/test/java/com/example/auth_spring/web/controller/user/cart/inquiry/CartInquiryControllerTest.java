@@ -102,7 +102,8 @@ class CartInquiryControllerTest {
                 .build();
 
         CartResponseDto cartResponseDto = CartResponseDto.builder()
-                .cart(cart)
+                .productName(cart.getProduct().getName())
+                .productPrice(cart.getProduct().getPrice())
                 .build();
 
         List<CartResponseDto> cartResponseDtoList = new ArrayList<>(Collections.singleton(cartResponseDto));

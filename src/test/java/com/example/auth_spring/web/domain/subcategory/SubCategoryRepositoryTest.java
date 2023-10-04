@@ -7,11 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class SubCategoryRepositoryTest {
 
     @Autowired
@@ -19,13 +21,6 @@ class SubCategoryRepositoryTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-
-    @AfterEach
-    void after() {
-        subCategoryRepository.deleteAll();
-        categoryRepository.deleteAll();
-    }
 
     @Test
     @DisplayName("[Repository] 서브 카테고리 생성하기")

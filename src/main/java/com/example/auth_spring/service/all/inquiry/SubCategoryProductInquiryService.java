@@ -27,7 +27,7 @@ public class SubCategoryProductInquiryService {
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<ProductResponseDto> data = productRepository.findProductListBySubCategoryName(subCategoryName, pageable).map(ProductResponseDto::new);
+        Page<ProductResponseDto> data = productRepository.findProductListBySubCategoryName(subCategoryName, pageable);
 
         return ProductListResponseDto.getProductListResponseDto(data);
     }

@@ -18,16 +18,6 @@ class ProductRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
-    @BeforeEach
-    public void beforeCleanup() {
-        productRepository.deleteAll();
-    }
-
-    @AfterEach
-    public void afterCleanup() {
-        productRepository.deleteAll();
-    }
-
     @Test
     @DisplayName("[Repository] 상품 등록 하기")
     void createProduct() {

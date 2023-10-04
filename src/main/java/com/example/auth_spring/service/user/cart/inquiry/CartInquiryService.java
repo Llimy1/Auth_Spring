@@ -34,17 +34,21 @@ public class CartInquiryService {
 
         tokenService.accessTokenExpiration(bearerAccessToken);
 
-        User user = tokenService.findUser(bearerAccessToken);
+        String email = tokenService.accessTokenEmail(bearerAccessToken);
 
-        if (!user.getRole().equals(Role.USER)) {
-            throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_USER);
-        }
+//        User user = tokenService.findUser(bearerAccessToken);
 
-        Long userId = user.getId();
+//        if (!user.getRole().equals(Role.USER)) {
+//            throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_USER);
+//        }
+
+//        Long userId = user.getId();
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<CartResponseDto> data = cartRepository.findAllByUserId(userId, pageable).map(CartResponseDto::new);
+        Page<CartResponseDto> data = cartRepository.findCartByUserEmail(email, pageable);
+
+//        Page<CartResponseDto> data = cartRepository.findAllByUserId(userId, pageable).map(CartResponseDto::new);
 
         if (data.isEmpty()) {
             throw new NotFoundException(ErrorCode.CART_PRODUCT_NOT_FOUND);

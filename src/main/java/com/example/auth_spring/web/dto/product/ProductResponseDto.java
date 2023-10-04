@@ -14,8 +14,8 @@ public class ProductResponseDto {
     private Long productPrice;
 
     @Builder
-    public ProductResponseDto(Product product) {
-        this.productName = product.getName();
-        this.productPrice = product.getPrice();
+    public ProductResponseDto(String productName, Long productPrice) {
+        this.productName = productName;
+        this.productPrice = productPrice;
     }
 }

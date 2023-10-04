@@ -27,7 +27,6 @@ public class SubCategoryInquiryService {
     private final TokenService tokenService;
     private final CommonService commonService;
 
-    private final CategoryRepository categoryRepository;
     private final SubCategoryRepository subCategoryRepository;
 
 
@@ -41,15 +40,17 @@ public class SubCategoryInquiryService {
             throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_ADMIN);
         }
 
-        Category category = categoryRepository.findByName(categoryName)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
+//        Category category = categoryRepository.findByName(categoryName)
+//                .orElseThrow(() -> new NotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
+//
+//        Long categoryId = category.getId();
+//
+//        List<SubCategoryResponseDto> subCategoryList = subCategoryRepository.findAllByCategoryId(categoryId)
+//                .stream()
+//                .map(SubCategoryResponseDto::new)
+//                .collect(Collectors.toList());
 
-        Long categoryId = category.getId();
-
-        List<SubCategoryResponseDto> subCategoryList = subCategoryRepository.findAllByCategoryId(categoryId)
-                .stream()
-                .map(SubCategoryResponseDto::new)
-                .collect(Collectors.toList());
+        List<SubCategoryResponseDto> subCategoryList = subCategoryRepository.findSubCategoryListByCategoryName(categoryName);
 
         return SubCategoryListResponseDto.builder()
                 .categoryName(categoryName)

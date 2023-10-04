@@ -30,7 +30,7 @@ public class CategoryProductInquiryService {
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<ProductResponseDto> data = productRepository.findProductListByCategoryName(categoryName, pageable).map(ProductResponseDto::new);
+        Page<ProductResponseDto> data = productRepository.findProductListByCategoryName(categoryName, pageable);
 
         return ProductListResponseDto.getProductListResponseDto(data);
     }

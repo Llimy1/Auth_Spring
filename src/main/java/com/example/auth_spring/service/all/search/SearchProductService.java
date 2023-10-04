@@ -8,6 +8,8 @@ import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
 import com.example.auth_spring.web.dto.product.ProductResponseDto;
+import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
+import com.example.auth_spring.web.dto.search.SearchProductResponseDto;
 import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,27 +28,13 @@ public class SearchProductService {
 
     // 상품 검색
     // 가장 최근순으로 정렬
-    public ProductListResponseDto searchProductList(String keyword, int page, int size, String sortBy) {
+    public SearchProductListResponseDto searchProductList(String keyword, int page, int size, String sortBy) {
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<ProductResponseDto> data = productRepository.findAllByNameContaining(keyword, pageable).map(ProductResponseDto::new);
+        Page<SearchProductResponseDto> data = productRepository.findAllByNameContaining(keyword, pageable).map(SearchProductResponseDto::new);
 
-        if (data.isEmpty()) {
-            throw new NotFoundException(ErrorCode.SEARCH_NOT_FOUND);
-        }
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(data.getTotalPages())
-                .totalElements(data.getTotalElements())
-                .pageNo(data.getNumber())
-                .isLastPage(data.isLast())
-                .build();
-
-        return ProductListResponseDto.builder()
-                .productList(data.getContent())
-                .pagination(pagination)
-                .build();
+        return SearchProductListResponseDto.getSearchProductListResponseDto(data);
     }
 
     public CommonResponse<Object> searchProductListResponse(String keyword, int page, int size, String sortBy) {

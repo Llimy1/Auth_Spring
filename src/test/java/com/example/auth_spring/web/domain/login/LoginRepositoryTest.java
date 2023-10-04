@@ -26,33 +26,30 @@ class LoginRepositoryTest {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @AfterEach
-    public void cleanup() {
-        loginRepository.deleteAll();
-    }
+
 
     @Test
     @DisplayName("[Repository] 로그인 생성하기")
     void createLogin() {
 
-        String email1 = "abce@naver.com";
-        String password1 = "1234";
-        String name1 = "홍길동";
-        String nickname1 = "바람";
-        String phoneNumber1 = "01000000000";
-        String gender1 = "male";
-        String introduce1 = "안녕하세요 홍길동 입니다.";
-        String profileImgUrl1 = "https://img_url";
+        String email1 = "a";
+        String password1 = "b";
+        String name1 = "c";
+        String nickname1 = "d";
+        String phoneNumber1 = "e";
+        String gender1 = "f";
+        String introduce1 = "g";
+        String profileImgUrl1 = "h";
         Role role1 = Role.valueOf("USER");
 
-        String email2 = "abced@naver.com";
-        String password2 = "12345";
-        String name2 = "김남수";
-        String nickname2 = "남수";
-        String phoneNumber2 = "01000000001";
-        String gender2 = "male";
-        String introduce2 = "안녕하세요 김남수 입니다.";
-        String profileImgUrl2 = "https://img2_url";
+        String email2 = "i";
+        String password2 = "j";
+        String name2 = "k";
+        String nickname2 = "l";
+        String phoneNumber2 = "m";
+        String gender2 = "n";
+        String introduce2 = "o";
+        String profileImgUrl2 = "p";
         Role role2 = Role.valueOf("USER");
 
         //given

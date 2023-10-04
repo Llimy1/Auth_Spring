@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +32,7 @@ public class AllProductInquiryService {
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<ProductResponseDto> data = productRepository.findAll(pageable).map(ProductResponseDto::new);
+        Page<ProductResponseDto> data = productRepository.findProductAllList(pageable);
 
         return ProductListResponseDto.getProductListResponseDto(data);
     }

@@ -85,7 +85,8 @@ class SubCategoryProductInquiryControllerTest {
                 .build();
 
         ProductResponseDto productResponseDto = ProductResponseDto.builder()
-                .product(product)
+                .productName(product.getName())
+                .productPrice(product.getPrice())
                 .build();
 
         List<ProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));

@@ -12,7 +12,7 @@ public class SubCategoryResponseDto {
     private String subCategoryName;
 
     @Builder
-    public SubCategoryResponseDto(SubCategory subCategory) {
-        this.subCategoryName = subCategory.getName();
+    public SubCategoryResponseDto(String subCategoryName) {
+        this.subCategoryName = subCategoryName;
     }
 }

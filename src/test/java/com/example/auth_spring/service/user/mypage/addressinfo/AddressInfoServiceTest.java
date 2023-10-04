@@ -2,8 +2,9 @@ package com.example.auth_spring.service.user.mypage.addressinfo;
 
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
-import com.example.auth_spring.service.user.mypage.addressinfo.AddressInfoService;
+
 import com.example.auth_spring.web.domain.address.Address;
+import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoListResponseDto;
 import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoResponseDto;
@@ -19,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -26,13 +28,15 @@ import static org.mockito.Mockito.mock;
 class AddressInfoServiceTest {
 
     private TokenService tokenService;
+    private AddressRepository addressRepository;
     private CommonService commonService;
     private AddressInfoService addressInfoService;
 
     @BeforeEach
     void setup() {
         tokenService = mock(TokenService.class);
-        addressInfoService = new AddressInfoService(tokenService, commonService);
+        addressRepository = mock(AddressRepository.class);
+        addressInfoService = new AddressInfoService(tokenService, commonService, addressRepository);
     }
 
     @Test
@@ -61,14 +65,16 @@ class AddressInfoServiceTest {
                 .build();
 
         AddressInfoResponseDto addressInfoResponseDto = AddressInfoResponseDto.builder()
-                .address(address)
+                .zipCode(address.getZipCode())
+                .streetAddress(address.getStreetAddress())
+                .detailAddress(address.getDetailAddress())
                 .build();
 
         List<AddressInfoResponseDto> addressInfoResponseDtoList = new ArrayList<>(Collections.singletonList(addressInfoResponseDto));
 
 
         //given
-        given(tokenService.findAllAddress(bearerAccessToken)).willReturn(addressInfoResponseDtoList);
+        given(addressRepository.findAddressListByUserId(any())).willReturn(addressInfoResponseDtoList);
 
         //when
         AddressInfoListResponseDto addressInfoListResponseDto = addressInfoService.addressInfo(bearerAccessToken);

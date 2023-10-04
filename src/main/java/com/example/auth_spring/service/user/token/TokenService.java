@@ -5,14 +5,11 @@ import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.SuccessCode;
-import com.example.auth_spring.web.domain.address.Address;
-import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.login.Login;
 import com.example.auth_spring.web.domain.login.LoginRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.user.UserRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoResponseDto;
 import com.example.auth_spring.web.exception.ExpirationFiveMinutesException;
 import com.example.auth_spring.web.exception.JwtException;
 import com.example.auth_spring.web.exception.NotFoundException;
@@ -22,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 
 @Service
@@ -32,7 +28,6 @@ public class TokenService {
     private final JwtProvider jwtProvider;
     private final LoginRepository loginRepository;
     private final UserRepository userRepository;
-    private final AddressRepository addressRepository;
     private final CommonService commonService;
 
     private static final String TOKEN_PREFIX = "Bearer ";
@@ -90,6 +85,13 @@ public class TokenService {
         return null;
     }
 
+    // AccessToekn에서 email 가져오기
+    public String accessTokenEmail(String accessToken) {
+        String resolveAccessToken = resolveToken(accessToken);
+
+        return jwtProvider.getEmail(resolveAccessToken);
+    }
+
     // AccessToken 만료 시간이 5분보다 적게 남았을 때
     public void accessTokenExpiration(String accessToken) {
         String resolveAccessToken = resolveToken(accessToken);
@@ -121,12 +123,6 @@ public class TokenService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
-    // AccessToken을 통해 address 가져오기
-    public List<AddressInfoResponseDto> findAllAddress(String accessToken) {
-        Long userId = accessTokenUserId(accessToken);
-
-        return addressRepository.findAllByUserId(userId);
-    }
 
     // AccessToken을 통해 User 권한 가져오기
     public String findUserRole(String accessToken) {

@@ -19,9 +19,9 @@ public class AddressInfoResponseDto {
 
 
     @Builder
-    public AddressInfoResponseDto(Address address) {
-        this.zipCode = address.getZipCode();
-        this.streetAddress = address.getStreetAddress();
-        this.detailAddress = address.getDetailAddress();
+    public AddressInfoResponseDto(String zipCode, String streetAddress, String detailAddress) {
+        this.zipCode = zipCode;
+        this.streetAddress = streetAddress;
+        this.detailAddress = detailAddress;
     }
 }

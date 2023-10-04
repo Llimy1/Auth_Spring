@@ -11,6 +11,7 @@ import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
+import com.example.auth_spring.web.dto.product.ProductResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,8 @@ class ProductInquiryServiceTest {
         ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(user, "role", Role.SELLER);
 
+        String email = "email";
+
         product = Product.builder()
                 .subCategory(SubCategory.builder()
                         .category(Category.builder()
@@ -68,15 +71,27 @@ class ProductInquiryServiceTest {
                 .price(10000L)
                 .build();
 
-        List<Product> productList = new ArrayList<>(Collections.singleton(product));
-        Page<Product> page = new PageImpl<>(productList);
+        ProductResponseDto productResponseDto = ProductResponseDto.builder()
+                .productName(product.getName())
+                .productPrice(product.getPrice())
+                .build();
+
+        List<ProductResponseDto> productResponseDtoList = List.of(productResponseDto);
+        Page<ProductResponseDto> page = new PageImpl<>(productResponseDtoList);
+
+//        List<Product> productList = new ArrayList<>(Collections.singleton(product));
+//        Page<Product> page = new PageImpl<>(productList);
 
 
         //given
-        given(productRepository.findAllByUserId(any(), any()))
-                .willReturn(page);
+//        given(productRepository.findAllByUserId(any(), any()))
+//                .willReturn(page);
 
-        given(tokenService.findUser(anyString())).willReturn(user);
+        given(productRepository.findProductByUserEmail(anyString(), any()))
+                .willReturn(page);
+        given(tokenService.accessTokenEmail(anyString())).willReturn(email);
+
+//        given(tokenService.findUser(anyString())).willReturn(user);
 
         //when
         ProductListResponseDto productListResponseDto = productInquiryService.productInquiry(bearerAccessToken, 1, 10, "modifiedAt");
@@ -91,8 +106,5 @@ class ProductInquiryServiceTest {
                 .isEqualTo("옷");
         assertThat(productListResponseDto.getProductList().get(0).getProductPrice())
                 .isEqualTo(10000L);
-
-
-
     }
 }

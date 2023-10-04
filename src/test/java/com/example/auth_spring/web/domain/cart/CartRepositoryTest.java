@@ -43,10 +43,7 @@ class CartRepositoryTest {
 
 
 
-    @AfterEach
-    public void cleanup() {
-        cartRepository.deleteAll();
-    }
+
 
     @Test
     @DisplayName("[Repository] 장바구니 생성하기")

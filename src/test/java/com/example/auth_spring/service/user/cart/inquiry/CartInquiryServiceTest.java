@@ -10,6 +10,7 @@ import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.cart.CartListResponseDto;
+import com.example.auth_spring.web.dto.cart.CartResponseDto;
 import com.example.auth_spring.web.dto.common.Pagination;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -75,12 +76,24 @@ class CartInquiryServiceTest {
                 .product(product)
                 .build();
 
-        List<Cart> cartList = new ArrayList<>(Collections.singleton(cart));
-        Page<Cart> page = new PageImpl<>(cartList);
+        List<CartResponseDto> cartList = List.of(CartResponseDto.builder()
+                        .productName(cart.getProduct().getName())
+                        .productPrice(cart.getProduct().getPrice())
+                .build());
+
+        Page<CartResponseDto> page = new PageImpl<>(cartList);
+
+//        List<Cart> cartList = new ArrayList<>(Collections.singleton(cart));
+//        Page<Cart> page = new PageImpl<>(cartList);
 
         //given
-        given(tokenService.findUser(anyString())).willReturn(user);
-        given(cartRepository.findAllByUserId(any(), any()))
+//        given(tokenService.findUser(anyString())).willReturn(user);
+//        given(cartRepository.findAllByUserId(any(), any()))
+//                .willReturn(page);
+
+        given(tokenService.accessTokenEmail(anyString()))
+                .willReturn("email");
+        given(cartRepository.findCartByUserEmail(anyString(), any()))
                 .willReturn(page);
 
 

@@ -7,6 +7,7 @@ import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
+import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,17 +63,17 @@ class SearchProductServiceTest {
                 .willReturn(page);
 
         //when
-        ProductListResponseDto productListResponseDto = searchProductService.searchProductList("나이키", 1, 10 ,"modifiedAt");
+        SearchProductListResponseDto searchProductListResponseDto = searchProductService.searchProductList("나이키", 1, 10 ,"modifiedAt");
 
         //then
-        Pagination pagination = productListResponseDto.getPagination();
+        Pagination pagination = searchProductListResponseDto.getPagination();
         assertThat(pagination.getPageNo()).isEqualTo(0);
         assertThat(pagination.getTotalPages()).isEqualTo(1);
         assertThat(pagination.getTotalElements()).isEqualTo(1);
         assertThat(pagination.isLastPage()).isEqualTo(true);
-        assertThat(productListResponseDto.getProductList().get(0).getProductName())
+        assertThat(searchProductListResponseDto.getSearchProductList().get(0).getProductName())
                 .isEqualTo("나이키 맨투맨");
-        assertThat(productListResponseDto.getProductList().get(0).getProductPrice())
+        assertThat(searchProductListResponseDto.getSearchProductList().get(0).getProductPrice())
                 .isEqualTo(10000L);
     }
 

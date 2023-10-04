@@ -7,6 +7,7 @@ import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
+import com.example.auth_spring.web.dto.product.ProductResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,8 +53,15 @@ class CategoryProductInquiryServiceTest {
                 .price(10000L)
                 .build();
 
-        List<Product> productList = new ArrayList<>(Collections.singleton(product));
-        Page<Product> page = new PageImpl<>(productList);
+//        List<Product> productList = new ArrayList<>(Collections.singleton(product));
+//        Page<Product> page = new PageImpl<>(productList);
+
+        List<ProductResponseDto> productList = List.of(ProductResponseDto.builder()
+                .productName(product.getName())
+                .productPrice(product.getPrice())
+                .build());
+
+        Page<ProductResponseDto> page = new PageImpl<>(productList);
 
         //given
         given(productRepository.findProductListByCategoryName(anyString(), any()))

@@ -13,8 +13,8 @@ public class CartResponseDto {
     private Long productPrice;
 
     @Builder
-    public CartResponseDto(Cart cart) {
-        this.productName = cart.getProduct().getName();
-        this.productPrice = cart.getProduct().getPrice();
+    public CartResponseDto(String productName, Long productPrice) {
+        this.productName = productName;
+        this.productPrice = productPrice;
     }
 }

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,30 +17,30 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 class BaseTimeEntityTest {
 
     @Autowired
     private UserRepository userRepository;
 
 
-    @AfterEach
-    public void cleanup() {
-        userRepository.deleteAll();
-    }
+
 
     @Test
     @DisplayName("[Domain] 베이스 타임 적용 확인")
     void useBaseTimeEntity() {
 
-        String email1 = "abce@naver.com";
-        String password1 = "1234";
-        String name1 = "홍길동";
-        String nickname1 = "바람";
-        String phoneNumber1 = "01000000000";
-        String gender1 = "male";
-        String introduce1 = "안녕하세요 홍길동 입니다.";
-        String profileImgUrl1 = "https://img_url";
+        String email1 = "a";
+        String password1 = "b";
+        String name1 = "c";
+        String nickname1 = "d";
+        String phoneNumber1 = "e";
+        String gender1 = "f";
+        String introduce1 = "g";
+        String profileImgUrl1 = "h";
         Role role1 = Role.valueOf("USER");
+
+
 
 
 

@@ -91,7 +91,9 @@ class AddressInfoControllerTest {
         String bearerAccessToken = "Bearer accessToken";
 
         AddressInfoResponseDto addressInfoResponseDto = AddressInfoResponseDto.builder()
-                .address(address)
+                .zipCode(address.getZipCode())
+                .streetAddress(address.getStreetAddress())
+                .detailAddress(address.getDetailAddress())
                 .build();
 
         List<AddressInfoResponseDto> addressInfoResponseDtoList = new ArrayList<>(Collections.singletonList(addressInfoResponseDto));

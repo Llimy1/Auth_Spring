@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -14,18 +15,29 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByUserId(Long userId, Pageable pageable);
 
-    Page<Product> findAll(Pageable pageable);
 
-    @Query("SELECT p FROM Product p " +
+    @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(p.name as productName, p.price as productPrice) " +
+            "FROM Product p " +
+            "JOIN p.user u " +
+            "WHERE u.email = :email ")
+    Page<ProductResponseDto> findProductByUserEmail(@Param("email") String email, Pageable pageable);
+
+    @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(p.name as productName, p.price as productPrice) " +
+            "FROM Product p ")
+    Page<ProductResponseDto> findProductAllList(Pageable pageable);
+
+    @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(p.name as productName, p.price as productPrice) " +
+            "FROM Product p " +
             "JOIN p.subCategory sc " +
             "JOIN sc.category c " +
             "WHERE c.name = ?1 ")
-    Page<Product> findProductListByCategoryName(String categoryName, Pageable pageable);
+    Page<ProductResponseDto> findProductListByCategoryName(String categoryName, Pageable pageable);
 
-    @Query("SELECT p FROM Product p " +
+    @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(p.name as productName, p.price as productPrice) " +
+            "FROM Product p " +
             "JOIN p.subCategory sc " +
             "WHERE p.name = ?1 ")
-    Page<Product> findProductListBySubCategoryName(String subCategoryName, Pageable pageable);
+    Page<ProductResponseDto> findProductListBySubCategoryName(String subCategoryName, Pageable pageable);
 
     Page<Product> findAllByNameContaining(String keyword, Pageable pageable);
 

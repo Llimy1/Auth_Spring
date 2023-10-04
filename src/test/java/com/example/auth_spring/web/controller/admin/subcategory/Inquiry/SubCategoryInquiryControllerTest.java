@@ -86,7 +86,7 @@ class SubCategoryInquiryControllerTest {
                 .build();
 
         SubCategoryResponseDto subCategoryResponseDto = SubCategoryResponseDto.builder()
-                .subCategory(subCategory)
+                .subCategoryName(subCategory.getName())
                 .build();
 
         List<SubCategoryResponseDto> subCategoryResponseDtoList = new ArrayList<>(Collections.singleton(subCategoryResponseDto));

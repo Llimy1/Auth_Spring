@@ -6,6 +6,7 @@ import com.example.auth_spring.service.all.inquiry.AllProductInquiryService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.controller.all.inquiry.AllProductInquiryController;
+import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -78,6 +79,9 @@ class AllProductInquiryControllerTest {
                                 .build())
                         .name("맨투맨")
                         .build())
+                .brand(Brand.builder()
+                        .name("나이키")
+                        .build())
                 .name("옷")
                 .price(10000L)
                 .build();
@@ -85,7 +89,9 @@ class AllProductInquiryControllerTest {
         ProductResponseDto productResponseDto = ProductResponseDto.builder()
                 .productName(product.getName())
                 .productPrice(product.getPrice())
+                .brandName(product.getBrand().getName())
                 .build();
+
         List<ProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));
 
         Page<ProductResponseDto> page = new PageImpl<>(productList);
@@ -125,6 +131,7 @@ class AllProductInquiryControllerTest {
                 .andExpect(jsonPath("$.message").value(SuccessCode.ALL_PRODUCT_INQUIRY_SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.data.productList[0].productName").value("옷"))
                 .andExpect(jsonPath("$.data.productList[0].productPrice").value(10000L))
+                .andExpect(jsonPath("$.data.productList[0].brandName").value("나이키"))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))

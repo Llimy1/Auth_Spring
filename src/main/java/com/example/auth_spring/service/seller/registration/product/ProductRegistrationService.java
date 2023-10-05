@@ -1,10 +1,12 @@
-package com.example.auth_spring.service.seller.registration;
+package com.example.auth_spring.service.seller.registration.product;
 
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.domain.brand.Brand;
+import com.example.auth_spring.web.domain.brand.BrandRepository;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -28,11 +30,14 @@ public class ProductRegistrationService {
     private final CommonService commonService;
     private final ProductRepository productRepository;
     private final SubCategoryRepository subCategoryRepository;
+    private final BrandRepository brandRepository;
 
 
     // 상품 등록
     @Transactional
     public Long registration(String bearerAccessToken, String subCategoryName, ProductRequestDto productRequestDto) {
+        String brandName = productRequestDto.getBrandName();
+
         tokenService.accessTokenExpiration(bearerAccessToken);
 
         User user = tokenService.findUser(bearerAccessToken);
@@ -44,9 +49,10 @@ public class ProductRegistrationService {
         SubCategory subCategory = subCategoryRepository.findByName(subCategoryName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SUB_CATEGORY_NOT_FOUND));
 
+        Brand brand = brandRepository.findByName(brandName)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.BRAND_NOT_FOUND));
 
-
-        Product product = productRequestDto.toProductEntity(user, subCategory);
+        Product product = productRequestDto.toProductEntity(user, subCategory, brand);
 
         return productRepository.save(product).getId();
     }

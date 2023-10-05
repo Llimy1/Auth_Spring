@@ -13,10 +13,13 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 
 
     @Query("SELECT NEW com.example.auth_spring.web.dto.cart.CartResponseDto(" +
-            "c.product.name as productName, " +
-            "c.product.price as productPrice) " +
+            "p.product.name as productName, " +
+            "p.product.price as productPrice," +
+            "b.name as brandName) " +
             "FROM Cart c " +
             "JOIN c.user u " +
+            "JOIN c.product p " +
+            "JOIN p.brand b " +
             "WHERE u.email = :email ")
     Page<CartResponseDto> findCartByUserEmail(@Param("email") String email, Pageable pageable);
 

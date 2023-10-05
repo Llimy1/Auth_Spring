@@ -35,7 +35,9 @@ public enum ErrorCode {
     DEFAULT_ADDRESS_TO_MANY("기본 주소가 이미 존재합니다."),
     CART_PRODUCT_NOT_FOUND("장바구니에서 상품을 찾을 수 없습니다."),
     PRODUCT_THAT_EXIST("중복된 상품 입니다."),
-    SEARCH_NOT_FOUND("검색한 상품을 찾을 수 없습니다.");
+    SEARCH_NOT_FOUND("검색한 상품을 찾을 수 없습니다."),
+    ORDER_NAME_THAT_EXIST("중복된 주문 번호 입니다."),
+    BRAND_NOT_FOUND("브랜드를 찾을 수 없습니다.");
 
 
 

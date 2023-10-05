@@ -1,10 +1,12 @@
 package com.example.auth_spring.service.all.search;
 
 import com.example.auth_spring.service.common.CommonService;
+import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
+import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
 import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +36,8 @@ class SearchProductServiceTest {
     private CommonService commonService;
     private SearchProductService searchProductService;
     private Product product;
-
+    private User user;
+    private Brand brand;
     @BeforeEach
     void setup() {
         productRepository = mock(ProductRepository.class);
@@ -44,6 +48,14 @@ class SearchProductServiceTest {
     @DisplayName("[Service] 검색 상품 조회 성공")
     void searchProductSuccess() {
 
+        user = new User();
+        ReflectionTestUtils.setField(user, "id", 1L);
+
+        brand = Brand.builder()
+                .user(user)
+                .name("나이키")
+                .build();
+
         product = Product.builder()
                 .subCategory(SubCategory.builder()
                         .category(Category.builder()
@@ -51,6 +63,7 @@ class SearchProductServiceTest {
                                 .build())
                         .name("맨투맨")
                         .build())
+                .brand(brand)
                 .name("나이키 맨투맨")
                 .price(10000L)
                 .build();
@@ -75,6 +88,8 @@ class SearchProductServiceTest {
                 .isEqualTo("나이키 맨투맨");
         assertThat(searchProductListResponseDto.getSearchProductList().get(0).getProductPrice())
                 .isEqualTo(10000L);
+        assertThat(searchProductListResponseDto.getSearchProductList().get(0).getBrandName())
+                .isEqualTo("나이키");
     }
 
 }

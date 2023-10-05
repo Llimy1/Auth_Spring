@@ -8,16 +8,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT NEW com.example.auth_spring.web.dto.order.OrderProductAllResponseDto(" +
             "o.orderName as orderName, " +
             "p.name as productName, " +
-            "o.totalPrice as totalOrderPrice, " +
+            "o.totalPrice as totalOrderPrice," +
+            "b.name as productBrand," +
             "o.count as orderProductCount) " +
             "FROM Order o " +
             "JOIN o.user u " +
             "JOIN o.product p " +
+            "JOIN p.brand b " +
             "WHERE u.email = :email ")
     Page<OrderProductAllResponseDto> findAllOrderList(@Param("email") String email, Pageable pageable);
 
@@ -26,6 +30,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "u.name as userName, " +
             "p.name as productName, " +
             "p.price as productPrice," +
+            "b.name as productBrand," +
             "p.deliveryPrice as deliveryPrice, " +
             "o.totalPrice as totalOrderPrice, " +
             "a.zipCode as zipCode, " +
@@ -36,6 +41,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "JOIN o.user u " +
             "JOIN o.product p " +
             "JOIN o.address a " +
+            "JOIN p.brand b " +
             "WHERE o.orderName = ?1 ")
     OrderProductDetailResponseDto findDetailOrder(String orderName);
+
+    boolean existsByOrderName(String orderName);
 }

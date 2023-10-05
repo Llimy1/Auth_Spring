@@ -1,9 +1,10 @@
 package com.example.auth_spring.service.seller.product.inquiry;
 
-import com.example.auth_spring.service.seller.inquiry.ProductInquiryService;
+import com.example.auth_spring.service.seller.inquiry.product.ProductInquiryService;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.Role;
+import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
@@ -20,8 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,6 +38,7 @@ class ProductInquiryServiceTest {
     private ProductInquiryService productInquiryService;
     private User user;
     private Product product;
+    private Brand brand;
 
     @BeforeEach
     void setup() {
@@ -58,6 +58,11 @@ class ProductInquiryServiceTest {
         ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(user, "role", Role.SELLER);
 
+        brand = Brand.builder()
+                .user(user)
+                .name("나이키")
+                .build();
+
         String email = "email";
 
         product = Product.builder()
@@ -67,6 +72,7 @@ class ProductInquiryServiceTest {
                                 .build())
                         .name("맨투맨")
                         .build())
+                .brand(brand)
                 .name("옷")
                 .price(10000L)
                 .build();
@@ -74,24 +80,15 @@ class ProductInquiryServiceTest {
         ProductResponseDto productResponseDto = ProductResponseDto.builder()
                 .productName(product.getName())
                 .productPrice(product.getPrice())
+                .brandName(product.getBrand().getName())
                 .build();
 
         List<ProductResponseDto> productResponseDtoList = List.of(productResponseDto);
         Page<ProductResponseDto> page = new PageImpl<>(productResponseDtoList);
 
-//        List<Product> productList = new ArrayList<>(Collections.singleton(product));
-//        Page<Product> page = new PageImpl<>(productList);
-
-
-        //given
-//        given(productRepository.findAllByUserId(any(), any()))
-//                .willReturn(page);
-
         given(productRepository.findProductByUserEmail(anyString(), any()))
                 .willReturn(page);
         given(tokenService.accessTokenEmail(anyString())).willReturn(email);
-
-//        given(tokenService.findUser(anyString())).willReturn(user);
 
         //when
         ProductListResponseDto productListResponseDto = productInquiryService.productInquiry(bearerAccessToken, 1, 10, "modifiedAt");
@@ -106,5 +103,7 @@ class ProductInquiryServiceTest {
                 .isEqualTo("옷");
         assertThat(productListResponseDto.getProductList().get(0).getProductPrice())
                 .isEqualTo(10000L);
+        assertThat(productListResponseDto.getProductList().get(0).getBrandName())
+                .isEqualTo("나이키");
     }
 }

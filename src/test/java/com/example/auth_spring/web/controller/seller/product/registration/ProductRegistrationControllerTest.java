@@ -3,11 +3,12 @@ package com.example.auth_spring.web.controller.seller.product.registration;
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
-import com.example.auth_spring.service.seller.registration.ProductRegistrationService;
+import com.example.auth_spring.service.seller.registration.product.ProductRegistrationService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.controller.seller.product.registration.product.ProductRegistrationController;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
 import com.example.auth_spring.web.dto.product.ProductRequestDto;
@@ -71,6 +72,7 @@ class ProductRegistrationControllerTest {
                 .productName("옷")
                 .productPrice(10000L)
                 .deliveryPrice(3000)
+                .brandName("나이키")
                 .build();
     }
 

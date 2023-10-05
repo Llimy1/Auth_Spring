@@ -1,6 +1,6 @@
-package com.example.auth_spring.web.controller.seller.product.inquiry;
+package com.example.auth_spring.web.controller.seller.product.inquiry.product;
 
-import com.example.auth_spring.service.seller.inquiry.ProductInquiryService;
+import com.example.auth_spring.service.seller.inquiry.product.ProductInquiryService;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;

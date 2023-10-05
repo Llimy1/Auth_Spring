@@ -1,21 +1,19 @@
-package com.example.auth_spring.web.controller.user.cart.inquiry;
+package com.example.auth_spring.web.controller.user.order.Inquiry;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.common.CommonService;
-import com.example.auth_spring.service.user.cart.inquiry.CartInquiryService;
+import com.example.auth_spring.service.user.order.Inquiry.OrderProductAllInquiryService;
+import com.example.auth_spring.service.user.order.Inquiry.OrderProductDetailInquiryService;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.brand.Brand;
-import com.example.auth_spring.web.domain.cart.Cart;
-import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.order.Order;
 import com.example.auth_spring.web.domain.product.Product;
-import com.example.auth_spring.web.domain.subcategory.SubCategory;
-import com.example.auth_spring.web.domain.user.User;
-import com.example.auth_spring.web.dto.cart.CartListResponseDto;
-import com.example.auth_spring.web.dto.cart.CartResponseDto;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.Pagination;
+import com.example.auth_spring.web.dto.order.OrderProductAllListResponseDto;
+import com.example.auth_spring.web.dto.order.OrderProductAllResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,10 +30,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -45,11 +42,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CartInquiryController.class)
-class CartInquiryControllerTest {
+@WebMvcTest(OrderProductAllInquiryController.class)
+class OrderProductAllInquiryControllerTest {
 
     @MockBean
-    private CartInquiryService cartInquiryService;
+    private OrderProductAllInquiryService orderProductAllInquiryService;
 
     @MockBean
     private CommonService commonService;
@@ -66,6 +63,10 @@ class CartInquiryControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    private Product product;
+    private Order order;
+    private Brand brand;
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
@@ -74,81 +75,62 @@ class CartInquiryControllerTest {
     }
 
     @Test
-    @DisplayName("[API] 장바구니 상품 조회 성공")
+    @DisplayName("[API] 주문 정보 전체 조회 성공")
     @WithMockUser(roles = "USER")
-    void cartInquirySuccess() throws Exception {
+    void orderProductAllInquirySuccess() throws Exception {
 
         String bearerAccessToken = "Bearer accessToken";
 
-        User user = new User();
-        ReflectionTestUtils.setField(user, "id", 1L);
+        brand = new Brand();
+        ReflectionTestUtils.setField(brand, "name", "나이키");
 
-        Product product = Product.builder()
-                .subCategory(SubCategory.builder()
-                        .category(Category.builder()
-                                .name("의류")
-                                .build())
-                        .name("맨투맨")
-                        .build())
-                .brand(Brand.builder()
-                        .name("나이키")
-                        .build())
-                .name("옷")
-                .price(10000L)
-                .build();
-        ReflectionTestUtils.setField(product, "id", 1L);
+        product = new Product();
+        ReflectionTestUtils.setField(product, "name", "나이키 맨투맨");
 
-        Cart cart = Cart.builder()
-                .product(product)
-                .user(user)
-                .build();
+        order = new Order();
+        ReflectionTestUtils.setField(order, "orderName", "orderName");
+        ReflectionTestUtils.setField(order, "totalPrice", 103000L);
+        ReflectionTestUtils.setField(order, "count", 1);
 
-        CartResponseDto cartResponseDto = CartResponseDto.builder()
-                .productName(cart.getProduct().getName())
-                .productPrice(cart.getProduct().getPrice())
-                .brandName(cart.getProduct().getBrand().getName())
-                .build();
 
-        List<CartResponseDto> cartResponseDtoList = new ArrayList<>(Collections.singleton(cartResponseDto));
+        List<OrderProductAllResponseDto> orderProductAllList = List.of(OrderProductAllResponseDto.builder()
+                .orderName(order.getOrderName())
+                .productName(product.getName())
+                .orderProductCount(order.getCount())
+                .totalOrderPrice(order.getTotalPrice())
+                .productBrand(brand.getName())
+                .build());
 
-        Page<CartResponseDto> page = new PageImpl<>(cartResponseDtoList);
+        Page<OrderProductAllResponseDto> page = new PageImpl<>(orderProductAllList);
 
-        Pagination pagination = Pagination.builder()
-                .totalPages(page.getTotalPages())
-                .totalElements(page.getTotalElements())
-                .pageNo(page.getNumber())
-                .isLastPage(page.isLast())
-                .build();
+        OrderProductAllListResponseDto orderProductAllListResponseDto = OrderProductAllListResponseDto.getOrderProductListResponseDto(page);
 
-        CartListResponseDto cartListResponseDto = CartListResponseDto.builder()
-                .cartList(page.getContent())
-                .pagination(pagination)
-                .build();
-
+        //given
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .status(ResponseStatus.SUCCESS.getDescription())
-                .message(SuccessCode.CART_INQUIRY_SUCCESS.getDescription())
-                .data(cartListResponseDto)
+                .message(SuccessCode.ORDER_PRODUCT_ALL_INQUIRY_SUCCESS.getDescription())
+                .data(orderProductAllListResponseDto)
                 .build();
 
-        //given
-        given(cartInquiryService.cartInquiryResponse(anyString(), anyInt(), anyInt(), any()))
+        //when
+        given(orderProductAllInquiryService.orderProductAllListResponse(anyString(), anyInt(), anyInt(), anyString()))
                 .willReturn(commonResponse);
 
-        //when
         //then
-        mvc.perform(get("/api/v1/user/cart/getList")
+        mvc.perform(get("/api/v1/user/order/getAllList")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.message").value(SuccessCode.CART_INQUIRY_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.cartList[0].productName").value("옷"))
-                .andExpect(jsonPath("$.data.cartList[0].productPrice").value(10000L))
-                .andExpect(jsonPath("$.data.cartList[0].brandName").value("나이키"))
+                .andExpect(jsonPath("$.message").value(SuccessCode.ORDER_PRODUCT_ALL_INQUIRY_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.data.orderProductAllList[0].orderName").value(order.getOrderName()))
+                .andExpect(jsonPath("$.data.orderProductAllList[0].productName").value(product.getName()))
+                .andExpect(jsonPath("$.data.orderProductAllList[0].orderProductCount").value(order.getCount()))
+                .andExpect(jsonPath("$.data.orderProductAllList[0].totalOrderPrice").value(order.getTotalPrice()))
+                .andExpect(jsonPath("$.data.orderProductAllList[0].productBrand").value(brand.getName()))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))

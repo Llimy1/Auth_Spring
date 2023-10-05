@@ -1,5 +1,6 @@
 package com.example.auth_spring.web.domain.product;
 
+import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
 import com.example.auth_spring.web.domain.order.Order;
@@ -39,6 +40,10 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "sub_category_id")
     private SubCategory subCategory;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
     @OneToMany(mappedBy = "product")
     private List<Cart> cartList;
 
@@ -46,9 +51,10 @@ public class Product extends BaseTimeEntity {
     private List<Order> orderList;
 
     @Builder
-    public Product(User user, SubCategory subCategory, String name, Long price, Integer deliveryPrice) {
+    public Product(User user, SubCategory subCategory, Brand brand, String name, Long price, Integer deliveryPrice) {
         this.user = user;
         this.subCategory = subCategory;
+        this.brand = brand;
         this.name = name;
         this.price = price;
         this.deliveryPrice = deliveryPrice;

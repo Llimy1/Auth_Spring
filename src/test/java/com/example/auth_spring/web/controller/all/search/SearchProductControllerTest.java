@@ -7,6 +7,7 @@ import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -83,6 +84,9 @@ class SearchProductControllerTest {
                                 .build())
                         .name("맨투맨")
                         .build())
+                .brand(Brand.builder()
+                        .name("나이키")
+                        .build())
                 .name("나이키 맨투맨")
                 .price(10000L)
                 .build();
@@ -129,6 +133,7 @@ class SearchProductControllerTest {
                 .andExpect(jsonPath("$.message").value(SuccessCode.SEARCH_PRODUCT_SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.data.searchProductList[0].productName").value("나이키 맨투맨"))
                 .andExpect(jsonPath("$.data.searchProductList[0].productPrice").value(10000L))
+                .andExpect(jsonPath("$.data.searchProductList[0].brandName").value("나이키"))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))

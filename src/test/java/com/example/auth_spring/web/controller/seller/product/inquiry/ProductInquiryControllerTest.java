@@ -3,9 +3,11 @@ package com.example.auth_spring.web.controller.seller.product.inquiry;
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
-import com.example.auth_spring.service.seller.inquiry.ProductInquiryService;
+import com.example.auth_spring.service.seller.inquiry.product.ProductInquiryService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.controller.seller.product.inquiry.product.ProductInquiryController;
+import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -86,6 +88,9 @@ class ProductInquiryControllerTest {
                                 .build())
                         .name("맨투맨")
                         .build())
+                .brand(Brand.builder()
+                        .name("나이키")
+                        .build())
                 .name("옷")
                 .price(10000L)
                 .build();
@@ -93,6 +98,7 @@ class ProductInquiryControllerTest {
         ProductResponseDto productResponseDto = ProductResponseDto.builder()
                 .productName(product.getName())
                 .productPrice(product.getPrice())
+                .brandName(product.getBrand().getName())
                 .build();
         List<ProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));
 
@@ -136,6 +142,7 @@ class ProductInquiryControllerTest {
                 .andExpect(jsonPath("$.message").value(SuccessCode.SELLER_PRODUCT_INQUIRY_SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.data.productList[0].productName").value("옷"))
                 .andExpect(jsonPath("$.data.productList[0].productPrice").value(10000L))
+                .andExpect(jsonPath("$.data.productList[0].brandName").value("나이키"))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))

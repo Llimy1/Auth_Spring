@@ -1,16 +1,11 @@
 package com.example.auth_spring.service.all.search;
 
 import com.example.auth_spring.service.common.CommonService;
-import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.common.Pagination;
-import com.example.auth_spring.web.dto.product.ProductListResponseDto;
-import com.example.auth_spring.web.dto.product.ProductResponseDto;
 import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
 import com.example.auth_spring.web.dto.search.SearchProductResponseDto;
-import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +21,7 @@ public class SearchProductService {
     private final CommonService commonService;
 
 
-    // 상품 검색
+    // 상품 이름 검색
     // 가장 최근순으로 정렬
     public SearchProductListResponseDto searchProductList(String keyword, int page, int size, String sortBy) {
 

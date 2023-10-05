@@ -36,35 +36,11 @@ public class CartInquiryService {
 
         String email = tokenService.accessTokenEmail(bearerAccessToken);
 
-//        User user = tokenService.findUser(bearerAccessToken);
-
-//        if (!user.getRole().equals(Role.USER)) {
-//            throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_USER);
-//        }
-
-//        Long userId = user.getId();
-
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
         Page<CartResponseDto> data = cartRepository.findCartByUserEmail(email, pageable);
 
-//        Page<CartResponseDto> data = cartRepository.findAllByUserId(userId, pageable).map(CartResponseDto::new);
-
-        if (data.isEmpty()) {
-            throw new NotFoundException(ErrorCode.CART_PRODUCT_NOT_FOUND);
-        }
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(data.getTotalPages())
-                .totalElements(data.getTotalElements())
-                .pageNo(data.getNumber())
-                .isLastPage(data.isLast())
-                .build();
-
-        return CartListResponseDto.builder()
-                .cartList(data.getContent())
-                .pagination(pagination)
-                .build();
+        return CartListResponseDto.getCartListResponseDto(data);
     }
 
 

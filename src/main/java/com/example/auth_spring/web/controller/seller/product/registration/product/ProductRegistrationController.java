@@ -1,6 +1,6 @@
-package com.example.auth_spring.web.controller.seller.product.registration;
+package com.example.auth_spring.web.controller.seller.product.registration.product;
 
-import com.example.auth_spring.service.seller.registration.ProductRegistrationService;
+import com.example.auth_spring.service.seller.registration.product.ProductRegistrationService;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.dto.product.ProductIdResponseDto;

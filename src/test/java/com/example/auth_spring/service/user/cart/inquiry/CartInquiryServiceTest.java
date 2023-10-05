@@ -3,6 +3,7 @@ package com.example.auth_spring.service.user.cart.inquiry;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.type.Role;
+import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.cart.CartRepository;
 import com.example.auth_spring.web.domain.category.Category;
@@ -41,6 +42,7 @@ class CartInquiryServiceTest {
     private CartInquiryService cartInquiryService;
     private User user;
     private Product product;
+    private Brand brand;
 
     @BeforeEach
     void setup() {
@@ -59,6 +61,11 @@ class CartInquiryServiceTest {
         ReflectionTestUtils.setField(user, "id", 1L);
         ReflectionTestUtils.setField(user, "role", Role.USER);
 
+        brand = Brand.builder()
+                .user(user)
+                .name("나이키")
+                .build();
+
         product = Product.builder()
                 .subCategory(SubCategory.builder()
                         .category(Category.builder()
@@ -66,6 +73,7 @@ class CartInquiryServiceTest {
                                 .build())
                         .name("맨투맨")
                         .build())
+                .brand(brand)
                 .name("옷")
                 .price(10000L)
                 .build();
@@ -79,17 +87,11 @@ class CartInquiryServiceTest {
         List<CartResponseDto> cartList = List.of(CartResponseDto.builder()
                         .productName(cart.getProduct().getName())
                         .productPrice(cart.getProduct().getPrice())
+                        .brandName(cart.getProduct().getBrand().getName())
                 .build());
 
         Page<CartResponseDto> page = new PageImpl<>(cartList);
 
-//        List<Cart> cartList = new ArrayList<>(Collections.singleton(cart));
-//        Page<Cart> page = new PageImpl<>(cartList);
-
-        //given
-//        given(tokenService.findUser(anyString())).willReturn(user);
-//        given(cartRepository.findAllByUserId(any(), any()))
-//                .willReturn(page);
 
         given(tokenService.accessTokenEmail(anyString()))
                 .willReturn("email");
@@ -111,6 +113,8 @@ class CartInquiryServiceTest {
                 .isEqualTo("옷");
         assertThat(cartListResponseDto.getCartList().get(0).getProductPrice())
                 .isEqualTo(10000L);
+        assertThat(cartListResponseDto.getCartList().get(0).getBrandName())
+                .isEqualTo("나이키");
     }
 
 }

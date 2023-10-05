@@ -11,6 +11,7 @@ public class OrderProductDetailResponseDto {
     private String userName;
     private String productName;
     private Long productPrice;
+    private String productBrand;
     private Integer deliveryPrice;
     private Long totalOrderPrice;
     private String zipCode;
@@ -20,10 +21,11 @@ public class OrderProductDetailResponseDto {
 
 
     @Builder
-    public OrderProductDetailResponseDto(String userName, String productName, Long productPrice, Integer deliveryPrice, Long totalOrderPrice, String zipCode, String streetAddress, String detailAddress, Integer orderProductCount) {
+    public OrderProductDetailResponseDto(String userName, String productName, Long productPrice, String productBrand, Integer deliveryPrice, Long totalOrderPrice, String zipCode, String streetAddress, String detailAddress, Integer orderProductCount) {
         this.userName = userName;
         this.productName = productName;
         this.productPrice = productPrice;
+        this.productBrand = productBrand;
         this.deliveryPrice = deliveryPrice;
         this.totalOrderPrice = totalOrderPrice;
         this.zipCode = zipCode;

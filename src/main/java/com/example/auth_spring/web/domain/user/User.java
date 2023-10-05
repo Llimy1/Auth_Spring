@@ -6,6 +6,7 @@ import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
 import com.example.auth_spring.web.domain.login.Login;
+import com.example.auth_spring.web.domain.order.Order;
 import com.example.auth_spring.web.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "users")
 public class User extends BaseTimeEntity {
 
     @Id
@@ -56,16 +58,20 @@ public class User extends BaseTimeEntity {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    private List<Address> addresses;
+    private List<Address> addressList;
 
     @OneToMany(mappedBy = "user")
-    private List<Product> products;
+    private List<Product> productList;
 
     @OneToMany(mappedBy = "user")
-    private List<Cart> cart;
+    private List<Cart> cartList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orderList;
 
     @OneToOne(mappedBy = "user")
     private Login login;
+
 
 
 

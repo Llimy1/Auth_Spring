@@ -11,8 +11,11 @@ import java.util.Optional;
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
     @Query("SELECT NEW com.example.auth_spring.web.dto.mypage.addressInfo.AddressInfoResponseDto(" +
-            "ad.zipCode as zipCode, ad.streetAddress as streetAddress, ad.detailAddress as detailAddress) " +
+            "ad.zipCode as zipCode, " +
+            "ad.streetAddress as streetAddress, " +
+            "ad.detailAddress as detailAddress) " +
             "FROM Address ad " +
             "WHERE ad.user.id = :userId ")
     List<AddressInfoResponseDto> findAddressListByUserId(@Param("userId") Long userId);
+
 }

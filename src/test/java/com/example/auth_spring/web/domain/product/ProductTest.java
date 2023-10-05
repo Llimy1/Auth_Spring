@@ -16,16 +16,20 @@ class ProductTest {
         //given
         String productName = "옷";
         Long productPrice = 10000L;
+        Integer deliveryPrice = 3000;
 
         Product product = Product.builder()
                 .name(productName)
                 .price(productPrice)
+                .deliveryPrice(3000)
                 .build();
 
         //when
         //then
         assertThat(product.getName()).isEqualTo(productName);
         assertThat(product.getPrice()).isEqualTo(productPrice);
+        assertThat(product.getDeliveryPrice()).isEqualTo(deliveryPrice);
+
     }
 
 }

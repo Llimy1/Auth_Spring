@@ -39,7 +39,10 @@ public enum SuccessCode {
     CART_DELETE_SUCCESS("장바구니 상품 삭제에 성공 했습니다."),
     SEARCH_PRODUCT_SUCCESS("검색한 상품 조회에 성공 했습니다."),
     CATEGORY_PRODUCT_INQUIRY_SUCCESS("카테고리 상품 조회에 성공 했습니다."),
-    SUB_CATEGORY_PRODUCT_INQUIRY_SUCCESS("서브 카테고리 상품 조회에 성공 했습니다.");
+    SUB_CATEGORY_PRODUCT_INQUIRY_SUCCESS("서브 카테고리 상품 조회에 성공 했습니다."),
+    ORDER_PRODUCT_REGISTRATION_SUCCESS("주문에 성공 했습니다."),
+    ORDER_PRODUCT_DETAIL_INQUIRY_SUCCESS("주문 상세 정보 조회에 성공 했습니다."),
+    ORDER_PRODUCT_ALL_INQUIRY_SUCCESS("주문 전체 조회에 성공 했습니다.");
 
     private final String description;
 

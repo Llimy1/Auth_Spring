@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "certification")
 public class Certification extends BaseTimeEntity {
 
     @Id

@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "categories")
 public class Category {
 
     @Id

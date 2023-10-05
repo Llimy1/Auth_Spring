@@ -70,6 +70,7 @@ class ProductRegistrationControllerTest {
         return ProductRequestDto.builder()
                 .productName("옷")
                 .productPrice(10000L)
+                .deliveryPrice(3000)
                 .build();
     }
 

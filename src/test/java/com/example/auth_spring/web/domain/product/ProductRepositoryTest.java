@@ -23,19 +23,23 @@ class ProductRepositoryTest {
     void createProduct() {
         String productName1 = "옷";
         Long productPrice1 = 10000L;
+        Integer deliveryPrice1 = 3000;
 
         String productName2 = "옷가지";
         Long productPrice2 = 100000L;
+        Integer deliveryPrice2 = 4000;
 
         //given
         Product product1 = Product.builder()
                 .name(productName1)
                 .price(productPrice1)
+                .deliveryPrice(deliveryPrice1)
                 .build();
 
         Product product2 = Product.builder()
                 .name(productName2)
                 .price(productPrice2)
+                .deliveryPrice(deliveryPrice2)
                 .build();
 
         //when

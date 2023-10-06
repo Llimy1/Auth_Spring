@@ -1,18 +1,12 @@
 package com.example.auth_spring.service.seller.inquiry.product;
 
-import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
-import com.example.auth_spring.type.ErrorCode;
-import com.example.auth_spring.type.Role;
+import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.product.ProductRepository;
-import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
 import com.example.auth_spring.web.dto.product.ProductResponseDto;
-import com.example.auth_spring.web.exception.IllegalStateException;
-import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

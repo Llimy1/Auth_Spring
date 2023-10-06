@@ -1,4 +1,4 @@
-package com.example.auth_spring.web.controller.seller.product.inquiry;
+package com.example.auth_spring.web.controller.seller.product.inquiry.product;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.user.token.TokenService;

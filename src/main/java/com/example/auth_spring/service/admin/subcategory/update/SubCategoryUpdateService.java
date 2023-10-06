@@ -26,8 +26,8 @@ public class SubCategoryUpdateService {
     private final SubCategoryRepository subCategoryRepository;
 
 
-    @Transactional
     // 서브 카테고리명 수정
+    @Transactional
     public SubCategoryUpdateResponseDto subCategoryUpdate(String bearerAccessToken, String beforeSubCategoryName, String afterSubCategoryName) {
 
         tokenService.accessTokenExpiration(bearerAccessToken);

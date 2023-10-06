@@ -4,6 +4,7 @@ import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
 import com.example.auth_spring.web.domain.order.Order;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import lombok.Builder;
@@ -49,6 +50,9 @@ public class Product extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "product")
     private List<Order> orderList;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductOption> productOptionList;
 
     @Builder
     public Product(User user, SubCategory subCategory, Brand brand, String name, Long price, Integer deliveryPrice) {

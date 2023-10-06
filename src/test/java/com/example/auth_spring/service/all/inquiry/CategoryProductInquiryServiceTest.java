@@ -3,6 +3,7 @@ package com.example.auth_spring.service.all.inquiry;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -72,6 +73,7 @@ class CategoryProductInquiryServiceTest {
                 .productName(product.getName())
                 .productPrice(product.getPrice())
                 .brandName(product.getBrand().getName())
+
                 .build());
 
         Page<ProductResponseDto> page = new PageImpl<>(productList);
@@ -95,6 +97,7 @@ class CategoryProductInquiryServiceTest {
                 .isEqualTo(10000L);
         assertThat(productListResponseDto.getProductList().get(0).getBrandName())
                 .isEqualTo("나이키");
+
     }
 
 }

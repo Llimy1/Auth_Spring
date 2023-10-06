@@ -3,6 +3,7 @@ package com.example.auth_spring.service.all.inquiry;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -66,10 +67,14 @@ class SubCategoryProductInquiryServiceTest {
                 .price(10000L)
                 .build();
 
+
+
+
         List<ProductResponseDto> productList = List.of(ProductResponseDto.builder()
                 .productName(product.getName())
                         .productPrice(product.getPrice())
                         .brandName(product.getBrand().getName())
+
                                 .build());
 
         Page<ProductResponseDto> page = new PageImpl<>(productList);

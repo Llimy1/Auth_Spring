@@ -2,6 +2,7 @@ package com.example.auth_spring.web.domain.cart;
 
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
 import com.example.auth_spring.web.domain.product.Product;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,13 +28,14 @@ public class Cart extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "product_option_id")
+    private ProductOption productOption;
 
     @Builder
-    public Cart(User user, Product product) {
+    public Cart(User user, ProductOption productOption) {
         this.user = user;
-        this.product = product;
+        this.productOption = productOption;
     }
 }

@@ -3,8 +3,12 @@ package com.example.auth_spring.web.domain.cart;
 import com.example.auth_spring.type.Role;
 import com.example.auth_spring.web.domain.category.Category;
 import com.example.auth_spring.web.domain.category.CategoryRepository;
+import com.example.auth_spring.web.domain.option.Option;
+import com.example.auth_spring.web.domain.option.OptionRepository;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
+import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.subcategory.SubCategoryRepository;
 import com.example.auth_spring.web.domain.user.User;
@@ -30,7 +34,7 @@ class CartRepositoryTest {
     private CartRepository cartRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductOptionRepository productOptionRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -40,6 +44,12 @@ class CartRepositoryTest {
 
     @Autowired
     private SubCategoryRepository subCategoryRepository;
+
+    @Autowired
+    private OptionRepository optionRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
 
 
@@ -96,10 +106,25 @@ class CartRepositoryTest {
 
         Product product1 = productRepository.save(product);
 
+        Option option = Option.builder()
+                .user(user)
+                .name("XL")
+                .build();
+
+        Option option1 = optionRepository.save(option);
+
+
+
+        ProductOption productOption = ProductOption.builder()
+                .product(product1)
+                .option(option1)
+                .build();
+
+
 
         Cart cart = Cart.builder()
                 .user(user1)
-                .product(product1)
+                .productOption(productOption)
                 .build();
 
         Cart result = cartRepository.save(cart);
@@ -107,7 +132,7 @@ class CartRepositoryTest {
         //when
         //then
         assertThat(result.getUser().getId()).isEqualTo(user.getId());
-        assertThat(result.getProduct().getId()).isEqualTo(product.getId());
+        assertThat(result.getProductOption().getProduct().getId()).isEqualTo(product.getId());
 
     }
 }

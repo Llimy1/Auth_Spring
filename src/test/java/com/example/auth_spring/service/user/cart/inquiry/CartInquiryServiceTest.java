@@ -7,7 +7,9 @@ import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.cart.CartRepository;
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.cart.CartListResponseDto;
@@ -79,15 +81,27 @@ class CartInquiryServiceTest {
                 .build();
         ReflectionTestUtils.setField(product, "id", 1L);
 
-        Cart cart = Cart.builder()
+        Option option = Option.builder()
                 .user(user)
+                .name("XL")
+                .build();
+
+        ReflectionTestUtils.setField(option, "id", 1L);
+
+        ProductOption productOption = ProductOption.builder()
+                .option(option)
                 .product(product)
                 .build();
 
+        Cart cart = Cart.builder()
+                .user(user)
+                .productOption(productOption)
+                .build();
+
         List<CartResponseDto> cartList = List.of(CartResponseDto.builder()
-                        .productName(cart.getProduct().getName())
-                        .productPrice(cart.getProduct().getPrice())
-                        .brandName(cart.getProduct().getBrand().getName())
+                        .productName(cart.getProductOption().getProduct().getName())
+                        .productPrice(cart.getProductOption().getProduct().getPrice())
+                        .brandName(cart.getProductOption().getProduct().getBrand().getName())
                 .build());
 
         Page<CartResponseDto> page = new PageImpl<>(cartList);

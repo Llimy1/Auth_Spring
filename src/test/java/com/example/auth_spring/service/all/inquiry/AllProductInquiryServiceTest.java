@@ -4,6 +4,7 @@ import com.example.auth_spring.service.all.inquiry.AllProductInquiryService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;

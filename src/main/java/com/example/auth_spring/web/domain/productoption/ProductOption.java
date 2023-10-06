@@ -1,11 +1,15 @@
 package com.example.auth_spring.web.domain.productoption;
 
+import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.option.Option;
+import com.example.auth_spring.web.domain.order.Order;
 import com.example.auth_spring.web.domain.product.Product;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -24,4 +28,16 @@ public class ProductOption {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_id")
     private Option option;
+
+    @OneToMany(mappedBy = "productOption")
+    private List<Cart> cartList;
+
+    @OneToMany(mappedBy = "productOption")
+    private List<Order> orderList;
+
+    @Builder
+    public ProductOption(Product product, Option option) {
+        this.product = product;
+        this.option = option;
+    }
 }

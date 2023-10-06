@@ -12,11 +12,13 @@ public class CartResponseDto {
     private String productName;
     private Long productPrice;
     private String brandName;
+    private String optionName;
 
     @Builder
-    public CartResponseDto(String productName, Long productPrice, String brandName) {
+    public CartResponseDto(String productName, Long productPrice, String brandName, String optionName) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.brandName = brandName;
+        this.optionName = optionName;
     }
 }

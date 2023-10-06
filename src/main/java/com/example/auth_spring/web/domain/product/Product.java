@@ -46,12 +46,6 @@ public class Product extends BaseTimeEntity {
     private Brand brand;
 
     @OneToMany(mappedBy = "product")
-    private List<Cart> cartList;
-
-    @OneToMany(mappedBy = "product")
-    private List<Order> orderList;
-
-    @OneToMany(mappedBy = "product")
     private List<ProductOption> productOptionList;
 
     @Builder

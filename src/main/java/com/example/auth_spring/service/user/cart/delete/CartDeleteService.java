@@ -23,6 +23,8 @@ public class CartDeleteService {
     private final CommonService commonService;
     private final CartRepository cartRepository;
 
+
+    // 장바구니 삭제
     @Transactional
     public void cartDelete(String bearerAccessToken, String productName) {
         tokenService.accessTokenExpiration(bearerAccessToken);
@@ -31,12 +33,14 @@ public class CartDeleteService {
             throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
         }
 
-        Cart cart = cartRepository.findByProductName(productName)
+        Cart cart = cartRepository.findProductName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CART_PRODUCT_NOT_FOUND));
 
         cartRepository.delete(cart);
     }
 
+
+    // API 반환
     @Transactional
     public CommonResponse<Object> cartDeleteResponse(String bearerAccessToken, String productName) {
         cartDelete(bearerAccessToken, productName);

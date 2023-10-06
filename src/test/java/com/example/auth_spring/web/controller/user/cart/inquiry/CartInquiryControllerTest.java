@@ -9,7 +9,9 @@ import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.cart.CartListResponseDto;
@@ -96,17 +98,27 @@ class CartInquiryControllerTest {
                 .name("옷")
                 .price(10000L)
                 .build();
+
         ReflectionTestUtils.setField(product, "id", 1L);
 
-        Cart cart = Cart.builder()
+        Option option = Option.builder()
+                .user(user)
+                .name("XL")
+                .build();
+        ProductOption productOption = ProductOption.builder()
+                .option(option)
                 .product(product)
+                .build();
+
+        Cart cart = Cart.builder()
+                .productOption(productOption)
                 .user(user)
                 .build();
 
         CartResponseDto cartResponseDto = CartResponseDto.builder()
-                .productName(cart.getProduct().getName())
-                .productPrice(cart.getProduct().getPrice())
-                .brandName(cart.getProduct().getBrand().getName())
+                .productName(cart.getProductOption().getProduct().getName())
+                .productPrice(cart.getProductOption().getProduct().getPrice())
+                .brandName(cart.getProductOption().getProduct().getBrand().getName())
                 .build();
 
         List<CartResponseDto> cartResponseDtoList = new ArrayList<>(Collections.singleton(cartResponseDto));

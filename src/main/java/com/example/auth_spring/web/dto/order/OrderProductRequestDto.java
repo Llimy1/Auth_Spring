@@ -3,6 +3,7 @@ package com.example.auth_spring.web.dto.order;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.order.Order;
 import com.example.auth_spring.web.domain.product.Product;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -27,14 +28,14 @@ public class OrderProductRequestDto {
         this.productName = productName;
     }
 
-    public Order toOrderEntity(User user, Product product, Address address, String orderName) {
+    public Order toOrderEntity(User user, ProductOption productOption, Address address, String orderName) {
         return Order.builder()
                 .user(user)
-                .product(product)
+                .productOption(productOption)
                 .address(address)
                 .orderName(orderName)
                 .count(count)
-                .totalPrice(product.getPrice() + product.getDeliveryPrice())
+                .totalPrice(productOption.getProduct().getPrice() + productOption.getProduct().getDeliveryPrice())
                 .build();
     }
 }

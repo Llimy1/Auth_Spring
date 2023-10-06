@@ -9,6 +9,8 @@ import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.cart.CartRepository;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
+import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.exception.IllegalStateException;
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartRegistrationService {
 
     private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
+    private final ProductOptionRepository productOptionRepository;
     private final TokenService tokenService;
     private final CommonService commonService;
 
@@ -39,17 +41,17 @@ public class CartRegistrationService {
             throw new IllegalStateException(ErrorCode.AUTHORITY_NOT_USER);
         }
 
-        cartRepository.findByProductName(productName).ifPresent(a -> {
+        cartRepository.findProductName(productName).ifPresent(a -> {
             throw new IllegalStateException(ErrorCode.PRODUCT_THAT_EXIST);
         });
 
-        Product product = productRepository.findByName(productName)
+        ProductOption productOption = productOptionRepository.findProductOptiopnByProductName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
 
         Cart cart = Cart.builder()
                 .user(user)
-                .product(product)
+                .productOption(productOption)
                 .build();
 
         cartRepository.save(cart);

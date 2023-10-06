@@ -3,6 +3,7 @@ package com.example.auth_spring.web.domain.order;
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
 import com.example.auth_spring.web.domain.product.Product;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,8 +39,8 @@ public class Order extends BaseTimeEntity {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "product_option_id")
+    private ProductOption productOption;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,12 +48,12 @@ public class Order extends BaseTimeEntity {
     private Address address;
 
     @Builder
-    public Order(String orderName, Integer count, Long totalPrice, User user, Product product, Address address) {
+    public Order(String orderName, Integer count, Long totalPrice, User user, ProductOption productOption, Address address) {
         this.orderName = orderName;
         this.count = count;
         this.totalPrice = totalPrice;
         this.user = user;
-        this.product = product;
+        this.productOption = productOption;
         this.address = address;
     }
 }

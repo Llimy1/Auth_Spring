@@ -13,8 +13,6 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Page<Product> findAllByUserId(Long userId, Pageable pageable);
-
     @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(" +
             "p.name as productName," +
             "p.price as productPrice," +

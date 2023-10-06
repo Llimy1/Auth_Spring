@@ -10,6 +10,8 @@ import com.example.auth_spring.web.domain.order.Order;
 import com.example.auth_spring.web.domain.order.OrderRepository;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
+import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.order.OrderProductRequestDto;
@@ -28,7 +30,7 @@ public class OrderProductRegistrationService {
     private final TokenService tokenService;
     private final CommonService commonService;
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
+    private final ProductOptionRepository productOptionRepository;
     private final AddressRepository addressRepository;
 
     // 주문 정보 저장
@@ -47,12 +49,12 @@ public class OrderProductRegistrationService {
         } while (isOrderNameDuplicate(orderName));
 
         User user = tokenService.findUser(bearerAccessToken);
-        Product product = productRepository.findByName(productName)
+        ProductOption productOption = productOptionRepository.findProductOptiopnByProductName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ADDRESS_NOT_FOUND));
 
-        Order order = orderProductRequestDto.toOrderEntity(user, product, address, orderName);
+        Order order = orderProductRequestDto.toOrderEntity(user, productOption, address, orderName);
 
 
         orderRepository.save(order);

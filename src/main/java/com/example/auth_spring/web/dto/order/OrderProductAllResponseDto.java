@@ -13,13 +13,15 @@ public class OrderProductAllResponseDto {
     private Long totalOrderPrice;
     private String productBrand;
     private Integer orderProductCount;
+    private String optionName;
 
     @Builder
-    public OrderProductAllResponseDto(String orderName, String productName, Long totalOrderPrice, String productBrand, Integer orderProductCount) {
+    public OrderProductAllResponseDto(String orderName, String productName, Long totalOrderPrice, String productBrand, Integer orderProductCount, String optionName) {
         this.orderName = orderName;
         this.productName = productName;
         this.totalOrderPrice = totalOrderPrice;
         this.productBrand = productBrand;
         this.orderProductCount = orderProductCount;
+        this.optionName = optionName;
     }
 }

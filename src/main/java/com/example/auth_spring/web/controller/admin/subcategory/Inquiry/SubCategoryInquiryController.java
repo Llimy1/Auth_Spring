@@ -20,7 +20,7 @@ public class SubCategoryInquiryController {
     private final SubCategoryInquiryService subCategoryInquiryService;
 
     @ApiOperation(value = "서브 카테고리 조회")
-    @GetMapping("/subCategory/{categoryName}/getList")
+    @GetMapping("/subCategory/{categoryName}")
     public ResponseEntity<ResultDto<SubCategoryListResponseDto>> subCategoryList(@RequestHeader("Authorization") String bearerAccessToken,
                                                                                  @ApiParam(name = "categoryName", value = "카테고리명", example = "의류") @PathVariable String categoryName) {
         CommonResponse<Object> commonResponse = subCategoryInquiryService.subCategoryListResponse(bearerAccessToken, categoryName);

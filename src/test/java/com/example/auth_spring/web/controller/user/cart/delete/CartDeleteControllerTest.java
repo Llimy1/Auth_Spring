@@ -79,7 +79,7 @@ class CartDeleteControllerTest {
 
         //when
         //then
-        mvc.perform(delete("/api/v1/user/cart/delete/{productName}", "삭제 상품명")
+        mvc.perform(delete("/api/v1/user/cart/{productName}", "삭제 상품명")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))

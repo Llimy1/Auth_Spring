@@ -22,7 +22,7 @@ public class CategoryDeleteController {
 
 
     @ApiOperation(value = "카테고리 삭제 API")
-    @DeleteMapping("/category/delete/{categoryName}")
+    @DeleteMapping("/category/{categoryName}")
     public ResponseEntity<ResultDto<Void>> categoryDelete(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                          @ApiParam(name = "categoryName", value = "카테고리명", example = "의류") @PathVariable String categoryName) {
         CommonResponse<Object> commonResponse = categoryDeleteService.categoryDeleteResponse(bearerAccessToken, categoryName);

@@ -3,6 +3,7 @@ import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
+import com.example.auth_spring.web.domain.view.View;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,14 +21,20 @@ public class ProductRequestDto {
     private Integer deliveryPrice;
     @ApiModelProperty(name = "brandName", value = "brandName", example = "3000")
     private String brandName;
+    @ApiModelProperty(name = "discountRate", value = "discountRate", example = "35")
+    private Integer discountRate;
+    @ApiModelProperty(name = "isDisCount", value = "isDisCount", example = "true")
+    private Boolean isDiscount;
 
 
     @Builder
-    public ProductRequestDto(String productName, Long productPrice, Integer deliveryPrice, String brandName) {
+    public ProductRequestDto(String productName, Long productPrice, Integer deliveryPrice, String brandName, Integer discountRate, Boolean isDiscount) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.deliveryPrice = deliveryPrice;
         this.brandName = brandName;
+        this.discountRate = discountRate;
+        this.isDiscount = isDiscount;
     }
 
     public Product toProductEntity(User user, SubCategory subCategory, Brand brand) {
@@ -38,6 +45,16 @@ public class ProductRequestDto {
                 .name(productName)
                 .price(productPrice)
                 .deliveryPrice(deliveryPrice)
+                .discountRate(discountRate)
+                .isDiscount(isDiscount)
+                .likeCount(0L)
+                .build();
+    }
+
+    public View toViewEntity(Product product) {
+        return View.builder()
+                .count(0L)
+                .product(product)
                 .build();
     }
 }

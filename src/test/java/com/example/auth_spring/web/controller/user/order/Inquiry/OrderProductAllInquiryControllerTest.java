@@ -118,7 +118,7 @@ class OrderProductAllInquiryControllerTest {
                 .willReturn(commonResponse);
 
         //then
-        mvc.perform(get("/api/v1/user/order/getAllList")
+        mvc.perform(get("/api/v1/user/order")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))

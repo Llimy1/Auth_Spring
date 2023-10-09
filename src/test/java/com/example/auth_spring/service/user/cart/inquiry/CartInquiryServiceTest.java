@@ -78,6 +78,9 @@ class CartInquiryServiceTest {
                 .brand(brand)
                 .name("옷")
                 .price(10000L)
+                .deliveryPrice(3000)
+                .isDiscount(true)
+                .discountRate(10)
                 .build();
         ReflectionTestUtils.setField(product, "id", 1L);
 
@@ -99,9 +102,11 @@ class CartInquiryServiceTest {
                 .build();
 
         List<CartResponseDto> cartList = List.of(CartResponseDto.builder()
-                        .productName(cart.getProductOption().getProduct().getName())
-                        .productPrice(cart.getProductOption().getProduct().getPrice())
-                        .brandName(cart.getProductOption().getProduct().getBrand().getName())
+                .productName(product.getName())
+                .productPrice(product.getPrice())
+                .brandName(product.getBrand().getName())
+                .isDiscount(product.getIsDiscount())
+                .discountRate(product.getDiscountRate())
                 .build());
 
         Page<CartResponseDto> page = new PageImpl<>(cartList);
@@ -124,11 +129,16 @@ class CartInquiryServiceTest {
         assertThat(pagination.getTotalElements()).isEqualTo(1);
         assertThat(pagination.isLastPage()).isEqualTo(true);
         assertThat(cartListResponseDto.getCartList().get(0).getProductName())
-                .isEqualTo("옷");
+                .isEqualTo(cartList.get(0).getProductName());
         assertThat(cartListResponseDto.getCartList().get(0).getProductPrice())
-                .isEqualTo(10000L);
+                .isEqualTo(cartList.get(0).getProductPrice());
         assertThat(cartListResponseDto.getCartList().get(0).getBrandName())
-                .isEqualTo("나이키");
+                .isEqualTo(cartList.get(0).getBrandName());
+        assertThat(cartListResponseDto.getCartList().get(0).getIsDiscount())
+                .isEqualTo(cartList.get(0).getIsDiscount());
+        assertThat(cartListResponseDto.getCartList().get(0).getDiscountRate())
+                .isEqualTo(cartList.get(0).getDiscountRate());
+
     }
 
 }

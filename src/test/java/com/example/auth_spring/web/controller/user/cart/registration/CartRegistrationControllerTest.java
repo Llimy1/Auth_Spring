@@ -81,7 +81,7 @@ class CartRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/user/cart/registration/{productName}", "상품명")
+        mvc.perform(post("/api/v1/user/cart/{productName}", "상품명")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -111,7 +111,7 @@ class CartRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/user/cart/registration/{productName}", "상품명")
+        mvc.perform(post("/api/v1/user/cart/{productName}", "상품명")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -141,7 +141,7 @@ class CartRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/user/cart/registration/{productName}", "상품명")
+        mvc.perform(post("/api/v1/user/cart/{productName}", "상품명")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))

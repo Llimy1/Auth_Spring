@@ -37,7 +37,8 @@ public enum ErrorCode {
     PRODUCT_THAT_EXIST("중복된 상품 입니다."),
     SEARCH_NOT_FOUND("검색한 상품을 찾을 수 없습니다."),
     ORDER_NAME_THAT_EXIST("중복된 주문 번호 입니다."),
-    BRAND_NOT_FOUND("브랜드를 찾을 수 없습니다.");
+    BRAND_NOT_FOUND("브랜드를 찾을 수 없습니다."),
+    LIKE_NOT_FOUND("좋아요 정보를 찾을 수 없습니다.");
 
 
 

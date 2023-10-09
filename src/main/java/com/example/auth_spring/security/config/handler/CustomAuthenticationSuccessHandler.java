@@ -1,5 +1,6 @@
 package com.example.auth_spring.security.config.handler;
 
+import com.example.auth_spring.security.jwt.dto.GeneratedTokenDto;
 import com.example.auth_spring.service.all.login.OAuth2LoginService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.Role;
@@ -56,8 +57,9 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 
         } else {
-            CommonResponse<Object> commonResponse = oAuth2LoginService.oAuth2LoginResponse(email, response);
-            ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+            CommonResponse<Object> commonResponse = oAuth2LoginService.oAuth2LoginResponse(email);
+            ResultDto<GeneratedTokenDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+            result.setData((GeneratedTokenDto) commonResponse.getData());
             ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
             response.sendRedirect("http://localhost:8080/");
         }

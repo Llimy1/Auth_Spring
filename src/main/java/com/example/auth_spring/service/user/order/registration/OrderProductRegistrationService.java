@@ -8,8 +8,6 @@ import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.address.AddressRepository;
 import com.example.auth_spring.web.domain.order.Order;
 import com.example.auth_spring.web.domain.order.OrderRepository;
-import com.example.auth_spring.web.domain.product.Product;
-import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.domain.user.User;
@@ -49,10 +47,13 @@ public class OrderProductRegistrationService {
         } while (isOrderNameDuplicate(orderName));
 
         User user = tokenService.findUser(bearerAccessToken);
-        ProductOption productOption = productOptionRepository.findProductOptiopnByProductName(productName)
+        ProductOption productOption = productOptionRepository.findProductOptionByProductName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ADDRESS_NOT_FOUND));
+
+
+
 
         Order order = orderProductRequestDto.toOrderEntity(user, productOption, address, orderName);
 

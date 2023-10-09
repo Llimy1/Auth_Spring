@@ -13,11 +13,21 @@ public class ProductResponseDto {
     private String productName;
     private Long productPrice;
     private String brandName;
+    private Boolean isDiscount;
+    private Integer discountRate;
 
     @Builder
-    public ProductResponseDto(String productName, Long productPrice, String brandName) {
+    public ProductResponseDto(String productName, Long productPrice, String brandName, Boolean isDiscount, Integer discountRate) {
         this.productName = productName;
-        this.productPrice = productPrice;
         this.brandName = brandName;
+        this.isDiscount = isDiscount;
+        if (isDiscount) {
+            double discount = discountRate / 100.0;
+            this.productPrice = Math.round((1 - discount) * productPrice);
+            this.discountRate = discountRate;
+
+        } else {
+            this.productPrice = productPrice;
+        }
     }
 }

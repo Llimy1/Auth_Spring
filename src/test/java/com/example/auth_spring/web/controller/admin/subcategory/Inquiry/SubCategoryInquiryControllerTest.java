@@ -109,7 +109,7 @@ class SubCategoryInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/admin/subCategory/{categoryName}/getList", "의류")
+        mvc.perform(get("/api/v1/admin/subCategory/{categoryName}", "의류")
                 .with(csrf())
                 .header("Authorization", bearerAccessToken)
                 .contentType(MediaType.APPLICATION_JSON))

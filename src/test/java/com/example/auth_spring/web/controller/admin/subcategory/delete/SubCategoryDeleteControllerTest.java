@@ -79,7 +79,7 @@ class SubCategoryDeleteControllerTest {
 
         //when
         //then
-        mvc.perform(delete("/api/v1/admin/subCategory/delete/{subCategoryName}", "맨투맨")
+        mvc.perform(delete("/api/v1/admin/subCategory/{subCategoryName}", "맨투맨")
                 .with(csrf())
                 .header("Authorization", bearerAccessToken)
                 .contentType(MediaType.APPLICATION_JSON))

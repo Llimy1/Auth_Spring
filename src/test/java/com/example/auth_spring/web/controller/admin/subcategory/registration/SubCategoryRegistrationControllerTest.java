@@ -91,7 +91,7 @@ class SubCategoryRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/admin/subCategory/{categoryName}/registration", "의류")
+        mvc.perform(post("/api/v1/admin/subCategory/{categoryName}", "의류")
                 .with(csrf())
                 .header("Authorization", bearerAccessToken)
                 .contentType(MediaType.APPLICATION_JSON)

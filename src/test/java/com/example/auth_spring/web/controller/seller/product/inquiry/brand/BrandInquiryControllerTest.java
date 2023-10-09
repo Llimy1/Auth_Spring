@@ -3,10 +3,10 @@ package com.example.auth_spring.web.controller.seller.product.inquiry.brand;
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.seller.inquiry.brand.BrandInquiryService;
-import com.example.auth_spring.service.seller.inquiry.product.ProductInquiryService;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.controller.seller.inquiry.brand.BrandInquiryController;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.brand.BrandListResponseDto;
@@ -29,7 +29,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -108,7 +107,7 @@ class BrandInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/seller/brand/getList")
+        mvc.perform(get("/api/v1/seller/brand")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -119,5 +118,4 @@ class BrandInquiryControllerTest {
                 .andExpect(jsonPath("$.data.brandList[0].brandName").value("나이키"))
                 .andDo(print());
     }
-
 }

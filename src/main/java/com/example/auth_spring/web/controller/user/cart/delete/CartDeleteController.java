@@ -19,7 +19,7 @@ public class CartDeleteController {
     private final CartDeleteService cartDeleteService;
 
     @ApiOperation(value = "장바구니 상품 삭제 API")
-    @DeleteMapping("/cart/delete/{productName}")
+    @DeleteMapping("/cart/{productName}")
     public ResponseEntity<ResultDto<Void>> deleteProduct(@RequestHeader("Authorization") String bearerAccessToken,
                                                          @ApiParam(name = "productName", value = "상품 이름", example = "나이키 맨투맨") @PathVariable String productName) {
         CommonResponse<Object> commonResponse = cartDeleteService.cartDeleteResponse(bearerAccessToken, productName);

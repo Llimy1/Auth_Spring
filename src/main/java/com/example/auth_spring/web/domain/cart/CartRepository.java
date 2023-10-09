@@ -16,7 +16,9 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
             "p.name as productName, " +
             "p.price as productPrice," +
             "b.name as brandName," +
-            "o.name as optionName) " +
+            "o.name as optionName," +
+            "p.isDiscount as isDiscount," +
+            "p.discountRate as discountRate) " +
             "FROM Cart c " +
             "JOIN c.user u " +
             "JOIN c.productOption po " +

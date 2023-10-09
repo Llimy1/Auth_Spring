@@ -23,7 +23,7 @@ public class CategoryInquiryController {
     private final CategoryInquiryService categoryInquiryService;
 
     @ApiOperation(value = "카테고리 전체 조회 API")
-    @GetMapping("/category/getList")
+    @GetMapping("/category")
     public ResponseEntity<ResultDto<CategoryListResponseDto>> categoryList(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken) {
         CommonResponse<Object> commonResponse = categoryInquiryService.categoryListResponse(bearerAccessToken);
         ResultDto<CategoryListResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

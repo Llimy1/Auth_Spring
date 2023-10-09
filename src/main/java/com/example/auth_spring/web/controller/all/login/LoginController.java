@@ -1,5 +1,6 @@
 package com.example.auth_spring.web.controller.all.login;
 
+import com.example.auth_spring.security.jwt.dto.GeneratedTokenDto;
 import com.example.auth_spring.service.all.login.BasicLoginService;
 import com.example.auth_spring.service.all.login.OAuth2LoginService;
 import com.example.auth_spring.web.dto.auth.login.BasicLoginRequestDto;
@@ -20,23 +21,14 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     private final BasicLoginService basicLoginService;
-    private final OAuth2LoginService oAuth2LoginService;
 
     @ApiOperation(value = "자체 로그인 API", notes = "자체 로그인 진행")
     @PostMapping("/login/basic")
-    public ResponseEntity<ResultDto<Void>> basicLogin(@RequestBody BasicLoginRequestDto basicLoginRequestDto, HttpServletResponse httpServletResponse) {
-        CommonResponse<Object> commonResponse = basicLoginService.basicLoginResponse(basicLoginRequestDto, httpServletResponse);
-        ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+    public ResponseEntity<ResultDto<GeneratedTokenDto>> basicLogin(@RequestBody BasicLoginRequestDto basicLoginRequestDto) {
+        CommonResponse<Object> commonResponse = basicLoginService.basicLoginResponse(basicLoginRequestDto);
+        ResultDto<GeneratedTokenDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
+        result.setData((GeneratedTokenDto) commonResponse.getData());
 
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }
-
-//    @ApiOperation(value = "소셜 회원 가입 API", notes = "소셜 로그인 후 회원 정보 없을 시 회원 가입 진행")
-//    @PostMapping("/login/oath2")
-//    public ResponseEntity<ResultDto<Void>> oauth2Login(HttpServletResponse httpServletResponse) {
-//        CommonResponse<Object> commonResponse = oAuth2LoginService.oAuth2LoginResponse(httpServletResponse);
-//        ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
-//
-//        return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
-//    }
 }

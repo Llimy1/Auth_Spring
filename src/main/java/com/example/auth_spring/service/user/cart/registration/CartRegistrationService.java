@@ -7,8 +7,6 @@ import com.example.auth_spring.type.Role;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.cart.CartRepository;
-import com.example.auth_spring.web.domain.product.Product;
-import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.domain.user.User;
@@ -45,7 +43,7 @@ public class CartRegistrationService {
             throw new IllegalStateException(ErrorCode.PRODUCT_THAT_EXIST);
         });
 
-        ProductOption productOption = productOptionRepository.findProductOptiopnByProductName(productName)
+        ProductOption productOption = productOptionRepository.findProductOptionByProductName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
 

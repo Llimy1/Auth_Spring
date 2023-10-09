@@ -126,7 +126,7 @@ class OrderProductDetailInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/user/order/{orderName}/getDetail", "주문 번호")
+        mvc.perform(get("/api/v1/user/order/{orderName}", "주문 번호")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))

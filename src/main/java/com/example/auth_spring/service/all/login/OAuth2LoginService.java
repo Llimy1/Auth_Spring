@@ -61,13 +61,9 @@ public class OAuth2LoginService {
 
     // API 반환
     @Transactional
-    public CommonResponse<Object> oAuth2LoginResponse(String email, HttpServletResponse httpServletResponse) {
-        GeneratedTokenDto generatedTokenDto = oauth2Login(email);
+    public CommonResponse<Object> oAuth2LoginResponse(String email) {
 
-        httpServletResponse.setHeader("Authorization", generatedTokenDto.getAccessToken());
-        httpServletResponse.setHeader("REFRESH-TOKEN", generatedTokenDto.getRefreshToken());
-
-        return commonService.successResponse(SuccessCode.OAUTH2_LOGIN_SUCCESS.getDescription(), HttpStatus.CREATED, null);
+        return commonService.successResponse(SuccessCode.OAUTH2_LOGIN_SUCCESS.getDescription(), HttpStatus.CREATED, oauth2Login(email));
     }
 
 

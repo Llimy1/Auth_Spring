@@ -1,5 +1,6 @@
 package com.example.auth_spring.web.controller.all.login;
 
+import com.example.auth_spring.security.jwt.dto.GeneratedTokenDto;
 import com.example.auth_spring.security.jwt.filter.JwtAuthFilter;
 import com.example.auth_spring.service.all.login.BasicLoginService;
 import com.example.auth_spring.service.all.login.OAuth2LoginService;
@@ -71,15 +72,23 @@ class LoginControllerTest {
 
         String body = objectMapper.writeValueAsString(loginRequestDto());
 
+        String accessToken = "accessToken";
+        String refreshToken = "refreshToken";
+
+        GeneratedTokenDto generatedTokenDto = GeneratedTokenDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.CREATED)
                 .status(ResponseStatus.SUCCESS.getDescription())
                 .message(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription())
-                .data(null)
+                .data(generatedTokenDto)
                 .build();
         //given
 
-        given(basicLoginService.basicLoginResponse(any(), any()))
+        given(basicLoginService.basicLoginResponse(any()))
                 .willReturn(commonResponse);
 
         //when
@@ -91,6 +100,8 @@ class LoginControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription()))
+                .andExpect(jsonPath("$.data.accessToken").value("Bearer accessToken"))
+                .andExpect(jsonPath("$.data.refreshToken").value("Bearer refreshToken"))
                 .andDo(print());
     }
 
@@ -101,16 +112,24 @@ class LoginControllerTest {
 
         String body = objectMapper.writeValueAsString(loginRequestDto());
 
+        String accessToken = "accessToken";
+        String refreshToken = "refreshToken";
+
+        GeneratedTokenDto generatedTokenDto = GeneratedTokenDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
         CommonResponse<Object> commonResponse = CommonResponse.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .status(ResponseStatus.FAIL.getDescription())
                 .message(ErrorCode.LOGIN_EXCEPTION.getDescription())
-                .data(null)
+                .data(generatedTokenDto)
                 .build();
 
 
         //given
-        given(basicLoginService.basicLoginResponse(any(), any()))
+        given(basicLoginService.basicLoginResponse(any()))
                 .willReturn(commonResponse);
 
         //when

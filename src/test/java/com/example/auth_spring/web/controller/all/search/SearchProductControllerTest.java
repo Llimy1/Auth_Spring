@@ -15,8 +15,6 @@ import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
 import com.example.auth_spring.web.dto.product.ProductResponseDto;
-import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
-import com.example.auth_spring.web.dto.search.SearchProductResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,15 +87,23 @@ class SearchProductControllerTest {
                         .build())
                 .name("나이키 맨투맨")
                 .price(10000L)
+                .deliveryPrice(3000)
+                .isDiscount(true)
+                .discountRate(10)
                 .build();
 
-        SearchProductResponseDto productResponseDto = SearchProductResponseDto.builder()
-                .product(product)
+        ProductResponseDto productResponseDto = ProductResponseDto.builder()
+                .productName(product.getName())
+                .productPrice(product.getPrice())
+                .brandName(product.getBrand().getName())
+                .isDiscount(product.getIsDiscount())
+                .discountRate(product.getDiscountRate())
                 .build();
 
-        List<SearchProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));
+        List<ProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));
 
-        Page<SearchProductResponseDto> page = new PageImpl<>(productList);
+        Page<ProductResponseDto> page = new PageImpl<>(productList);
+
 
         Pagination pagination = Pagination.builder()
                 .totalPages(page.getTotalPages())
@@ -106,8 +112,8 @@ class SearchProductControllerTest {
                 .isLastPage(page.isLast())
                 .build();
 
-        SearchProductListResponseDto productListResponseDto = SearchProductListResponseDto.builder()
-                .searchProductList(productList)
+        ProductListResponseDto productListResponseDto = ProductListResponseDto.builder()
+                .productList(productList)
                 .pagination(pagination)
                 .build();
 
@@ -119,21 +125,24 @@ class SearchProductControllerTest {
                 .build();
 
         //given
-        given(searchProductService.searchProductListResponse(anyString(), anyInt(), anyInt(), anyString()))
+        given(searchProductService.searchNameProductListResponse(anyString(), anyInt(), anyInt(), anyString()))
                 .willReturn(commonResponse);
 
         //when
         //then
-        mvc.perform(get("/api/v1/all/search/{keyword}", "나")
+        mvc.perform(get("/api/v1/all/search")
                         .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("keyword", "나이키"))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.SEARCH_PRODUCT_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.searchProductList[0].productName").value("나이키 맨투맨"))
-                .andExpect(jsonPath("$.data.searchProductList[0].productPrice").value(10000L))
-                .andExpect(jsonPath("$.data.searchProductList[0].brandName").value("나이키"))
+                .andExpect(jsonPath("$.data.productList[0].productName").value(productList.get(0).getProductName()))
+                .andExpect(jsonPath("$.data.productList[0].productPrice").value(productList.get(0).getProductPrice()))
+                .andExpect(jsonPath("$.data.productList[0].brandName").value(productList.get(0).getBrandName()))
+                .andExpect(jsonPath("$.data.productList[0].isDiscount").value(productList.get(0).getIsDiscount()))
+                .andExpect(jsonPath("$.data.productList[0].discountRate").value(productList.get(0).getDiscountRate()))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))
@@ -154,14 +163,15 @@ class SearchProductControllerTest {
                 .build();
 
         //given
-        given(searchProductService.searchProductListResponse(anyString(), anyInt(), anyInt(), anyString()))
+        given(searchProductService.searchNameProductListResponse(anyString(), anyInt(), anyInt(), anyString()))
                 .willReturn(commonResponse);
 
         //when
         //then
-        mvc.perform(get("/api/v1/all/search/{keyword}", "나")
+        mvc.perform(get("/api/v1/all/search")
                         .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("keyword", "나이키"))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.FAIL.getDescription()))

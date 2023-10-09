@@ -20,7 +20,7 @@ public class CartRegistrationController {
     private final CartRegistrationService cartRegistrationService;
 
     @ApiOperation(value = "장바구니 상품 등록 API")
-    @PostMapping("/cart/registration/{productName}")
+    @PostMapping("/cart/{productName}")
     public ResponseEntity<ResultDto<Void>> cartRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                             @ApiParam(name = "productName", value = "상품 이름", example = "나이키 맨투맨") @PathVariable String productName) {
 

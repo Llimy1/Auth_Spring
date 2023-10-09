@@ -32,7 +32,7 @@ public class CertificationController {
     }
 
     @ApiOperation(value = "인증 번호 불러오기 API", notes = "보내진 인증 번호가 일치 하는지 확인 후 반환")
-    @GetMapping("/{certificationCode}")
+    @GetMapping("/signup/mail/{certificationCode}")
     public ResponseEntity<ResultDto<Void>> certificationCheck(@ApiParam(name = "code", value = "인증 번호") @PathVariable String certificationCode) {
         CommonResponse<Object> commonResponse = certificationService.responseCertificationCheck(certificationCode);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

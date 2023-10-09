@@ -35,7 +35,6 @@ public class OptionInquiryService {
         return OptionListResponseDto.builder()
                 .optionList(optionResponseDtoList)
                 .build();
-
     }
 
     // API 반환
@@ -44,3 +43,4 @@ public class OptionInquiryService {
         return commonService.successResponse(SuccessCode.OPTION_LIST_INQUIRY_SUCCESS.getDescription(), HttpStatus.OK, optionInquiry(bearerAccessToken));
     }
 }
+

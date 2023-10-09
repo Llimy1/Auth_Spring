@@ -85,12 +85,17 @@ class CategoryProductInquiryControllerTest {
                         .build())
                 .name("옷")
                 .price(10000L)
+                .deliveryPrice(3000)
+                .isDiscount(true)
+                .discountRate(10)
                 .build();
 
         ProductResponseDto productResponseDto = ProductResponseDto.builder()
                 .productName(product.getName())
                 .productPrice(product.getPrice())
                 .brandName(product.getBrand().getName())
+                .isDiscount(product.getIsDiscount())
+                .discountRate(product.getDiscountRate())
                 .build();
         List<ProductResponseDto> productList = new ArrayList<>(Collections.singleton(productResponseDto));
 
@@ -121,16 +126,19 @@ class CategoryProductInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/all/product/category/{categoryName}/getList", "의류")
+        mvc.perform(get("/api/v1/all/product/category/{categoryName}", "의류")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.CATEGORY_PRODUCT_INQUIRY_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.productList[0].productName").value("옷"))
-                .andExpect(jsonPath("$.data.productList[0].productPrice").value(10000L))
-                .andExpect(jsonPath("$.data.productList[0].brandName").value("나이키"))
+
+                .andExpect(jsonPath("$.data.productList[0].productName").value(productList.get(0).getProductName()))
+                .andExpect(jsonPath("$.data.productList[0].productPrice").value(productList.get(0).getProductPrice()))
+                .andExpect(jsonPath("$.data.productList[0].brandName").value(productList.get(0).getBrandName()))
+                .andExpect(jsonPath("$.data.productList[0].isDiscount").value(productList.get(0).getIsDiscount()))
+                .andExpect(jsonPath("$.data.productList[0].discountRate").value(productList.get(0).getDiscountRate()))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))

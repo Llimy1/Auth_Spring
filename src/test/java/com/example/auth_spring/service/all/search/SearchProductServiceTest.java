@@ -9,7 +9,7 @@ import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.Pagination;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
-import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
+import com.example.auth_spring.web.dto.product.ProductResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,17 +66,27 @@ class SearchProductServiceTest {
                 .brand(brand)
                 .name("나이키 맨투맨")
                 .price(10000L)
+                .deliveryPrice(3000)
+                .isDiscount(true)
+                .discountRate(10)
                 .build();
 
-        List<Product> productList = new ArrayList<>(Collections.singleton(product));
-        Page<Product> page = new PageImpl<>(productList);
+        List<ProductResponseDto> productList = List.of(ProductResponseDto.builder()
+                .productName(product.getName())
+                .productPrice(product.getPrice())
+                .brandName(product.getBrand().getName())
+                .isDiscount(product.getIsDiscount())
+                .discountRate(product.getDiscountRate())
+                .build());
+
+        Page<ProductResponseDto> page = new PageImpl<>(productList);
 
         //given
-        given(productRepository.findAllByNameContaining(any(), any()))
+        given(productRepository.findProductListBySearchName(any(), any()))
                 .willReturn(page);
 
         //when
-        SearchProductListResponseDto searchProductListResponseDto = searchProductService.searchProductList("나이키", 1, 10 ,"modifiedAt");
+        ProductListResponseDto searchProductListResponseDto = searchProductService.searchNameProductList("나이키", 1, 10 ,"modifiedAt");
 
         //then
         Pagination pagination = searchProductListResponseDto.getPagination();
@@ -84,12 +94,16 @@ class SearchProductServiceTest {
         assertThat(pagination.getTotalPages()).isEqualTo(1);
         assertThat(pagination.getTotalElements()).isEqualTo(1);
         assertThat(pagination.isLastPage()).isEqualTo(true);
-        assertThat(searchProductListResponseDto.getSearchProductList().get(0).getProductName())
-                .isEqualTo("나이키 맨투맨");
-        assertThat(searchProductListResponseDto.getSearchProductList().get(0).getProductPrice())
-                .isEqualTo(10000L);
-        assertThat(searchProductListResponseDto.getSearchProductList().get(0).getBrandName())
-                .isEqualTo("나이키");
+        assertThat(searchProductListResponseDto.getProductList().get(0).getProductName())
+                .isEqualTo(productList.get(0).getProductName());
+        assertThat(searchProductListResponseDto.getProductList().get(0).getProductPrice())
+                .isEqualTo(productList.get(0).getProductPrice());
+        assertThat(searchProductListResponseDto.getProductList().get(0).getBrandName())
+                .isEqualTo(product.getBrand().getName());
+        assertThat(searchProductListResponseDto.getProductList().get(0).getIsDiscount())
+                .isEqualTo(productList.get(0).getIsDiscount());
+        assertThat(searchProductListResponseDto.getProductList().get(0).getDiscountRate())
+                .isEqualTo(productList.get(0).getDiscountRate());
     }
 
 }

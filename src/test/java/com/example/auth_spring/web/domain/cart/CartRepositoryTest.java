@@ -101,7 +101,11 @@ class CartRepositoryTest {
 
         Product product = Product.builder()
                 .subCategory(subCategory)
+                .name("나이키 맨투맨")
                 .price(10000L)
+                .deliveryPrice(3000)
+                .isDiscount(true)
+                .discountRate(10)
                 .build();
 
         Product product1 = productRepository.save(product);

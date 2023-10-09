@@ -66,6 +66,9 @@ class CategoryProductInquiryServiceTest {
                 .brand(brand)
                 .name("옷")
                 .price(10000L)
+                .deliveryPrice(3000)
+                .isDiscount(true)
+                .discountRate(10)
                 .build();
 
 
@@ -73,7 +76,8 @@ class CategoryProductInquiryServiceTest {
                 .productName(product.getName())
                 .productPrice(product.getPrice())
                 .brandName(product.getBrand().getName())
-
+                .isDiscount(product.getIsDiscount())
+                .discountRate(product.getDiscountRate())
                 .build());
 
         Page<ProductResponseDto> page = new PageImpl<>(productList);
@@ -92,11 +96,15 @@ class CategoryProductInquiryServiceTest {
         assertThat(pagination.getTotalElements()).isEqualTo(1);
         assertThat(pagination.isLastPage()).isEqualTo(true);
         assertThat(productListResponseDto.getProductList().get(0).getProductName())
-                .isEqualTo("옷");
+                .isEqualTo(productList.get(0).getProductName());
         assertThat(productListResponseDto.getProductList().get(0).getProductPrice())
-                .isEqualTo(10000L);
+                .isEqualTo(productList.get(0).getProductPrice());
         assertThat(productListResponseDto.getProductList().get(0).getBrandName())
-                .isEqualTo("나이키");
+                .isEqualTo(product.getBrand().getName());
+        assertThat(productListResponseDto.getProductList().get(0).getIsDiscount())
+                .isEqualTo(productList.get(0).getIsDiscount());
+        assertThat(productListResponseDto.getProductList().get(0).getDiscountRate())
+                .isEqualTo(productList.get(0).getDiscountRate());
 
     }
 

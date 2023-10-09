@@ -73,7 +73,7 @@ class SignupExistControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/all/signup/exist/nickname/{nickname}", "nickname")
+        mvc.perform(post("/api/v1/all/signup/nickname/{nickname}", "nickname")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -101,7 +101,7 @@ class SignupExistControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/all/signup/exist/email/{email}", "abcd@naver.com")
+        mvc.perform(post("/api/v1/all/signup/email/{email}", "abcd@naver.com")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -129,7 +129,7 @@ class SignupExistControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/all/signup/exist/phoneNumber/{phoneNumber}", "01000000000")
+        mvc.perform(post("/api/v1/all/signup/phoneNumber/{phoneNumber}", "01000000000")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

@@ -25,5 +25,5 @@ public interface ProductOptionRepository extends JpaRepository<ProductOption, Lo
             "JOIN FETCH po.option o " +
             "JOIN FETCH po.product p " +
             "WHERE p.name = ?1 ")
-    Optional<ProductOption> findProductOptiopnByProductName(String productName);
+    Optional<ProductOption> findProductOptionByProductName(String productName);
 }

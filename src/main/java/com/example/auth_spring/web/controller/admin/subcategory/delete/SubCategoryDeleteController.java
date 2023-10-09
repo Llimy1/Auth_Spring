@@ -20,7 +20,7 @@ public class SubCategoryDeleteController {
     private final SubCategoryDeleteService subCategoryDeleteService;
 
     @ApiOperation(value = "서브 카테고리 삭제 API")
-    @DeleteMapping("/subCategory/delete/{subCategoryName}")
+    @DeleteMapping("/subCategory/{subCategoryName}")
     public ResponseEntity<ResultDto<Void>> subCategoryDelete(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                              @ApiParam(name = "subCategoryName", value = "서브 카테고리명", example = "맨투맨") @PathVariable String subCategoryName) {
 

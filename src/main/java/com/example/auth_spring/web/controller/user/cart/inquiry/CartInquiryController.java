@@ -20,7 +20,7 @@ public class CartInquiryController {
     private final CartInquiryService cartInquiryService;
 
     @ApiOperation(value = "장바구니 상품 조회 API")
-    @GetMapping("/cart/getList")
+    @GetMapping("/cart")
     public ResponseEntity<ResultDto<CartListResponseDto>> cartList(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                     @RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,

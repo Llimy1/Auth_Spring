@@ -21,7 +21,7 @@ public class OrderProductDetailInquiryController {
     private final OrderProductDetailInquiryService orderProductDetailInquiryService;
 
     @ApiOperation(value = "주문 상세 정보 API")
-    @GetMapping("/order/{orderName}/getDetail")
+    @GetMapping("/order/{orderName}")
     public ResponseEntity<ResultDto<OrderProductDetailResponseDto>> orderProductDetail(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                                        @ApiParam(name = "orderName", value = "주문 번호", example = "aB8Xp3Kw") @PathVariable String orderName) {
         CommonResponse<Object> commonResponse = orderProductDetailInquiryService.orderProductDetailResponse(bearerAccessToken, orderName);

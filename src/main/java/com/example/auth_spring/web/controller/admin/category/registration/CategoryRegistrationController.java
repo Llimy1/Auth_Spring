@@ -21,7 +21,7 @@ public class CategoryRegistrationController {
 
 
     @ApiOperation(value = "카테고리 등록 API")
-    @PostMapping("/category/registration")
+    @PostMapping("/category")
     public ResponseEntity<ResultDto<Void>> categoryRegistration(@ApiIgnore @RequestHeader("Authorization") String bearAccessToken,
                                                                 @RequestBody CategoryRequestDto categoryRequestDto) {
         CommonResponse<Object> commonResponse = categoryRegistrationService.categoryRegistrationResponse(bearAccessToken, categoryRequestDto);

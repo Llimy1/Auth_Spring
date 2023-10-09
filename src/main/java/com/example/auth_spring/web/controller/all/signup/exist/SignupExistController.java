@@ -22,7 +22,7 @@ public class SignupExistController {
     private final SignupExistService signupExistService;
 
     @ApiOperation(value = "닉네임 중복 확인 API")
-    @PostMapping("/signup/exist/nickname/{nickname}")
+    @PostMapping("/signup/nickname/{nickname}")
     public ResponseEntity<ResultDto<Void>> nicknameExist(@ApiParam(name = "nickname", value = "닉네임", example = "nickname")
                                                              @PathVariable String nickname) {
         CommonResponse<Object> commonResponse = signupExistService.nicknameExist(nickname);
@@ -32,7 +32,7 @@ public class SignupExistController {
     }
 
     @ApiOperation(value = "이메일 중복 확인 API")
-    @PostMapping("/signup/exist/email/{email}")
+    @PostMapping("/signup/email/{email}")
     public ResponseEntity<ResultDto<Void>> emailExist(@ApiParam(name = "email", value = "이메일", example = "abcd@naver.com")
                                                           @PathVariable String email) {
         CommonResponse<Object> commonResponse = signupExistService.emailExist(email);
@@ -42,7 +42,7 @@ public class SignupExistController {
     }
 
     @ApiOperation(value = "핸드폰 번호 중복 확인 API")
-    @PostMapping("/signup/exist/phoneNumber/{phoneNumber}")
+    @PostMapping("/signup/phoneNumber/{phoneNumber}")
     public ResponseEntity<ResultDto<Void>> phoneNumber(@ApiParam(name = "phoneNumber", value = "핸드폰 번호", example = "01000000000")
                                                            @PathVariable String phoneNumber) {
         CommonResponse<Object> commonResponse = signupExistService.phoneNumberExist(phoneNumber);

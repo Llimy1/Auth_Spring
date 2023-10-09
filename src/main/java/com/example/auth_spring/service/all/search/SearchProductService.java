@@ -4,8 +4,8 @@ import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.search.SearchProductListResponseDto;
-import com.example.auth_spring.web.dto.search.SearchProductResponseDto;
+import com.example.auth_spring.web.dto.product.ProductListResponseDto;
+import com.example.auth_spring.web.dto.product.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,17 +23,18 @@ public class SearchProductService {
 
     // 상품 이름 검색
     // 가장 최근순으로 정렬
-    public SearchProductListResponseDto searchProductList(String keyword, int page, int size, String sortBy) {
+    public ProductListResponseDto searchNameProductList(String keyword, int page, int size, String sortBy) {
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<SearchProductResponseDto> data = productRepository.findAllByNameContaining(keyword, pageable).map(SearchProductResponseDto::new);
+        Page<ProductResponseDto> data = productRepository.findProductListBySearchName(keyword, pageable);
 
-        return SearchProductListResponseDto.getSearchProductListResponseDto(data);
+        return ProductListResponseDto.getProductListResponseDto(data);
     }
 
-    public CommonResponse<Object> searchProductListResponse(String keyword, int page, int size, String sortBy) {
-        return commonService.successResponse(SuccessCode.SEARCH_PRODUCT_SUCCESS.getDescription(), HttpStatus.OK, searchProductList(keyword, page, size, sortBy));
+    // API 반환
+    public CommonResponse<Object> searchNameProductListResponse(String keyword, int page, int size, String sortBy) {
+        return commonService.successResponse(SuccessCode.SEARCH_PRODUCT_SUCCESS.getDescription(), HttpStatus.OK, searchNameProductList(keyword, page, size, sortBy));
     }
 
 

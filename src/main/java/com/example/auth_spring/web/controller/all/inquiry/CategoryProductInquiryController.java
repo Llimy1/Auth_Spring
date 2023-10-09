@@ -20,7 +20,7 @@ public class CategoryProductInquiryController {
     private final CategoryProductInquiryService categoryProductInquiryService;
 
     @ApiOperation(value = "카테고리 별 상품 조회 API")
-    @GetMapping("/product/category/{categoryName}/getList")
+    @GetMapping("/product/category/{categoryName}")
     public ResponseEntity<ResultDto<ProductListResponseDto>> getCategoryProductList(@ApiParam(name = "categoryName", value = "카테고리명", example = "의류") @PathVariable String categoryName,
                                                                                     @RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                                     @RequestParam(value = "size", defaultValue = "10", required = false) int size,

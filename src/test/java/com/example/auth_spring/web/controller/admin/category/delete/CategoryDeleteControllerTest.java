@@ -78,7 +78,7 @@ class CategoryDeleteControllerTest {
 
         //when
         //then
-        mvc.perform(delete("/api/v1/admin/category/delete/{categoryName}", "의류")
+        mvc.perform(delete("/api/v1/admin/category/{categoryName}", "의류")
                 .with(csrf())
                         .header("Authorization", bearerAccessToken)
                 .contentType(MediaType.APPLICATION_JSON))

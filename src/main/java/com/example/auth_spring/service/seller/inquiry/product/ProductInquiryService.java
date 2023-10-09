@@ -5,8 +5,8 @@ import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.type.SuccessCode;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
-import com.example.auth_spring.web.dto.product.ProductListResponseDto;
-import com.example.auth_spring.web.dto.product.ProductResponseDto;
+import com.example.auth_spring.web.dto.seller.SellerProductListResponseDto;
+import com.example.auth_spring.web.dto.seller.SellerProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +25,7 @@ public class ProductInquiryService {
 
     // 판매자 상품 조회
     // 수정 시간이 가장 최근순으로 정렬
-    public ProductListResponseDto productInquiry(String bearerAccessToken, int page, int size, String sortBy) {
+    public SellerProductListResponseDto productInquiry(String bearerAccessToken, int page, int size, String sortBy) {
 
         tokenService.accessTokenExpiration(bearerAccessToken);
 
@@ -33,9 +33,9 @@ public class ProductInquiryService {
 
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
-        Page<ProductResponseDto> data = productRepository.findProductByUserEmail(email, pageable);
+        Page<SellerProductResponseDto> data = productRepository.findProductByUserEmail(email, pageable);
 
-        return ProductListResponseDto.getProductListResponseDto(data);
+        return SellerProductListResponseDto.getSellerProductListResponseDto(data);
     }
 
     // API 반환

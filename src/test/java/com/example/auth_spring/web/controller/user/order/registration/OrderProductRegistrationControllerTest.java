@@ -93,7 +93,7 @@ class OrderProductRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/user/order/registration/")
+        mvc.perform(post("/api/v1/user/order")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)

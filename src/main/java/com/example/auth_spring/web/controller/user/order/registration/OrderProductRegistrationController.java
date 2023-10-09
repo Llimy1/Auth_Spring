@@ -20,7 +20,7 @@ public class OrderProductRegistrationController {
     private final OrderProductRegistrationService orderProductRegistrationService;
 
     @ApiOperation(value = "주문 정보 저장 API")
-    @PostMapping("/order/registration")
+    @PostMapping("/order")
     public ResponseEntity<ResultDto<Void>> OrderProductRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                     @RequestBody OrderProductRequestDto orderProductRequestDto) {
         CommonResponse<Object> commonResponse = orderProductRegistrationService.orderProductRegistrationResponse(bearerAccessToken, orderProductRequestDto);

@@ -22,7 +22,7 @@ public class AllProductInquiryController {
     private final AllProductInquiryService allProductInquiryService;
 
     @ApiOperation(value = "전체 상품 조회 API")
-    @GetMapping("/product/getAllList")
+    @GetMapping("/product")
     public ResponseEntity<ResultDto<ProductListResponseDto>> getAllList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                         @RequestParam(value = "size", defaultValue = "10", required = false) int size,
                                                                         @RequestParam(value = "sortBy", defaultValue = "modifiedAt", required = false) String sortBy) {

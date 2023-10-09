@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductListResponseDto {
 
-    @ApiModelProperty(example = "판매자 상품 리스트 반환")
+    @ApiModelProperty(example = "상품 리스트 반환")
     private List<ProductResponseDto> productList;
     private Pagination pagination;
 

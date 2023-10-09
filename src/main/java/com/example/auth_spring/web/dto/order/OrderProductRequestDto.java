@@ -2,7 +2,6 @@ package com.example.auth_spring.web.dto.order;
 
 import com.example.auth_spring.web.domain.address.Address;
 import com.example.auth_spring.web.domain.order.Order;
-import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.user.User;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,6 +19,7 @@ public class OrderProductRequestDto {
     private Long addressId;
     @ApiModelProperty(name = "productName", value = "productName", example = "나이키 후드티")
     private String productName;
+    private Long totalPrice;
 
     @Builder
     public OrderProductRequestDto(Integer count, Long addressId, String productName) {
@@ -29,13 +29,23 @@ public class OrderProductRequestDto {
     }
 
     public Order toOrderEntity(User user, ProductOption productOption, Address address, String orderName) {
+
+        if (productOption.getProduct().getIsDiscount()) {
+            double discountRate = productOption.getProduct().getDiscountRate() / 100.0;
+            double doublePrice = ((1 - discountRate) * productOption.getProduct().getPrice()) + productOption.getProduct().getDeliveryPrice();
+            totalPrice = Math.round(doublePrice);
+        } else {
+            totalPrice = productOption.getProduct().getPrice() + productOption.getProduct().getDeliveryPrice();
+        }
+
+
         return Order.builder()
                 .user(user)
                 .productOption(productOption)
                 .address(address)
                 .orderName(orderName)
                 .count(count)
-                .totalPrice(productOption.getProduct().getPrice() + productOption.getProduct().getDeliveryPrice())
+                .totalPrice(totalPrice)
                 .build();
     }
 }

@@ -97,7 +97,7 @@ class CategoryInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/admin/category/getList")
+        mvc.perform(get("/api/v1/admin/category")
                 .with(csrf())
                 .header("Authorization", bearerAccessToken)
                 .contentType(MediaType.APPLICATION_JSON))

@@ -20,7 +20,7 @@ public class OrderProductAllInquiryController {
     private final OrderProductAllInquiryService orderProductAllInquiryService;
 
     @ApiOperation(value = "주문 정보 리스트 API")
-    @GetMapping("/order/getAllList")
+    @GetMapping("/order")
     public ResponseEntity<ResultDto<OrderProductAllListResponseDto>> orderProductAllList(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                                          @RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                                          @RequestParam(value = "size", defaultValue = "10", required = false) int size,

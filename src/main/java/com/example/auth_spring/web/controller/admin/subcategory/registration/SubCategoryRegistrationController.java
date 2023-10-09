@@ -21,7 +21,7 @@ public class SubCategoryRegistrationController {
     private final SubCategoryRegistrationService subCategoryRegistrationService;
 
     @ApiOperation(value = "서브 카테고리 등록 API")
-    @PostMapping("/subCategory/{categoryName}/registration")
+    @PostMapping("/subCategory/{categoryName}")
     public ResponseEntity<ResultDto<Void>> subCategoryRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                    @ApiParam(name = "categoryName", value = "카테고리명", example = "의류") @PathVariable String categoryName,
                                                                    @RequestBody SubCategoryRequestDto subCategoryRequestDto) {

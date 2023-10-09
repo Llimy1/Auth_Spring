@@ -12,6 +12,8 @@ import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.subcategory.SubCategoryRepository;
 import com.example.auth_spring.web.domain.user.User;
+import com.example.auth_spring.web.domain.view.View;
+import com.example.auth_spring.web.domain.view.ViewRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
 import com.example.auth_spring.web.dto.product.ProductRequestDto;
@@ -31,6 +33,7 @@ public class ProductRegistrationService {
     private final ProductRepository productRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final BrandRepository brandRepository;
+    private final ViewRepository viewRepository;
 
 
     // 상품 등록
@@ -54,7 +57,13 @@ public class ProductRegistrationService {
 
         Product product = productRequestDto.toProductEntity(user, subCategory, brand);
 
-        return productRepository.save(product).getId();
+        Long productId  = productRepository.save(product).getId();
+
+        View view = productRequestDto.toViewEntity(product);
+
+        viewRepository.save(view);
+
+        return productId;
     }
 
     // API 반환
@@ -64,6 +73,4 @@ public class ProductRegistrationService {
 
         return commonService.successResponse(SuccessCode.PRODUCT_REGISTRATION_SUCCESS.getDescription(), HttpStatus.CREATED, new ProductIdResponseDto(productId));
     }
-
-
 }

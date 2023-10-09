@@ -72,12 +72,7 @@ public class BasicLoginService {
 
     // API 반환
     @Transactional
-    public CommonResponse<Object> basicLoginResponse(BasicLoginRequestDto basicLoginRequestDto, HttpServletResponse httpServletResponse) {
-        GeneratedTokenDto generatedTokenDto = basicLogin(basicLoginRequestDto);
-
-        httpServletResponse.setHeader("Authorization", generatedTokenDto.getAccessToken());
-        httpServletResponse.setHeader("REFRESH-TOKEN", generatedTokenDto.getRefreshToken());
-
-        return commonService.successResponse(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription(), HttpStatus.CREATED, null);
+    public CommonResponse<Object> basicLoginResponse(BasicLoginRequestDto basicLoginRequestDto) {
+        return commonService.successResponse(SuccessCode.BASIC_LOGIN_SUCCESS.getDescription(), HttpStatus.CREATED, basicLogin(basicLoginRequestDto));
     }
 }

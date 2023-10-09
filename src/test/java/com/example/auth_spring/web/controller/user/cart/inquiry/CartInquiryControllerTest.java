@@ -97,6 +97,9 @@ class CartInquiryControllerTest {
                         .build())
                 .name("옷")
                 .price(10000L)
+                .deliveryPrice(3000)
+                .isDiscount(true)
+                .discountRate(10)
                 .build();
 
         ReflectionTestUtils.setField(product, "id", 1L);
@@ -119,6 +122,8 @@ class CartInquiryControllerTest {
                 .productName(cart.getProductOption().getProduct().getName())
                 .productPrice(cart.getProductOption().getProduct().getPrice())
                 .brandName(cart.getProductOption().getProduct().getBrand().getName())
+                .isDiscount(cart.getProductOption().getProduct().getIsDiscount())
+                .discountRate(cart.getProductOption().getProduct().getDiscountRate())
                 .build();
 
         List<CartResponseDto> cartResponseDtoList = new ArrayList<>(Collections.singleton(cartResponseDto));
@@ -150,7 +155,7 @@ class CartInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/user/cart/getList")
+        mvc.perform(get("/api/v1/user/cart")
                         .with(csrf())
                         .header("Authorization", bearerAccessToken)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -158,9 +163,11 @@ class CartInquiryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.CART_INQUIRY_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.cartList[0].productName").value("옷"))
-                .andExpect(jsonPath("$.data.cartList[0].productPrice").value(10000L))
-                .andExpect(jsonPath("$.data.cartList[0].brandName").value("나이키"))
+                .andExpect(jsonPath("$.data.cartList[0].productName").value(cartListResponseDto.getCartList().get(0).getProductName()))
+                .andExpect(jsonPath("$.data.cartList[0].productPrice").value(cartListResponseDto.getCartList().get(0).getProductPrice()))
+                .andExpect(jsonPath("$.data.cartList[0].brandName").value(cartListResponseDto.getCartList().get(0).getBrandName()))
+                .andExpect(jsonPath("$.data.cartList[0].isDiscount").value(cartListResponseDto.getCartList().get(0).getIsDiscount()))
+                .andExpect(jsonPath("$.data.cartList[0].discountRate").value(cartListResponseDto.getCartList().get(0).getDiscountRate()))
                 .andExpect(jsonPath("$.data.pagination.totalPages").value(1))
                 .andExpect(jsonPath("$.data.pagination.totalElements").value(1))
                 .andExpect(jsonPath("$.data.pagination.pageNo").value(0))

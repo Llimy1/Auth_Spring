@@ -3,6 +3,7 @@ package com.example.auth_spring.web.domain.product;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.cart.Cart;
 import com.example.auth_spring.web.domain.common.BaseTimeEntity;
+import com.example.auth_spring.web.domain.image.Image;
 import com.example.auth_spring.web.domain.like.Like;
 import com.example.auth_spring.web.domain.order.Order;
 import com.example.auth_spring.web.domain.productoption.ProductOption;
@@ -64,6 +65,9 @@ public class Product extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "product")
     private List<Like> likeList;
+
+    @OneToMany(mappedBy = "product")
+    private List<Image> imageList;
 
     @Builder
     public Product(String name, Long price, Integer deliveryPrice, Integer discountRate, Boolean isDiscount, User user, SubCategory subCategory, Brand brand, Long likeCount) {

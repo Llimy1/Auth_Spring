@@ -28,7 +28,7 @@ public class LikeProductService {
 
     // 좋아요 추가
     @Transactional
-    public void likeProduct(String bearerAccessToken, String productName) {
+    public String likeProduct(String bearerAccessToken, String productName) {
 
         User user = tokenService.findUser(bearerAccessToken);
 
@@ -37,28 +37,51 @@ public class LikeProductService {
         Product product = productRepository.findByName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        // productId, useId 에 해당하는 좋아요가 있을 시 값 반환 없을 시 null 반환
-        Like like = likeRepository.findLikeByProductNameAndUserId(userId, productName)
-                        .orElse(null);
 
-        // 값이 있다면 좋아요 수 -1 해당 행 삭제, null 이면 새로운 객체 생성 후 DB에 저장
-        if (like != null) {
-            product.decreaseLike();
-            likeRepository.delete(like);
+        Like like = hasLike(userId, productName);
 
-        } else {
-            likeRepository.save(Like.builder()
-                            .user(user)
-                            .product(product)
-                    .build());
+        // 값이 있다면 좋아요 수 -1 해당 행 삭제, 없다면 새로운 객체 생성 후 DB에 저장
+        if (like == null) {
             product.increaseLike();
+            return createLike(user, product);
         }
+
+        product.decreaseLike();
+        return deleteLike(like);
     }
 
     // API 반환
     @Transactional
     public CommonResponse<Object> likeProductResponse(String bearerAccessToken, String productName) {
-        likeProduct(bearerAccessToken, productName);
-        return commonService.successResponse(SuccessCode.LIKE_PRODUCT_SUCCESS.getDescription(), HttpStatus.CREATED, null);
+        String successCode = likeProduct(bearerAccessToken, productName);
+        return commonService.successResponse(successCode, HttpStatus.CREATED, null);
+    }
+
+    // // productId, userId 에 해당하는 좋아요가 있을 시 값 반환 없을 시 null 반환
+    private Like hasLike(Long userId, String productName) {
+
+        return likeRepository.findLikeByProductNameAndUserId(userId, productName)
+                .orElse(null);
+    }
+
+    // 좋아요 추가
+    private String createLike(User user, Product product) {
+
+        Like like = Like.builder()
+                .user(user)
+                .product(product)
+                .build();
+
+        likeRepository.save(like);
+
+        return SuccessCode.LIKE_PRODUCT_SUCCESS.getDescription();
+    }
+
+    // 좋아요 삭제
+    private String deleteLike(Like like) {
+
+        likeRepository.delete(like);
+
+        return SuccessCode.UNLIKE_PRODUCT_SUCCESS.getDescription();
     }
 }

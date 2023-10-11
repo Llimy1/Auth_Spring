@@ -10,9 +10,6 @@ import java.util.Optional;
 
 public interface SubCategoryRepository extends JpaRepository<SubCategory, Long> {
 
-
-    List<SubCategory> findAllByCategoryId(Long categoryId);
-
     @Query("SELECT NEW com.example.auth_spring.web.dto.subcategory.SubCategoryResponseDto(" +
             "s.name as subCategoryName) " +
             "FROM SubCategory s " +

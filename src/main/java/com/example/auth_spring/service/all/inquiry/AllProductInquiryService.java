@@ -3,6 +3,7 @@ package com.example.auth_spring.service.all.inquiry;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.type.ErrorCode;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.domain.image.ImageRepository;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.Pagination;
@@ -33,6 +34,8 @@ public class AllProductInquiryService {
         PageRequest pageable = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
 
         Page<ProductResponseDto> data = productRepository.findProductAllList(pageable);
+
+
 
         return ProductListResponseDto.getProductListResponseDto(data);
     }

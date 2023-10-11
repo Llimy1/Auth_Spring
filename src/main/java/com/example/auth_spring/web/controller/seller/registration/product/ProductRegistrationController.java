@@ -10,7 +10,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.mail.Multipart;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,8 +29,9 @@ public class ProductRegistrationController {
     @PostMapping("/product/{subCategoryName}")
     public ResponseEntity<ResultDto<ProductIdResponseDto>> productRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                                @PathVariable String subCategoryName,
-                                                                               @RequestBody ProductRequestDto productRequestDto) {
-        CommonResponse<Object> commonResponse = productRegistrationService.registrationResponse(bearerAccessToken, subCategoryName, productRequestDto);
+                                                                               @RequestPart(value = "images") List<MultipartFile> multipartFiles,
+                                                                               @RequestPart(value = "productRequest") ProductRequestDto productRequestDto) {
+        CommonResponse<Object> commonResponse = productRegistrationService.registrationResponse(bearerAccessToken, subCategoryName, multipartFiles, productRequestDto);
         ResultDto<ProductIdResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
         result.setData((ProductIdResponseDto) commonResponse.getData());
 

@@ -22,7 +22,8 @@ public class LikeProductController {
     @ApiOperation(value = "좋아요 API")
     @PostMapping("/like/{productName}")
     public ResponseEntity<ResultDto<Void>> likeProduct(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
-                                                       @ApiParam(name = "productName", value = "상품 이름", example = "나이키 맨투") @PathVariable("productName") String productName) {
+                                                       @ApiParam(name = "productName", value = "상품 이름", example = "나이키 맨투맨")
+                                                       @PathVariable("productName") String productName) {
 
         CommonResponse<Object> commonResponse = likeProductService.likeProductResponse(bearerAccessToken, productName);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

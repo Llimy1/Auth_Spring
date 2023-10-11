@@ -18,6 +18,11 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   datasource:
     username: root
     password: alsgur99
@@ -26,7 +31,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
        hibernate:
         format_sql: true
@@ -35,3 +40,14 @@ spring:
 jwt:
   secret: spring-auth-project-spring-auth-project-spring-auth-project-spring-auth-project
 
+cloud:
+  aws:
+    s3:
+      bucket: ${cloud.aws.s3.bucket}
+    credentials:
+      access-key: ${cloud.aws.credentials.access-key}
+      secret-key: ${cloud.aws.credentials.secret-key}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

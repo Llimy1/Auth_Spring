@@ -47,7 +47,9 @@ public enum SuccessCode {
     BRAND_ALL_INQUIRY_SUCCESS("브랜드 조회에 성공 했습니다."),
     OPTION_REGISTRATION_SUCCESS("상품 옵션 저장에 성공 했습니다."),
     OPTION_LIST_INQUIRY_SUCCESS("상품 옵션 조회에 성공 했습니다."),
-    LIKE_PRODUCT_SUCCESS("좋아요에 성공 했습니다.");
+    LIKE_PRODUCT_SUCCESS("좋아요 추가 했습니다."),
+    UNLIKE_PRODUCT_SUCCESS("좋아요 삭제 했습니다.");
+
 
     private final String description;
 

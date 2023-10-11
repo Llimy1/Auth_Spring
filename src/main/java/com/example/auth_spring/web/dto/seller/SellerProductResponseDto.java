@@ -15,9 +15,10 @@ public class SellerProductResponseDto {
     private Integer discountRate;
     private Long viewCount;
     private Long likeCount;
+    private String mainProductImageUrl;
 
     @Builder
-    public SellerProductResponseDto(String productName, Long productPrice, String brandName, Boolean isDiscount, Integer discountRate, Long viewCount, Long likeCount) {
+    public SellerProductResponseDto(String productName, Long productPrice, String brandName, Boolean isDiscount, Integer discountRate, Long viewCount, Long likeCount, String mainProductImageUrl) {
         this.productName = productName;
         this.brandName = brandName;
         this.isDiscount = isDiscount;
@@ -31,5 +32,6 @@ public class SellerProductResponseDto {
         }
         this.viewCount = viewCount;
         this.likeCount = likeCount;
+        this.mainProductImageUrl = mainProductImageUrl;
     }
 }

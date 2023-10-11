@@ -106,6 +106,7 @@ class CartRepositoryTest {
                 .deliveryPrice(3000)
                 .isDiscount(true)
                 .discountRate(10)
+                .likeCount(0L)
                 .build();
 
         Product product1 = productRepository.save(product);

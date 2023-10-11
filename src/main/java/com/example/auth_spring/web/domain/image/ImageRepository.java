@@ -13,8 +13,7 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
             "i.imageSequence as imageSequence," +
             "i.imageUrl as imageUrl)" +
             "FROM Image i " +
-            "JOIN i.product p " +
-            "WHERE p.id = :productId ")
-    List<ImageResponseDto> findImageListByProductId(@Param("productId") Long productId);
+            "WHERE i.product.id = :productId ")
+    List<ImageResponseDto> findAllImageList(@Param("productId") Long productId);
 
 }

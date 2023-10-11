@@ -39,6 +39,7 @@ class ProductRepositoryTest {
                 .deliveryPrice(deliveryPrice1)
                 .isDiscount(isDiscount1)
                 .discountRate(discountRate1)
+                .likeCount(0L)
                 .build();
 
         Product product2 = Product.builder()
@@ -46,6 +47,7 @@ class ProductRepositoryTest {
                 .price(productPrice2)
                 .deliveryPrice(deliveryPrice2)
                 .isDiscount(isDiscount2)
+                .likeCount(0L)
                 .build();
 
         //when

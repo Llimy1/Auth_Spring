@@ -10,10 +10,12 @@ import java.util.List;
 @NoArgsConstructor
 public class ImageResponseDto {
 
-    private List<String> imageUrl;
+    private Integer imageSequence;
+    private String imageUrl;
 
     @Builder
-    public ImageResponseDto(List<String> imageUrl) {
+    public ImageResponseDto(Integer imageSequence, String imageUrl) {
+        this.imageSequence = imageSequence;
         this.imageUrl = imageUrl;
     }
 }

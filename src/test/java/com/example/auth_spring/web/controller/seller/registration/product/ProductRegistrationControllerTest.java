@@ -1,6 +1,7 @@
 package com.example.auth_spring.web.controller.seller.registration.product;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
+import com.example.auth_spring.service.seller.upload.S3UploadService;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.seller.registration.product.ProductRegistrationService;
@@ -20,8 +21,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -30,6 +33,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -48,6 +52,9 @@ class ProductRegistrationControllerTest {
     private JwtProvider jwtProvider;
 
     @MockBean
+    private S3UploadService s3UploadService;
+
+    @MockBean
     private TokenService tokenService;
 
     @Autowired
@@ -57,7 +64,8 @@ class ProductRegistrationControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
+
 
     @BeforeEach
     public void setup() {
@@ -82,7 +90,12 @@ class ProductRegistrationControllerTest {
     @WithMockUser(roles = "SELLER")
     void productRegistrationSuccess() throws Exception {
 
-        String body = objectMapper.writeValueAsString(productRequestDto());
+        MockMultipartFile image1 = new MockMultipartFile("images", "image1.jpg", MediaType.IMAGE_JPEG_VALUE, "image1".getBytes());
+        ProductRequestDto productRequestDto = productRequestDto();
+
+        String productRequestJson = objectMapper.writeValueAsString(productRequestDto);
+        MockMultipartFile productRequest = new MockMultipartFile("productRequest", "", "application/json", productRequestJson.getBytes());
+
 
         String bearerAccessToken = "Bearer accessToken";
 
@@ -100,11 +113,11 @@ class ProductRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/seller/product/{subCategoryName}", "서브 카테고리명")
+        mvc.perform(multipart("/api/v1/seller/product/{subCategoryName}", "서브 카테고리명")
+                        .file(image1)
+                        .file(productRequest)
                         .with(csrf())
-                        .header("Authorization", bearerAccessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .header("Authorization", bearerAccessToken))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.PRODUCT_REGISTRATION_SUCCESS.getDescription()))
@@ -116,7 +129,11 @@ class ProductRegistrationControllerTest {
     @DisplayName("[API] 상품 등록 실패 - 판매자 권한 없음")
     @WithMockUser(roles = "USER")
     void productRegistrationFail() throws Exception {
-        String body = objectMapper.writeValueAsString(productRequestDto());
+        MockMultipartFile image1 = new MockMultipartFile("images", "image1.jpg", MediaType.IMAGE_JPEG_VALUE, "image1".getBytes());
+        ProductRequestDto productRequestDto = productRequestDto();
+
+        String productRequestJson = objectMapper.writeValueAsString(productRequestDto);
+        MockMultipartFile productRequest = new MockMultipartFile("productRequest", "", "application/json", productRequestJson.getBytes());
 
         String bearerAccessToken = "Bearer accessToken";
 
@@ -136,11 +153,11 @@ class ProductRegistrationControllerTest {
 
         //when
         //then
-        mvc.perform(post("/api/v1/seller/product/{subCategoryName}", "서브 카테고리명")
+        mvc.perform(multipart("/api/v1/seller/product/{subCategoryName}", "서브 카테고리명")
+                        .file(image1)
+                        .file(productRequest)
                         .with(csrf())
-                        .header("Authorization", bearerAccessToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .header("Authorization", bearerAccessToken))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.FAIL.getDescription()))
                 .andExpect(jsonPath("$.message").value(ErrorCode.AUTHORITY_NOT_SELLER.getDescription()))

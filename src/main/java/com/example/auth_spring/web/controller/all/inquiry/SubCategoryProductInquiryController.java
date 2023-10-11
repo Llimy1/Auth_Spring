@@ -21,8 +21,8 @@ public class SubCategoryProductInquiryController {
     private final SubCategoryProductInquiryService subCategoryProductInquiryService;
 
     @ApiOperation(value = "서브 카테고리 별 상품 조회 API")
-    @GetMapping("/product/subCategory/{subCategoryName}")
-    public ResponseEntity<ResultDto<ProductListResponseDto>> getSubCategoryProductList(@ApiParam(name = "subCategoryName", value = "서브 카테고리명", example = "맨투맨")@PathVariable String subCategoryName,
+    @GetMapping("/product/subCategory")
+    public ResponseEntity<ResultDto<ProductListResponseDto>> getSubCategoryProductList(@ApiParam(name = "subCategoryName", value = "서브 카테고리명", example = "맨투맨")@RequestParam(value = "subCategoryName") String subCategoryName,
                                                                                        @RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                                                        @RequestParam(value = "size", defaultValue = "10", required = false) int size,
                                                                                        @RequestParam(value = "sortBy", defaultValue = "modifiedAt", required = false) String sortBy) {

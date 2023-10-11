@@ -3,6 +3,7 @@ package com.example.auth_spring.service.all.inquiry;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.image.ImageRepository;
 import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
@@ -32,6 +33,7 @@ import static org.mockito.Mockito.mock;
 class CategoryProductInquiryServiceTest {
 
     private ProductRepository productRepository;
+    private ImageRepository imageRepository;
     private CommonService commonService;
     private CategoryProductInquiryService categoryProductInquiryService;
     private Product product;
@@ -41,7 +43,8 @@ class CategoryProductInquiryServiceTest {
     @BeforeEach
     void setup() {
         productRepository = mock(ProductRepository.class);
-        categoryProductInquiryService = new CategoryProductInquiryService(productRepository, commonService);
+        imageRepository = mock(ImageRepository.class);
+        categoryProductInquiryService = new CategoryProductInquiryService(productRepository, imageRepository, commonService);
     }
 
     @Test

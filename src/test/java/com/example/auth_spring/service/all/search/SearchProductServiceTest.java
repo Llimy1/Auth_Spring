@@ -3,6 +3,7 @@ package com.example.auth_spring.service.all.search;
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.category.Category;
+import com.example.auth_spring.web.domain.image.ImageRepository;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.mock;
 class SearchProductServiceTest {
 
     private ProductRepository productRepository;
+    private ImageRepository imageRepository;
     private CommonService commonService;
     private SearchProductService searchProductService;
     private Product product;
@@ -41,7 +43,8 @@ class SearchProductServiceTest {
     @BeforeEach
     void setup() {
         productRepository = mock(ProductRepository.class);
-        searchProductService = new SearchProductService(productRepository, commonService);
+        imageRepository = mock(ImageRepository.class);
+        searchProductService = new SearchProductService(productRepository, imageRepository, commonService);
     }
 
     @Test

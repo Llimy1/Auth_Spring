@@ -27,75 +27,58 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "JOIN p.user u " +
             "JOIN p.brand b " +
             "JOIN p.viewList v " +
-            "ON p.id = v.product.id " +
             "JOIN p.imageList i " +
-            "ON p.id = i.product.id " +
             "WHERE u.email = :email " +
             "AND i.imageSequence = 1 ")
     Page<SellerProductResponseDto> findProductByUserEmail(@Param("email") String email, Pageable pageable);
 
     @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(" +
+            "p.id as productId," +
             "p.name as productName, " +
             "p.price as productPrice," +
             "b.name as brandName," +
             "p.isDiscount as isDiscount," +
-            "p.discountRate as discountRate, " +
-            "(SELECT NEW com.example.auth_spring.web.dto.image.ImageResponseDto(" +
-            "i.imageUrl as imageUrl)" +
-            "FROM Image i " +
-            "WHERE i.product = p " +
-            "ORDER BY i.imageSequence) as imageUrlList " +
+            "p.discountRate as discountRate) " +
             "FROM Product p " +
             "JOIN p.brand b ")
     Page<ProductResponseDto> findProductAllList(Pageable pageable);
 
     @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(" +
+            "p.id as productId," +
             "p.name as productName, " +
             "p.price as productPrice, " +
             "b.name as brandName," +
             "p.isDiscount as isDiscount," +
-            "p.discountRate as discountRate, " +
-            "(SELECT NEW com.example.auth_spring.web.dto.image.ImageResponseDto(" +
-            "i.imageUrl as imageUrl)" +
-            "FROM Image i " +
-            "WHERE i.product = p " +
-            "ORDER BY i.imageSequence) as imageUrlList " +
+            "p.discountRate as discountRate) " +
             "FROM Product p " +
-            "JOIN p.subCategory sc " +
-            "JOIN sc.category c " +
+            "LEFT JOIN p.subCategory sc " +
+            "LEFT JOIN sc.category c " +
             "JOIN p.brand b " +
-            "WHERE c.name = ?1 ")
-    Page<ProductResponseDto> findProductListByCategoryName(String categoryName, Pageable pageable);
-
-    @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(" +
-            "p.name as productName, " +
-            "p.price as productPrice, " +
-            "b.name as brandName," +
-            "p.isDiscount as isDiscount," +
-            "p.discountRate as discountRate," +
-            "(SELECT NEW com.example.auth_spring.web.dto.image.ImageResponseDto(" +
-            "i.imageUrl as imageUrl)" +
-            "FROM Image i " +
-            "WHERE i.product = p " +
-            "ORDER BY i.imageSequence) as imageUrlList " +
-            "FROM Product p " +
-            "JOIN p.subCategory sc " +
-            "JOIN p.brand b " +
-            "WHERE p.name = ?1 ")
-    Page<ProductResponseDto> findProductListBySubCategoryName(String subCategoryName, Pageable pageable);
+            "WHERE c.name = :categoryName " )
+    Page<ProductResponseDto> findProductListByCategoryName(@Param("categoryName") String categoryName, Pageable pageable);
 
 
     @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(" +
+            "p.id as productId, " +
+            "p.name as productName, " +
+            "p.price as productPrice, " +
+            "b.name as brandName, " +
+            "p.isDiscount as isDiscount, " +
+            "p.discountRate as discountRate) " +
+            "FROM Product p " +
+            "JOIN p.subCategory sc " +
+            "JOIN p.brand b " +
+            "WHERE sc.name = :subCategoryName")
+    Page<ProductResponseDto> findProductListBySubCategoryName(@Param("subCategoryName") String subCategoryName, Pageable pageable);
+
+
+    @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductResponseDto(" +
+            "p.id as productId," +
             "p.name as productName, " +
             "p.price as productPrice, " +
             "b.name as brandName," +
             "p.isDiscount as isDiscount," +
-            "p.discountRate as discountRate," +
-            "(SELECT NEW com.example.auth_spring.web.dto.image.ImageResponseDto(" +
-            "i.imageUrl as imageUrl)" +
-            "FROM Image i " +
-            "WHERE i.product = p " +
-            "ORDER BY i.imageSequence) as imageUrlList " +
+            "p.discountRate as discountRate) " +
             "FROM Product p " +
             "JOIN p.brand b " +
             "WHERE p.name LIKE %:keyword% ")

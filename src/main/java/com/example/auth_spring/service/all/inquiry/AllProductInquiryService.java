@@ -7,6 +7,8 @@ import com.example.auth_spring.web.domain.image.ImageRepository;
 import com.example.auth_spring.web.domain.product.ProductRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.Pagination;
+import com.example.auth_spring.web.dto.image.ImageListResponseDto;
+import com.example.auth_spring.web.dto.image.ImageResponseDto;
 import com.example.auth_spring.web.dto.product.ProductListResponseDto;
 import com.example.auth_spring.web.dto.product.ProductResponseDto;
 import com.example.auth_spring.web.exception.NotFoundException;
@@ -17,6 +19,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 public class AllProductInquiryService {
 
     private final ProductRepository productRepository;
+    private final ImageRepository imageRepository;
     private final CommonService commonService;
 
     // 전체 상품 조회
@@ -35,9 +40,20 @@ public class AllProductInquiryService {
 
         Page<ProductResponseDto> data = productRepository.findProductAllList(pageable);
 
+        List<ProductResponseDto> productList = data.getContent();
 
+        List<ImageListResponseDto> productImages = new ArrayList<>();
 
-        return ProductListResponseDto.getProductListResponseDto(data);
+        for (ProductResponseDto product : productList) {
+            List<ImageResponseDto> productImagesList = imageRepository.findAllImageList(product.getProductId());
+            ImageListResponseDto productImage = ImageListResponseDto.builder()
+                    .productId(product.getProductId())
+                    .imageUrlList(productImagesList)
+                    .build();
+            productImages.add(productImage);
+        }
+
+        return ProductListResponseDto.getProductListResponseDto(data, productImages);
     }
 
     // API 반환

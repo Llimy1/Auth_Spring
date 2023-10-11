@@ -126,9 +126,10 @@ class CategoryProductInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/all/product/category/{categoryName}", "의류")
+        mvc.perform(get("/api/v1/all/product/category")
                         .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("categoryName", "의류"))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))

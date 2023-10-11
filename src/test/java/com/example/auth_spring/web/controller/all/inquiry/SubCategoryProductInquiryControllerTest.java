@@ -128,9 +128,10 @@ class SubCategoryProductInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/all/product/subCategory/{subCategoryName}", "맨투맨")
+        mvc.perform(get("/api/v1/all/product/subCategory")
                         .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("subCategoryName", "맨투맨"))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))

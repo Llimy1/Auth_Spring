@@ -4,6 +4,7 @@ import com.example.auth_spring.service.seller.registration.product.ProductRegist
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
+import com.example.auth_spring.web.dto.product.ProductListRequestDto;
 import com.example.auth_spring.web.dto.product.ProductRequestDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,13 +28,11 @@ public class ProductRegistrationController {
 
     @ApiOperation(value = "판매자 상품 등록 API")
     @PostMapping("/product/{subCategoryName}")
-    public ResponseEntity<ResultDto<ProductIdResponseDto>> productRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
+    public ResponseEntity<ResultDto<Void>> productRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                                @PathVariable String subCategoryName,
-                                                                               @RequestPart(value = "images") List<MultipartFile> multipartFiles,
-                                                                               @RequestPart(value = "productRequest") ProductRequestDto productRequestDto) {
-        CommonResponse<Object> commonResponse = productRegistrationService.registrationResponse(bearerAccessToken, subCategoryName, multipartFiles, productRequestDto);
-        ResultDto<ProductIdResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
-        result.setData((ProductIdResponseDto) commonResponse.getData());
+                                                                               @RequestPart(value = "productRequestList") List<ProductListRequestDto> productListRequestDtoList) {
+        CommonResponse<Object> commonResponse = productRegistrationService.registrationResponse(bearerAccessToken, subCategoryName, productListRequestDtoList);
+        ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
 
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
     }

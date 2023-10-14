@@ -20,11 +20,12 @@ public class CartRegistrationController {
     private final CartRegistrationService cartRegistrationService;
 
     @ApiOperation(value = "장바구니 상품 등록 API")
-    @PostMapping("/cart/{productName}")
+    @PostMapping("/cart/{productCount}")
     public ResponseEntity<ResultDto<Void>> cartRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
-                                                            @ApiParam(name = "productName", value = "상품 이름", example = "나이키 맨투맨") @PathVariable String productName) {
+                                                            @ApiParam(name = "productName", value = "상품 이름", example = "나이키 맨투맨") @RequestParam("productName") String productName,
+                                                            @ApiParam(name = "productCount", value = "상품 개수", example = "1") @PathVariable(value = "productCount") Integer productCount) {
 
-        CommonResponse<Object> commonResponse = cartRegistrationService.cartRegistrationResponse(bearerAccessToken, productName);
+        CommonResponse<Object> commonResponse = cartRegistrationService.cartRegistrationResponse(bearerAccessToken, productName, productCount);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
 
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);

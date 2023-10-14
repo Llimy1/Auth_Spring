@@ -30,7 +30,7 @@ public class CartRegistrationService {
 
     // 장바구니 상품 추가
     @Transactional
-    public void cartRegistration(String bearerAccessToken, String productName) {
+    public void cartRegistration(String bearerAccessToken, String productName, Integer productCount) {
         tokenService.accessTokenExpiration(bearerAccessToken);
 
         User user = tokenService.findUser(bearerAccessToken);
@@ -46,19 +46,25 @@ public class CartRegistrationService {
         ProductOption productOption = productOptionRepository.findProductOptionByProductName(productName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
 
+        if (productCount > productOption.getStock()) {
+            throw new IllegalStateException(ErrorCode.PRODUCT_STOCK_OVER_REGISTRATION);
+        }
+
 
         Cart cart = Cart.builder()
                 .user(user)
                 .productOption(productOption)
+                .count(productCount)
                 .build();
+
 
         cartRepository.save(cart);
     }
 
     // API 반환
     @Transactional
-    public CommonResponse<Object> cartRegistrationResponse(String bearerAccessToken, String productName) {
-        cartRegistration(bearerAccessToken, productName);
+    public CommonResponse<Object> cartRegistrationResponse(String bearerAccessToken, String productName, Integer productCount) {
+        cartRegistration(bearerAccessToken, productName, productCount);
         return commonService.successResponse(SuccessCode.CART_REGISTRATION_SUCCESS.getDescription(), HttpStatus.CREATED, null);
     }
 }

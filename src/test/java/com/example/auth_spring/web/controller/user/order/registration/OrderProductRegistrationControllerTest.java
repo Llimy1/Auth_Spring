@@ -68,6 +68,7 @@ class OrderProductRegistrationControllerTest {
                 .productName("나이키 맨투맨")
                 .addressId(1L)
                 .count(1)
+                .totalPrice(100000L)
                 .build();
     }
 

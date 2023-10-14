@@ -45,6 +45,9 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private Long likeCount;
 
+    @Column
+    private Boolean soldOut;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -70,7 +73,7 @@ public class Product extends BaseTimeEntity {
     private List<Image> imageList;
 
     @Builder
-    public Product(String name, Long price, Integer deliveryPrice, Integer discountRate, Boolean isDiscount, User user, SubCategory subCategory, Brand brand, Long likeCount) {
+    public Product(String name, Long price, Integer deliveryPrice, Integer discountRate, Boolean isDiscount, User user, SubCategory subCategory, Brand brand, Long likeCount, Boolean soldOut) {
         this.name = name;
         this.price = price;
         this.deliveryPrice = deliveryPrice;
@@ -80,6 +83,7 @@ public class Product extends BaseTimeEntity {
         this.subCategory = subCategory;
         this.brand = brand;
         this.likeCount = likeCount;
+        this.soldOut = soldOut;
     }
 
     public void increaseLike() {

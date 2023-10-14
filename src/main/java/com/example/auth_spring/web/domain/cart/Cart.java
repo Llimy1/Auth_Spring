@@ -23,6 +23,9 @@ public class Cart extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Integer count;
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -34,7 +37,8 @@ public class Cart extends BaseTimeEntity {
     private ProductOption productOption;
 
     @Builder
-    public Cart(User user, ProductOption productOption) {
+    public Cart(Integer count, User user, ProductOption productOption) {
+        this.count = count;
         this.user = user;
         this.productOption = productOption;
     }

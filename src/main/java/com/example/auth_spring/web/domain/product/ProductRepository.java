@@ -2,6 +2,7 @@ package com.example.auth_spring.web.domain.product;
 
 
 
+import com.example.auth_spring.web.dto.product.ProductDetailResponseDto;
 import com.example.auth_spring.web.dto.product.ProductResponseDto;
 import com.example.auth_spring.web.dto.seller.SellerProductResponseDto;
 import org.springframework.data.domain.Page;
@@ -22,12 +23,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.discountRate as discountRate," +
             "v.count as viewCount," +
             "p.likeCount as likeCount," +
-            "i.imageUrl as mainProductImageUrl) " +
+            "i.imageUrl as mainProductImageUrl," +
+            "po.stock as productStock) " +
             "FROM Product p " +
             "JOIN p.user u " +
             "JOIN p.brand b " +
             "JOIN p.viewList v " +
             "JOIN p.imageList i " +
+            "JOIN p.productOptionList po " +
             "WHERE u.email = :email " +
             "AND i.imageSequence = 1 ")
     Page<SellerProductResponseDto> findProductByUserEmail(@Param("email") String email, Pageable pageable);
@@ -38,7 +41,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.price as productPrice," +
             "b.name as brandName," +
             "p.isDiscount as isDiscount," +
-            "p.discountRate as discountRate) " +
+            "p.discountRate as discountRate," +
+            "p.soldOut as soldOut) " +
             "FROM Product p " +
             "JOIN p.brand b ")
     Page<ProductResponseDto> findProductAllList(Pageable pageable);
@@ -49,7 +53,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.price as productPrice, " +
             "b.name as brandName," +
             "p.isDiscount as isDiscount," +
-            "p.discountRate as discountRate) " +
+            "p.discountRate as discountRate," +
+            "p.soldOut as soldOut) " +
             "FROM Product p " +
             "LEFT JOIN p.subCategory sc " +
             "LEFT JOIN sc.category c " +
@@ -64,7 +69,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.price as productPrice, " +
             "b.name as brandName, " +
             "p.isDiscount as isDiscount, " +
-            "p.discountRate as discountRate) " +
+            "p.discountRate as discountRate," +
+            "p.soldOut as soldOut) " +
             "FROM Product p " +
             "JOIN p.subCategory sc " +
             "JOIN p.brand b " +
@@ -78,11 +84,29 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.price as productPrice, " +
             "b.name as brandName," +
             "p.isDiscount as isDiscount," +
-            "p.discountRate as discountRate) " +
+            "p.discountRate as discountRate," +
+            "p.soldOut as soldOut) " +
             "FROM Product p " +
             "JOIN p.brand b " +
             "WHERE p.name LIKE %:keyword% ")
     Page<ProductResponseDto> findProductListBySearchName(@Param("keyword")String keyword, Pageable pageable);
+
+    @Query("SELECT NEW com.example.auth_spring.web.dto.product.ProductDetailResponseDto(" +
+            "p.id as productId," +
+            "p.name as productName," +
+            "p.price as productPrice," +
+            "b.name as brandName," +
+            "p.isDiscount as isDiscount," +
+            "p.discountRate as discountRate," +
+            "v.count as viewCount," +
+            "p.likeCount as likeCount," +
+            "po.stock as productStock) " +
+            "FROM Product p " +
+            "JOIN p.brand b " +
+            "JOIN p.productOptionList po " +
+            "JOIN p.viewList v " +
+            "WHERE p.name = :productName ")
+    Optional<ProductDetailResponseDto> findProductDetailByProductName(@Param("productName") String productName);
 
     Optional<Product> findByName(String productName);
 

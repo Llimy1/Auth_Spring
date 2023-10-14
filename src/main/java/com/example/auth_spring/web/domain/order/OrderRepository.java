@@ -17,14 +17,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "p.name as productName, " +
             "o.totalPrice as totalOrderPrice," +
             "b.name as productBrand," +
-            "o.count as orderProductCount," +
-            "op.name as optionName) " +
+            "o.count as orderProductCount) " +
             "FROM Order o " +
             "JOIN o.user u " +
             "JOIN o.productOption po " +
             "JOIN po.product p " +
             "JOIN p.brand b " +
-            "JOIN po.option op " +
             "WHERE u.email = :email ")
     Page<OrderProductAllResponseDto> findAllOrderList(@Param("email") String email, Pageable pageable);
 
@@ -34,13 +32,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "p.name as productName, " +
             "p.price as productPrice," +
             "b.name as productBrand," +
-            "op.name as optionName," +
             "p.deliveryPrice as deliveryPrice, " +
             "o.totalPrice as totalOrderPrice, " +
             "a.zipCode as zipCode, " +
             "a.streetAddress as streetAddress," +
             "a.detailAddress as detailAddress, " +
-            "o.count as orderProductCount) " +
+            "o.count as orderProductCount," +
+            "op.size as productSize," +
+            "op.color as productColor) " +
             "FROM Order o " +
             "JOIN o.user u " +
             "JOIN o.productOption po " +

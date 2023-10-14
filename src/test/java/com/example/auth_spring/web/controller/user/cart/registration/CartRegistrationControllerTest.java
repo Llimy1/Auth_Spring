@@ -23,8 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -76,7 +75,7 @@ class CartRegistrationControllerTest {
                 .build();
 
         //given
-        given(cartRegistrationService.cartRegistrationResponse(anyString(), anyString()))
+        given(cartRegistrationService.cartRegistrationResponse(anyString(), anyString(), anyInt()))
                 .willReturn(commonResponse);
 
         //when
@@ -106,7 +105,7 @@ class CartRegistrationControllerTest {
                 .build();
 
         //given
-        given(cartRegistrationService.cartRegistrationResponse(anyString(), anyString()))
+        given(cartRegistrationService.cartRegistrationResponse(anyString(), anyString(), anyInt()))
                 .willReturn(commonResponse);
 
         //when
@@ -136,7 +135,7 @@ class CartRegistrationControllerTest {
                 .build();
 
         //given
-        given(cartRegistrationService.cartRegistrationResponse(anyString(), anyString()))
+        given(cartRegistrationService.cartRegistrationResponse(anyString(), anyString(), anyInt()))
                 .willReturn(commonResponse);
 
         //when

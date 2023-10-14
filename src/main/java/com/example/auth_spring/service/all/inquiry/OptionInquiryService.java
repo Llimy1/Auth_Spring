@@ -1,8 +1,9 @@
-package com.example.auth_spring.service.seller.inquiry.option;
+package com.example.auth_spring.service.all.inquiry;
 
 import com.example.auth_spring.service.common.CommonService;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.type.SuccessCode;
+import com.example.auth_spring.web.domain.option.OptionRepository;
 import com.example.auth_spring.web.domain.productoption.ProductOption;
 import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
@@ -19,18 +20,14 @@ import java.util.List;
 @Service
 public class OptionInquiryService {
 
-    private final TokenService tokenService;
     private final CommonService commonService;
-    private final ProductOptionRepository productOptionRepository;
+    private final OptionRepository optionRepository;
 
 
     // 옵션 조회
-    public OptionListResponseDto optionInquiry(String bearerAccessToken) {
-        tokenService.accessTokenExpiration(bearerAccessToken);
+    public OptionListResponseDto optionInquiry(String productName) {
 
-        String email = tokenService.accessTokenEmail(bearerAccessToken);
-
-        List<OptionResponseDto> optionResponseDtoList = productOptionRepository.findOptionListByUserEmail(email);
+        List<OptionResponseDto> optionResponseDtoList = optionRepository.findOptionListByProductName(productName);
 
         return OptionListResponseDto.builder()
                 .optionList(optionResponseDtoList)
@@ -38,9 +35,9 @@ public class OptionInquiryService {
     }
 
     // API 반환
-    public CommonResponse<Object> optionInquiryResponse(String bearerAccessToken) {
+    public CommonResponse<Object> optionInquiryResponse(String productName) {
 
-        return commonService.successResponse(SuccessCode.OPTION_LIST_INQUIRY_SUCCESS.getDescription(), HttpStatus.OK, optionInquiry(bearerAccessToken));
+        return commonService.successResponse(SuccessCode.OPTION_LIST_INQUIRY_SUCCESS.getDescription(), HttpStatus.OK, optionInquiry(productName));
     }
 }
 

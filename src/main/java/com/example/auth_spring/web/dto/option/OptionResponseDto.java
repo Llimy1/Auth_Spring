@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OptionResponseDto {
 
-    private String optionName;
+    private String size;
+    private String color;
 
     @Builder
-    public OptionResponseDto(String optionName) {
-        this.optionName = optionName;
+    public OptionResponseDto(String size, String color) {
+        this.size = size;
+        this.color = color;
     }
 }

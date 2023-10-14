@@ -40,7 +40,9 @@ public enum ErrorCode {
     BRAND_NOT_FOUND("브랜드를 찾을 수 없습니다."),
     LIKE_NOT_FOUND("좋아요 정보를 찾을 수 없습니다."),
     FILE_EXTENSION_NOT_FOUND("확장자가 올바르지 않습니다."),
-    IMAGE_UPLOAD_FAIL("이미지 업로드에 실패 했습니다.");
+    IMAGE_UPLOAD_FAIL("이미지 업로드에 실패 했습니다."),
+    OPTION_NOT_FOUND("옵션을 찾을 수 없습니다."),
+    PRODUCT_STOCK_OVER_REGISTRATION("재고 수량을 초과 했습니다.");
 
 
 

@@ -19,26 +19,18 @@ public class OrderProductRequestDto {
     private Long addressId;
     @ApiModelProperty(name = "productName", value = "productName", example = "나이키 후드티")
     private String productName;
+    @ApiModelProperty(name = "totalPrice", value = "totalPrice", example = "100000")
     private Long totalPrice;
 
     @Builder
-    public OrderProductRequestDto(Integer count, Long addressId, String productName) {
+    public OrderProductRequestDto(Integer count, Long addressId, String productName, Long totalPrice) {
         this.count = count;
         this.addressId = addressId;
         this.productName = productName;
+        this.totalPrice = totalPrice;
     }
 
     public Order toOrderEntity(User user, ProductOption productOption, Address address, String orderName) {
-
-        if (productOption.getProduct().getIsDiscount()) {
-            double discountRate = productOption.getProduct().getDiscountRate() / 100.0;
-            double doublePrice = ((1 - discountRate) * productOption.getProduct().getPrice()) + productOption.getProduct().getDeliveryPrice();
-            totalPrice = Math.round(doublePrice);
-        } else {
-            totalPrice = productOption.getProduct().getPrice() + productOption.getProduct().getDeliveryPrice();
-        }
-
-
         return Order.builder()
                 .user(user)
                 .productOption(productOption)

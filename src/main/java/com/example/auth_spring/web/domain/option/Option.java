@@ -23,7 +23,10 @@ public class Option extends BaseTimeEntity {
     private Long id;
 
     @Column
-    private String name;
+    private String size;
+
+    @Column
+    private String color;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,8 +37,9 @@ public class Option extends BaseTimeEntity {
     private List<ProductOption> productOption;
 
     @Builder
-    public Option(String name, User user) {
-        this.name = name;
+    public Option(String size, String color, User user) {
+        this.size = size;
+        this.color = color;
         this.user = user;
     }
 }

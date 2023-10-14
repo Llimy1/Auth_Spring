@@ -1,9 +1,11 @@
 package com.example.auth_spring.web.dto.product;
 import com.example.auth_spring.web.domain.brand.Brand;
+import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.domain.view.View;
+import com.example.auth_spring.web.dto.option.OptionRequestDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,17 +27,24 @@ public class ProductRequestDto {
     private Integer discountRate;
     @ApiModelProperty(name = "isDisCount", value = "isDisCount", example = "true")
     private Boolean isDiscount;
+    @ApiModelProperty(name = "optionRequest", value = "optionRequest")
+    private OptionRequestDto optionRequestDto;
+    @ApiModelProperty(name = "productStock", value = "productStock")
+    private Integer productStock;
 
 
     @Builder
-    public ProductRequestDto(String productName, Long productPrice, Integer deliveryPrice, String brandName, Integer discountRate, Boolean isDiscount) {
+    public ProductRequestDto(String productName, Long productPrice, Integer deliveryPrice, String brandName, Integer discountRate, Boolean isDiscount, OptionRequestDto optionRequestDto, Integer productStock) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.deliveryPrice = deliveryPrice;
         this.brandName = brandName;
         this.discountRate = discountRate;
         this.isDiscount = isDiscount;
+        this.optionRequestDto = optionRequestDto;
+        this.productStock = productStock;
     }
+
 
     public Product toProductEntity(User user, SubCategory subCategory, Brand brand) {
         return Product.builder()
@@ -48,6 +57,7 @@ public class ProductRequestDto {
                 .discountRate(discountRate)
                 .isDiscount(isDiscount)
                 .likeCount(0L)
+                .soldOut(false)
                 .build();
     }
 

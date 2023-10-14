@@ -10,8 +10,12 @@ import com.example.auth_spring.web.domain.brand.Brand;
 import com.example.auth_spring.web.domain.brand.BrandRepository;
 import com.example.auth_spring.web.domain.image.Image;
 import com.example.auth_spring.web.domain.image.ImageRepository;
+import com.example.auth_spring.web.domain.option.Option;
+import com.example.auth_spring.web.domain.option.OptionRepository;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.product.ProductRepository;
+import com.example.auth_spring.web.domain.productoption.ProductOption;
+import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.domain.subcategory.SubCategory;
 import com.example.auth_spring.web.domain.subcategory.SubCategoryRepository;
 import com.example.auth_spring.web.domain.user.User;
@@ -19,6 +23,7 @@ import com.example.auth_spring.web.domain.view.View;
 import com.example.auth_spring.web.domain.view.ViewRepository;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.product.ProductIdResponseDto;
+import com.example.auth_spring.web.dto.product.ProductListRequestDto;
 import com.example.auth_spring.web.dto.product.ProductRequestDto;
 import com.example.auth_spring.web.exception.IllegalStateException;
 import com.example.auth_spring.web.exception.NotFoundException;
@@ -39,6 +44,8 @@ public class ProductRegistrationService {
     private final S3UploadService s3UploadService;
     private final ProductRepository productRepository;
     private final SubCategoryRepository subCategoryRepository;
+    private final ProductOptionRepository productOptionRepository;
+    private final OptionRepository optionRepository;
     private final BrandRepository brandRepository;
     private final ViewRepository viewRepository;
     private final ImageRepository imageRepository;
@@ -46,8 +53,7 @@ public class ProductRegistrationService {
 
     // 상품 등록
     @Transactional
-    public Long registration(String bearerAccessToken, String subCategoryName, List<MultipartFile> multipartFiles, ProductRequestDto productRequestDto) {
-        String brandName = productRequestDto.getBrandName();
+    public void registration(String bearerAccessToken, String subCategoryName, List<ProductListRequestDto> productListRequestDtoList) {
 
         tokenService.accessTokenExpiration(bearerAccessToken);
 
@@ -60,29 +66,48 @@ public class ProductRegistrationService {
         SubCategory subCategory = subCategoryRepository.findByName(subCategoryName)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SUB_CATEGORY_NOT_FOUND));
 
-        Brand brand = brandRepository.findByName(brandName)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.BRAND_NOT_FOUND));
+        for (ProductListRequestDto productListRequest : productListRequestDtoList) {
 
-        Product product = productRequestDto.toProductEntity(user, subCategory, brand);
+            ProductRequestDto productRequest = productListRequest.getProductRequest();
+            List<MultipartFile> multipartFiles = productListRequest.getMultipartFiles();
 
-        imageRegistration(multipartFiles, product);
+            String brandName = productRequest.getBrandName();
 
-        Long productId  = productRepository.save(product).getId();
+            Brand brand = brandRepository.findByName(brandName)
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.BRAND_NOT_FOUND));
 
-        View view = productRequestDto.toViewEntity(product);
+            Product product = productRequest.toProductEntity(user, subCategory, brand);
 
-        viewRepository.save(view);
+            productRepository.save(product);
 
-        return productId;
+            View view = productRequest.toViewEntity(product);
+
+            viewRepository.save(view);
+
+            Option option = productRequest.getOptionRequestDto().toOptionEntity(user);
+
+            optionRepository.save(option);
+
+            ProductOption productOption = ProductOption.builder()
+                    .option(option)
+                    .product(product)
+                    .stock(productRequest.getProductStock())
+                    .build();
+
+            productOptionRepository.save(productOption);
+
+            imageRegistration(multipartFiles, product);
+        }
     }
 
     // API 반환
     @Transactional
-    public CommonResponse<Object> registrationResponse(String bearerAccessToken, String subCategoryName, List<MultipartFile> multipartFiles, ProductRequestDto productRequestDto) {
-        Long productId = registration(bearerAccessToken, subCategoryName, multipartFiles, productRequestDto);
+    public CommonResponse<Object> registrationResponse(String bearerAccessToken, String subCategoryName, List<ProductListRequestDto> productListRequestDtoList) {
+        registration(bearerAccessToken, subCategoryName, productListRequestDtoList);
 
-        return commonService.successResponse(SuccessCode.PRODUCT_REGISTRATION_SUCCESS.getDescription(), HttpStatus.CREATED, new ProductIdResponseDto(productId));
+        return commonService.successResponse(SuccessCode.PRODUCT_REGISTRATION_SUCCESS.getDescription(), HttpStatus.CREATED, null);
     }
+
 
     // 이미지 저장
     private void imageRegistration(List<MultipartFile> multipartFiles, Product product) {

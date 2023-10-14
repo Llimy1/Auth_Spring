@@ -1,22 +1,19 @@
-package com.example.auth_spring.web.controller.seller.inquiry.option;
+package com.example.auth_spring.web.controller.all.inquiry;
 
-import com.example.auth_spring.service.seller.inquiry.option.OptionInquiryService;
+import com.example.auth_spring.service.all.inquiry.OptionInquiryService;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.common.ResultDto;
 import com.example.auth_spring.web.dto.option.OptionListResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/seller")
+@RequestMapping("/api/v1/all")
 @Api(tags = "Option APIs")
 public class OptionInquiryController {
 
@@ -24,9 +21,9 @@ public class OptionInquiryController {
 
     @ApiOperation(value = "옵션 조회 API")
     @GetMapping("/option")
-    public ResponseEntity<ResultDto<OptionListResponseDto>> optionList(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken) {
+    public ResponseEntity<ResultDto<OptionListResponseDto>> optionList(@ApiParam(name = "productName", value = "productName", example = "나이키 맨투맨") @RequestParam("productName") String productName) {
 
-        CommonResponse<Object> commonResponse = optionInquiryService.optionInquiryResponse(bearerAccessToken);
+        CommonResponse<Object> commonResponse = optionInquiryService.optionInquiryResponse(productName);
         ResultDto<OptionListResponseDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
         result.setData((OptionListResponseDto) commonResponse.getData());
 

@@ -21,7 +21,7 @@ public class OrderProductRegistrationController {
 
     @ApiOperation(value = "주문 정보 저장 API")
     @PostMapping("/order")
-    public ResponseEntity<ResultDto<Void>> OrderProductRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
+    public ResponseEntity<ResultDto<Void>> orderProductRegistration(@ApiIgnore @RequestHeader("Authorization") String bearerAccessToken,
                                                                     @RequestBody OrderProductRequestDto orderProductRequestDto) {
         CommonResponse<Object> commonResponse = orderProductRegistrationService.orderProductRegistrationResponse(bearerAccessToken, orderProductRequestDto);
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());

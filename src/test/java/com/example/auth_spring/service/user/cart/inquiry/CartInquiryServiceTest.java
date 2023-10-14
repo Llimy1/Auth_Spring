@@ -86,7 +86,8 @@ class CartInquiryServiceTest {
 
         Option option = Option.builder()
                 .user(user)
-                .name("XL")
+                .size("XL")
+                .color("RED")
                 .build();
 
         ReflectionTestUtils.setField(option, "id", 1L);

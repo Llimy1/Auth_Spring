@@ -113,7 +113,8 @@ class CartRepositoryTest {
 
         Option option = Option.builder()
                 .user(user)
-                .name("XL")
+                .size("XL")
+                .color("RED")
                 .build();
 
         Option option1 = optionRepository.save(option);

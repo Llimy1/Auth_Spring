@@ -21,6 +21,9 @@ public class ProductOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Integer stock;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -36,8 +39,13 @@ public class ProductOption {
     private List<Order> orderList;
 
     @Builder
-    public ProductOption(Product product, Option option) {
+    public ProductOption(Integer stock, Product product, Option option) {
+        this.stock = stock;
         this.product = product;
         this.option = option;
+    }
+
+    public void decreaseStock(Integer productOrderCount) {
+        this.stock -= productOrderCount;
     }
 }

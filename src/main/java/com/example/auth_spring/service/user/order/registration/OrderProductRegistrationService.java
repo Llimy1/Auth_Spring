@@ -13,6 +13,7 @@ import com.example.auth_spring.web.domain.productoption.ProductOptionRepository;
 import com.example.auth_spring.web.domain.user.User;
 import com.example.auth_spring.web.dto.common.CommonResponse;
 import com.example.auth_spring.web.dto.order.OrderProductRequestDto;
+import com.example.auth_spring.web.exception.IllegalStateException;
 import com.example.auth_spring.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,7 @@ public class OrderProductRegistrationService {
 
         String productName = orderProductRequestDto.getProductName();
         Long addressId = orderProductRequestDto.getAddressId();
+        Integer productCount = orderProductRequestDto.getCount();
 
         String orderName;
 
@@ -52,11 +54,13 @@ public class OrderProductRegistrationService {
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ADDRESS_NOT_FOUND));
 
-
-
+        if (productOption.getStock() < productCount) {
+            throw new IllegalStateException(ErrorCode.PRODUCT_STOCK_OVER_REGISTRATION);
+        }
 
         Order order = orderProductRequestDto.toOrderEntity(user, productOption, address, orderName);
 
+        productOption.decreaseStock(productCount);
 
         orderRepository.save(order);
     }

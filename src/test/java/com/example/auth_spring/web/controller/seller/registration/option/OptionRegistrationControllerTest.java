@@ -65,7 +65,8 @@ class OptionRegistrationControllerTest {
 
     private OptionRequestDto optionRequestDto() {
         return OptionRequestDto.builder()
-                .optionName("XL")
+                .size("XL")
+                .color("RED")
                 .build();
     }
 

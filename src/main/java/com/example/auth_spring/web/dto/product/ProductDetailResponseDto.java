@@ -1,21 +1,14 @@
 package com.example.auth_spring.web.dto.product;
 
-import com.example.auth_spring.web.domain.image.Image;
-import com.example.auth_spring.web.domain.product.Product;
-import com.example.auth_spring.web.domain.subcategory.SubCategory;
-import com.example.auth_spring.web.dto.image.ImageListResponseDto;
-import com.example.auth_spring.web.dto.image.ImageResponseDto;
+import com.example.auth_spring.web.dto.option.OptionResponseDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
-public class ProductResponseDto {
+public class ProductDetailResponseDto {
 
     private Long productId;
     private String productName;
@@ -23,11 +16,13 @@ public class ProductResponseDto {
     private String brandName;
     private Boolean isDiscount;
     private Integer discountRate;
-    private Boolean soldOut;
+    private Long viewCount;
+    private Long likeCount;
+    private Integer productStock;
 
 
     @Builder
-    public ProductResponseDto(Long productId, String productName, Long productPrice, String brandName, Boolean isDiscount, Integer discountRate, Boolean soldOut) {
+    public ProductDetailResponseDto(Long productId, String productName, Long productPrice, String brandName, Boolean isDiscount, Integer discountRate, Long viewCount, Long likeCount, Integer productStock) {
         this.productId = productId;
         this.productName = productName;
         this.brandName = brandName;
@@ -40,6 +35,9 @@ public class ProductResponseDto {
         } else {
             this.productPrice = productPrice;
         }
-        this.soldOut = soldOut;
+        this.viewCount = viewCount;
+        this.likeCount = likeCount;
+        this.productStock = productStock;
     }
+
 }

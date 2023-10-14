@@ -106,7 +106,8 @@ class CartInquiryControllerTest {
 
         Option option = Option.builder()
                 .user(user)
-                .name("XL")
+                .size("XL")
+                .color("RED")
                 .build();
         ProductOption productOption = ProductOption.builder()
                 .option(option)

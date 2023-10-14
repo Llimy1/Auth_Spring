@@ -10,17 +10,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OptionRequestDto {
 
-    private String optionName;
+    private String size;
+    private String color;
 
     @Builder
-    public OptionRequestDto(String optionName) {
-        this.optionName = optionName;
+    public OptionRequestDto(String size, String color) {
+        this.size = size;
+        this.color = color;
     }
+
 
     public Option toOptionEntity(User user) {
         return Option.builder()
                 .user(user)
-                .name(optionName)
+                .size(size)
+                .color(color)
                 .build();
     }
 }

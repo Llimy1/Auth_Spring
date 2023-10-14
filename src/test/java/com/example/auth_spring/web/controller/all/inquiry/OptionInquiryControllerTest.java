@@ -1,12 +1,12 @@
-package com.example.auth_spring.web.controller.seller.product.inquiry.option;
+package com.example.auth_spring.web.controller.all.inquiry;
 
 import com.example.auth_spring.security.jwt.service.JwtProvider;
 import com.example.auth_spring.service.common.CommonService;
-import com.example.auth_spring.service.seller.inquiry.option.OptionInquiryService;
+import com.example.auth_spring.service.all.inquiry.OptionInquiryService;
 import com.example.auth_spring.service.user.token.TokenService;
 import com.example.auth_spring.type.ResponseStatus;
 import com.example.auth_spring.type.SuccessCode;
-import com.example.auth_spring.web.controller.seller.inquiry.option.OptionInquiryController;
+import com.example.auth_spring.web.controller.all.inquiry.OptionInquiryController;
 import com.example.auth_spring.web.domain.option.Option;
 import com.example.auth_spring.web.domain.product.Product;
 import com.example.auth_spring.web.domain.productoption.ProductOption;
@@ -51,9 +51,6 @@ class OptionInquiryControllerTest {
     @MockBean
     private JwtProvider jwtProvider;
 
-    @MockBean
-    private TokenService tokenService;
-
     @Autowired
     private WebApplicationContext context;
 
@@ -74,10 +71,9 @@ class OptionInquiryControllerTest {
 
     @Test
     @DisplayName("[API] 옵션 조회 성공")
-    @WithMockUser(roles = "SELLER")
+    @WithMockUser(roles = "USER")
     void optionInquirySuccess() throws Exception {
 
-        String bearerAccessToken = "Bearer accessToken";
 
         user = new User();
         ReflectionTestUtils.setField(user, "id", 1L);
@@ -87,12 +83,14 @@ class OptionInquiryControllerTest {
 
         option = Option.builder()
                 .user(user)
-                .name("XL")
+                .size("XL")
+                .color("RED")
                 .build();
 
         OptionListResponseDto optionListResponseDto = OptionListResponseDto.builder()
                 .optionList(List.of(  OptionResponseDto.builder()
-                        .optionName("XL")
+                                .size(option.getSize())
+                                .color(option.getColor())
                         .build()))
                 .build();
 
@@ -109,15 +107,16 @@ class OptionInquiryControllerTest {
 
         //when
         //then
-        mvc.perform(get("/api/v1/seller/option")
+        mvc.perform(get("/api/v1/all/option")
                         .with(csrf())
-                        .header("Authorization", bearerAccessToken)
+                        .param("productName", "productName")
                         .contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(ResponseStatus.SUCCESS.getDescription()))
                 .andExpect(jsonPath("$.message").value(SuccessCode.OPTION_LIST_INQUIRY_SUCCESS.getDescription()))
-                .andExpect(jsonPath("$.data.optionList[0].optionName").value("XL"))
+                .andExpect(jsonPath("$.data.optionList[0].size").value(optionListResponseDto.getOptionList().get(0).getSize()))
+                .andExpect(jsonPath("$.data.optionList[0].color").value(optionListResponseDto.getOptionList().get(0).getColor()))
                 .andDo(print());
     }
 

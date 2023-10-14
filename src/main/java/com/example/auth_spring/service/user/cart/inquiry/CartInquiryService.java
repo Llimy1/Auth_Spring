@@ -40,6 +40,7 @@ public class CartInquiryService {
 
         Page<CartResponseDto> data = cartRepository.findCartByUserEmail(email, pageable);
 
+
         return CartListResponseDto.getCartListResponseDto(data);
     }
 

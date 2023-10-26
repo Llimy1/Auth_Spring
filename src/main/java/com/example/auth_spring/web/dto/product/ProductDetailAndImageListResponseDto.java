@@ -19,7 +19,4 @@ public class ProductDetailAndImageListResponseDto {
         this.productDetail = productDetail;
         this.imageUrlList = imageUrlList;
     }
-
-
-
 }

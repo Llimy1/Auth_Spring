@@ -33,7 +33,6 @@ public class Like {
     @JoinColumn(name = "product_id")
     private Product product;
 
-
     @Builder
     public Like(User user, Product product) {
         this.user = user;

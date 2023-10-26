@@ -108,6 +108,10 @@ public class ProductRegistrationService {
         return commonService.successResponse(SuccessCode.PRODUCT_REGISTRATION_SUCCESS.getDescription(), HttpStatus.CREATED, null);
     }
 
+    public void test(List<MultipartFile> multipartFileList) {
+        s3UploadService.upload(multipartFileList);
+    }
+
 
     // 이미지 저장
     private void imageRegistration(List<MultipartFile> multipartFiles, Product product) {

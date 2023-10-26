@@ -9,6 +9,7 @@ import com.example.auth_spring.web.dto.product.ProductRequestDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,5 +36,11 @@ public class ProductRegistrationController {
         ResultDto<Void> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
 
         return ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<ResultDto<Void>> test(@RequestPart(value = "images") List<MultipartFile> multipartFileList) {
+        productRegistrationService.test(multipartFileList);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

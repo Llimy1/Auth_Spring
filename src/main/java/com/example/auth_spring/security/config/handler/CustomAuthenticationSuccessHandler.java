@@ -34,7 +34,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
-        String profileImgUrl = oAuth2User.getAttribute("profileImgUrl");
+        String profileImgUrl = oAuth2User.getAttribute("picture");
         String provider = oAuth2User.getAttribute("provider");
 
 
@@ -47,6 +47,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
             String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/signup.html")
                     .queryParam("email", email)
+                    .queryParam("profileImgUrl", profileImgUrl)
                     .build()
                     .encode(StandardCharsets.UTF_8)
                     .toUriString();
@@ -57,11 +58,14 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 
         } else {
-            CommonResponse<Object> commonResponse = oAuth2LoginService.oAuth2LoginResponse(email);
-            ResultDto<GeneratedTokenDto> result = ResultDto.in(commonResponse.getStatus(), commonResponse.getMessage());
-            result.setData((GeneratedTokenDto) commonResponse.getData());
-            ResponseEntity.status(commonResponse.getHttpStatus()).body(result);
-            response.sendRedirect("http://localhost:8080/");
+            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/api/v1/all/login")
+                    .queryParam("email", email)
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString();
+
+
+            getRedirectStrategy().sendRedirect(request, response, targetUrl);
         }
     }
 }
